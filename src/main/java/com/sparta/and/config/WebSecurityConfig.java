@@ -34,14 +34,6 @@ public class WebSecurityConfig {
   private final AuthenticationConfiguration authenticationConfiguration;
 
   @Bean
-  public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-    return restTemplateBuilder
-            .setConnectTimeout(Duration.ofSeconds(5)) // 5초
-            .setReadTimeout(Duration.ofSeconds(5)) // 5초
-            .build();
-  }
-
-  @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
@@ -69,8 +61,7 @@ public class WebSecurityConfig {
 
     http.authorizeHttpRequests((authorizeHttpRequests) ->
         authorizeHttpRequests
-            .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-            .permitAll() // resources 접근 허용 설정
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
             .requestMatchers("/api/users/**").permitAll() // 로그인, 회원가입 누구나 가능.
             .requestMatchers("/api/view/users/**").permitAll()
             .requestMatchers("/").permitAll()

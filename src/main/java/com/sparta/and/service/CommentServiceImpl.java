@@ -43,7 +43,6 @@ public class CommentServiceImpl implements CommentService {
         return commentResponseDtoList;
     }
 
-    @Transactional
     @Override
     public ApiResponseDto insertComment(Long boardId, User user, CommentRequestDto commentRequestDto) {
         Board board = boardService.getBoardById(boardId);
