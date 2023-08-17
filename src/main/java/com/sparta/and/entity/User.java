@@ -25,8 +25,27 @@ public class User {
     private String userEmail;
 //   private enum role;
 
+    @Column(name = "nickname")
+    private String nickname;
+
     private Long kakaoId;
 
     private String googleId;
+    public User(String userName, String userPassword, String nickname, String googleId) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.nickname = nickname;
+        this.googleId = googleId;
+    }
+
+    public User kakaoIdUpdate(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this;
+    }
+
+    public User googleIdUpdate(String googleId) {
+        this.googleId = googleId;
+        return this;
+    }
 
 }
