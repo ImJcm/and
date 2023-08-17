@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -26,7 +26,7 @@ public class UserController {
     private final GoogleService googleService;
 
 
-    @GetMapping("auth/kakaotalk")
+    @GetMapping("/kakao/callback")
     public String KakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         String token = kakaoService.kakaoLogin(code); // 반환 값이 JWT 토큰
         token = token.substring(7);
@@ -38,7 +38,7 @@ public class UserController {
         return "redirect:/"; //프론트 연결;
     }
 
-    @GetMapping("auth/google")
+    @GetMapping("/google/callback")
     public String googleLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         String token = googleService.googleLogin(code); // 반환 값이 JWT 토큰
 
