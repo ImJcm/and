@@ -15,9 +15,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    private String userPassword;
+    @Column(name = "username", nullable = false, unique = true)
     private String userName;
+
+    @Column(name = "password", nullable = false)
+    private String userPassword;
+
+    @Column(name = "email")
     private String userEmail;
 //   private enum role;
+
+    private Long kakaoId;
+
+    private String googleId;
 
 }
