@@ -1,5 +1,6 @@
 package com.sparta.and.controller;
 
+import com.sparta.and.dto.ApiResponseDto;
 import com.sparta.and.dto.CommunityPostRequestDto;
 import com.sparta.and.dto.CommunityPostResponseDto;
 import com.sparta.and.exception.RestApiException;
@@ -25,9 +26,7 @@ public class CommunityPostController {
 	public ResponseEntity<?> createCommunityPost(@RequestBody CommunityPostRequestDto requestDto,
 	                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 		log.info("Controller - createCommunityPost : 시작");
-
 		CommunityPostResponseDto result = communityPostService.createCommunityPost(requestDto, userDetails);
-
 		log.info("Controller - createCommunityPost : 끝");
 		return ResponseEntity.status(HttpStatus.CREATED).body(result);
 	}
@@ -39,6 +38,20 @@ public class CommunityPostController {
 			CommunityPostResponseDto result = communityPostService.modifyCommunityPost(id, requestDto);
 			log.info("Controller - editCommunityPost : 끝");
 			return ResponseEntity.status(HttpStatus.OK).body(result);
+
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().body(new RestApiException(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteCommunityPost(@PathVariable Long id) {
+		log.info("Controller - deleteCommunityPost : 시작");
+		try {
+			ApiResponseDto result = communityPostService.deleteCommunityPost(id);
+			log.info("Controller - deleteCommunityPost : 끝");
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(new RestApiException(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
 		}

@@ -1,5 +1,6 @@
 package com.sparta.and.service;
 
+import com.sparta.and.dto.ApiResponseDto;
 import com.sparta.and.dto.CommunityPostRequestDto;
 import com.sparta.and.dto.CommunityPostResponseDto;
 import com.sparta.and.entity.CommunityPost;
@@ -7,6 +8,7 @@ import com.sparta.and.repository.CommunityPostRepository;
 import com.sparta.and.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,19 @@ public class CommunityPostServiceImpl implements CommunityPostService {
 
 		log.info("Service - modifyCommunityPost : 끝");
 		return new CommunityPostResponseDto(communityPost);
+	}
+
+	@Override
+	public ApiResponseDto deleteCommunityPost(Long id) {
+		log.info("Service - deleteCommunityPost : 시작");
+
+		CommunityPost communityPost = findPost(id);
+
+		// TODO : 작성자 확인 추가
+		communityPostRepository.delete(communityPost);
+
+		log.info("Service - deleteCommunityPost : 끝");
+		return new ApiResponseDto("게시글 삭제 완료", HttpStatus.OK.value());
 	}
 
 	@Override
