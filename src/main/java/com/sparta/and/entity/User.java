@@ -5,10 +5,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode
 @Table(name = "users")
 public class User {
     @Id
@@ -20,4 +22,6 @@ public class User {
     private String userEmail;
 //   private enum role;
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<CommunityPost> myPostList = new ArrayList<>();
 }
