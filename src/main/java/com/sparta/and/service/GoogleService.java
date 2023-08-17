@@ -66,9 +66,9 @@ public class GoogleService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "548376826797-uqt9obkjel3lov2i65ia5580hg1a1ntb.apps.googleusercontent.com");
-        body.add("client_secret", "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");
-        body.add("redirect_uri","http://localhost:8080/api/user/google/callback"); // 애플리케이션 등록시 설정한 redirect_uri
+        body.add("client_id", "1098266395848-j9gih592701mq0q8n2bj4nq7mffg2hjd.apps.googleusercontent.com");
+        body.add("client_secret", "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"); // 두개 다 해야함
+        body.add("redirect_uri","http://localhost:8080/api/users/google/callback"); // 애플리케이션 등록시 설정한 redirect_uri
         body.add("code",code); // 인가 코드
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
