@@ -31,7 +31,11 @@ public class CommunityPostServiceImpl implements CommunityPostService {
 
 	@Override
 	public CommunityPostResponseDto getCommunityPost(Long id) {
+		log.info("Service - getCommunityPost : 시작");
+
 		CommunityPost communityPost = findPost(id);
+
+		log.info("Service - getCommunityPost : 시작");
 		return new CommunityPostResponseDto(communityPost);
 	}
 
