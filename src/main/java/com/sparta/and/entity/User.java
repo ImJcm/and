@@ -31,6 +31,13 @@ public class User {
     private Long kakaoId;
 
     private String googleId;
+
+    public User(String userName, String userPassword, String nickname, Long kakaoId) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.nickname = nickname;
+        this.kakaoId = kakaoId;
+    }
     public User(String userName, String userPassword, String nickname, String googleId) {
         this.userName = userName;
         this.userPassword = userPassword;
