@@ -5,17 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 public class CategoryResponseDto {
-    private Long categoryId;
+    private Long id;
     private String categoryName;
 
     public CategoryResponseDto(Category category){
-        this.categoryId = category.getId();
+        this.id = category.getId();
         this.categoryName = category.getCategoryName();
 
     }

@@ -19,10 +19,6 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     //카테고리 전체조회
-//   private List<Category> getAllcategories(){
-//        return categoryRepository.findAllByCategoryId();
-//    }
-
     public CategoryListResponseDto getCategory() {
         List<CategoryResponseDto> categoryList = categoryRepository.findAll().stream()
                 .map(CategoryResponseDto::new)

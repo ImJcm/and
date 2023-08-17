@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/auth")
 public class CategoryController {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     //카테고리 생성
     @PostMapping("/category")
