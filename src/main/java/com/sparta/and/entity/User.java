@@ -34,4 +34,10 @@ public class User {
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<CommunityPost> myPostList = new ArrayList<>();
+
+	public User(String userName, String userPassword, String userEmail) {
+		this.userName = userName;
+		this.userPassword = userPassword;
+		this.userEmail = userEmail;
+	}
 }

@@ -10,7 +10,6 @@ import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "communityPost")
 @DynamicInsert
 @NoArgsConstructor
@@ -34,9 +33,21 @@ public class CommunityPost extends Timestamped {
 	@JoinColumn(name = "userId")
 	private User user;
 
-	public CommunityPost(CommunityPostRequestDto requestDto) {
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setContents(String contents) {
+		this.contents = contents;
+	}
+
+	public void setCommunityPostViews(Long communityPostViews) {
+		this.communityPostViews = communityPostViews;
+	}
+
+	public CommunityPost(CommunityPostRequestDto requestDto, User user) {
 		this.title = requestDto.getTitle();
 		this.contents = requestDto.getContents();
-//		this.user = user;
+		this.user = user;
 	}
 }

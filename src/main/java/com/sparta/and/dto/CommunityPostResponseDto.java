@@ -7,9 +7,11 @@ import lombok.Getter;
 public class CommunityPostResponseDto {
 	private String title;
 	private String contents;
+	private Long communityPostViews;
 
 	public CommunityPostResponseDto(CommunityPost communityPost) {
 		this.title = communityPost.getTitle();
 		this.contents = communityPost.getContents();
+		this.communityPostViews = communityPost.getCommunityPostViews();
 	}
 }
