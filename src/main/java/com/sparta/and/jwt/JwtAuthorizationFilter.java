@@ -45,6 +45,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 log.error("유효하지 않은 토큰입니다.");
                 return;
             }
+
+            Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
+
+            try {
+                setAuthentication(info.getSubject());
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                return;
+            }
         }
 
         filterChain.doFilter(request,response);

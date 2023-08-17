@@ -9,6 +9,7 @@ import com.sparta.and.jwt.JwtUtil;
 import com.sparta.and.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,11 @@ public class KakaoService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
+    @Value("${auth.kakao.client_id}")
+    private String restApiKey;
+
+    @Value("${auth.kakao.redirectURL}")
+    private String redirectURL;
 
     public String kakaoLogin(String code) throws JsonProcessingException {
         // "인가 코드"로 "액세스 토큰" 요청
@@ -64,8 +70,8 @@ public class KakaoService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "5350636bd29cb95d69ce8c1da3ba4102");
-        body.add("redirect_uri", "http://localhost:8080/api/users/kakao/callback");
+        body.add("client_id", restApiKey);
+        body.add("redirect_uri", redirectURL);
         body.add("code", code);
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
