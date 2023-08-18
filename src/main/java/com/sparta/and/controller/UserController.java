@@ -21,35 +21,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService userService;
-    private final KakaoService kakaoService;
-    private final GoogleService googleService;
+	private final UserService userService;
+	private final KakaoService kakaoService;
+	private final GoogleService googleService;
 
 
-    @GetMapping("/kakao/callback")
-    public String KakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
-        String token = kakaoService.kakaoLogin(code); // 반환 값이 JWT 토큰
-        token = token.substring(7);
-        token = "Bearer%20" + token;
-        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER,token);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+	@GetMapping("/kakao/callback")
+	public String KakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+		String token = kakaoService.kakaoLogin(code); // 반환 값이 JWT 토큰
+		token = token.substring(7);
+		token = "Bearer%20" + token;
+		Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token);
+		cookie.setPath("/");
+		response.addCookie(cookie);
 
-        return "redirect:/"; //프론트 연결;
-    }
+		return "redirect:/"; //프론트 연결;
+	}
 
-    @GetMapping("/google/callback")
-    public String googleLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
-        String token = googleService.googleLogin(code); // 반환 값이 JWT 토큰
+	@GetMapping("/google/callback")
+	public String googleLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+		String token = googleService.googleLogin(code); // 반환 값이 JWT 토큰
 
-        token = token.substring(7);
-        token = "Bearer%20" + token;
-        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER,token);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+		token = token.substring(7);
+		token = "Bearer%20" + token;
+		Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token);
+		cookie.setPath("/");
+		response.addCookie(cookie);
 
-        return "redirect:/";
-    }
+		return "redirect:/";
+	}
 
-        //로그아웃은 토큰 만료로 할 것인가, 레디스로 할 것인가... 나중에 구현하겠습니다.
+	//로그아웃은 토큰 만료로 할 것인가, 레디스로 할 것인가... 나중에 구현하겠습니다.
 }
