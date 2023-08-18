@@ -1,4 +1,4 @@
-package com.sparta.and.dto;
+package com.sparta.and.dto.response;
 
 import com.sparta.and.entity.CommunityPost;
 import lombok.Getter;

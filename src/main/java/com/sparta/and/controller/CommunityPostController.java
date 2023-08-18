@@ -1,8 +1,8 @@
 package com.sparta.and.controller;
 
 import com.sparta.and.dto.ApiResponseDto;
-import com.sparta.and.dto.CommunityPostRequestDto;
-import com.sparta.and.dto.CommunityPostResponseDto;
+import com.sparta.and.dto.request.CommunityPostRequestDto;
+import com.sparta.and.dto.response.CommunityPostResponseDto;
 import com.sparta.and.security.UserDetailsImpl;
 import com.sparta.and.service.CommunityPostService;
 import lombok.RequiredArgsConstructor;

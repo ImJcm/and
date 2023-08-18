@@ -1,8 +1,8 @@
 package com.sparta.and.service;
 
 import com.sparta.and.dto.ApiResponseDto;
-import com.sparta.and.dto.CommunityPostRequestDto;
-import com.sparta.and.dto.CommunityPostResponseDto;
+import com.sparta.and.dto.request.CommunityPostRequestDto;
+import com.sparta.and.dto.response.CommunityPostResponseDto;
 import com.sparta.and.entity.CommunityPost;
 import com.sparta.and.repository.CommunityPostRepository;
 import com.sparta.and.security.UserDetailsImpl;
@@ -30,12 +30,19 @@ public class CommunityPostServiceImpl implements CommunityPostService {
 	}
 
 	@Override
+	@Transactional
 	public CommunityPostResponseDto getCommunityPost(Long id) {
 		log.info("Service - getCommunityPost : 시작");
 
 		CommunityPost communityPost = findPost(id);
 
-		log.info("Service - getCommunityPost : 시작");
+		// TODO : 사용자 확인한 뒤 작성자라면 조회수 증가x 추가
+		long views = communityPost.getCommunityPostViews() + 1;
+		log.info("views : " + views);
+		communityPost.setCommunityPostViews(views);
+		log.info("views : " + views);
+
+		log.info("Service - getCommunityPost : 끝");
 		return new CommunityPostResponseDto(communityPost);
 	}
 

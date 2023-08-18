@@ -1,4 +1,4 @@
-package com.sparta.and.dto;
+package com.sparta.and.dto.request;
 
 import lombok.Getter;
 

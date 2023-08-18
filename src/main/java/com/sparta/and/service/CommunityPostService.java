@@ -1,8 +1,8 @@
 package com.sparta.and.service;
 
 import com.sparta.and.dto.ApiResponseDto;
-import com.sparta.and.dto.CommunityPostRequestDto;
-import com.sparta.and.dto.CommunityPostResponseDto;
+import com.sparta.and.dto.request.CommunityPostRequestDto;
+import com.sparta.and.dto.response.CommunityPostResponseDto;
 import com.sparta.and.entity.CommunityPost;
 import com.sparta.and.security.UserDetailsImpl;
 

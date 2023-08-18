@@ -1,10 +1,9 @@
 package com.sparta.and.entity;
 
-import com.sparta.and.dto.CommunityPostRequestDto;
+import com.sparta.and.dto.request.CommunityPostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
