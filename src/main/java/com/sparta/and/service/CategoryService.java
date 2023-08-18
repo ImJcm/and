@@ -8,7 +8,6 @@ import com.sparta.and.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,25 +37,25 @@ public class CategoryService {
 
     //카테고리 수정
 
-    public CategoryResponseDto updateCategory(Long id, CategoryRequestDto categoryRequestDto){
+    public CategoryResponseDto updateCategory(Long id, CategoryRequestDto categoryRequestDto) {
         // 카테고리 아이디로 카테고리를 먼저 받아오기
-       Category category = findById(id);
+        Category category = findById(id);
 
-       //세터를 사용
-       category.setCategoryName(categoryRequestDto.getCategoryName());
+        //세터를 사용
+        category.setCategoryName(categoryRequestDto.getCategoryName());
 
-       return new CategoryResponseDto(category);
+        return new CategoryResponseDto(category);
     }
 
     //카테고리 삭제
     @Transactional
-    public String deleteCategory(Long id){
+    public String deleteCategory(Long id) {
         Category category = findById(id);
         categoryRepository.delete(category);
         return "카테고리 삭제완료";
     }
 
-    private Category findById(Long id){
+    private Category findById(Long id) {
         return categoryRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다.")
         );

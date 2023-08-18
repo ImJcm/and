@@ -4,14 +4,11 @@ import com.sparta.and.dto.request.CategoryRequestDto;
 import com.sparta.and.dto.response.ApiResponseDto;
 import com.sparta.and.dto.response.CategoryListResponseDto;
 import com.sparta.and.dto.response.CategoryResponseDto;
-import com.sparta.and.entity.Category;
 import com.sparta.and.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,21 +26,21 @@ public class CategoryController {
 
     // 카테고리 전체조회
     @GetMapping("/category")
-    public ResponseEntity<CategoryListResponseDto> getCategory(){
+    public ResponseEntity<CategoryListResponseDto> getCategory() {
         CategoryListResponseDto getCategory = categoryService.getCategory();
         return ResponseEntity.ok().body(getCategory);
     }
 
     //카테고리 수정
     @PutMapping("/category/{id}")
-    public ResponseEntity<CategoryResponseDto> updateCategory(@PathVariable Long id, @RequestBody CategoryRequestDto categoryRequestDto){
-        CategoryResponseDto updateCategory = categoryService.updateCategory(id,categoryRequestDto);
+    public ResponseEntity<CategoryResponseDto> updateCategory(@PathVariable Long id, @RequestBody CategoryRequestDto categoryRequestDto) {
+        CategoryResponseDto updateCategory = categoryService.updateCategory(id, categoryRequestDto);
         return ResponseEntity.ok().body(updateCategory);
     }
 
     //카테고리 삭제
     @DeleteMapping("/category/{id}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long id){
+    public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
         String msg = categoryService.deleteCategory(id);
         return ResponseEntity.ok(msg);
     }
