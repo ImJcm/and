@@ -5,6 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -32,6 +35,14 @@ public class User {
 
     private String googleId;
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<CommunityPost> myPostList = new ArrayList<>();
+
+	public User(String userName, String userPassword, String userEmail) {
+		this.userName = userName;
+		this.userPassword = userPassword;
+		this.userEmail = userEmail;
+	}
     public User(String userName, String userPassword, String nickname, Long kakaoId) {
         this.userName = userName;
         this.userPassword = userPassword;
