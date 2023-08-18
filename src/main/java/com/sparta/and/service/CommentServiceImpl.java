@@ -21,92 +21,94 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
-    private final PostService postService;
-    private final CommentRepository commentRepository;
-    @Override
-    public List<CommentResponseDto> getComments(Long postId) {
-        Post post = postService.findPost(postId);
+	private final PostService postService;
+	private final CommentRepository commentRepository;
 
-        List<Comment> comments = commentRepository.getCommentListFindByPostId(postId)
-                .stream()
-                .toList();
+	@Override
+	public List<CommentResponseDto> getComments(Long postId) {
+		Post post = postService.findPost(postId);
 
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-        Map<Long, CommentResponseDto> commentResponseDtoHashMap = new HashMap<>();
+		List<Comment> comments = commentRepository.getCommentListFindByPostId(postId)
+				.stream()
+				.toList();
 
-        comments.forEach(c -> {
-            CommentResponseDto commentResponseDto = CommentResponseDto.convertCommentToDto(c);
-            commentResponseDtoHashMap.put(commentResponseDto.getCommentId(), commentResponseDto);
-            if(c.getParent() != null) commentResponseDtoHashMap.get(c.getParent().getId()).getChild().add(commentResponseDto);
-            else commentResponseDtoList.add(commentResponseDto);
-        });
-        return commentResponseDtoList;
-    }
+		List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+		Map<Long, CommentResponseDto> commentResponseDtoHashMap = new HashMap<>();
 
-    @Override
-    public ApiResponseDto insertComment(Long postId, User user, CommentRequestDto commentRequestDto) {
-        Post post = postService.findPost(postId);
+		comments.forEach(c -> {
+			CommentResponseDto commentResponseDto = CommentResponseDto.convertCommentToDto(c);
+			commentResponseDtoHashMap.put(commentResponseDto.getCommentId(), commentResponseDto);
+			if (c.getParent() != null)
+				commentResponseDtoHashMap.get(c.getParent().getId()).getChild().add(commentResponseDto);
+			else commentResponseDtoList.add(commentResponseDto);
+		});
+		return commentResponseDtoList;
+	}
 
-        Comment comment = Comment.builder()
-                .content(commentRequestDto.getContent())
-                .writer(user)
-                .deleteStatus(DeleteStatus.N)
-                .parent(null)
-                .post(post)
-                .build();
+	@Override
+	public ApiResponseDto insertComment(Long postId, User user, CommentRequestDto commentRequestDto) {
+		Post post = postService.findPost(postId);
 
-        if(commentRequestDto.getParentId() != null) {
-            Comment parentComment = getCommentById(commentRequestDto.getParentId());
-            comment.setParent(parentComment);
-        }
-        commentRepository.save(comment);
+		Comment comment = Comment.builder()
+				.content(commentRequestDto.getContent())
+				.writer(user)
+				.deleteStatus(DeleteStatus.N)
+				.parent(null)
+				.post(post)
+				.build();
 
-        return new ApiResponseDto("댓글 등록 성공", HttpStatus.OK.value());
-    }
+		if (commentRequestDto.getParentId() != null) {
+			Comment parentComment = getCommentById(commentRequestDto.getParentId());
+			comment.setParent(parentComment);
+		}
+		commentRepository.save(comment);
 
-    @Transactional
-    @Override
-    public ApiResponseDto updateComment(Long commentId, User user, CommentRequestDto commentRequestDto) {
-        Comment comment = getCommentById(commentId);
+		return new ApiResponseDto("댓글 등록 성공", HttpStatus.OK.value());
+	}
 
-        if(comment.getWriter().getUserId() != user.getUserId()) {
-            throw new IllegalArgumentException("댓글 작성자가 아닙니다.");
-        }
+	@Transactional
+	@Override
+	public ApiResponseDto updateComment(Long commentId, User user, CommentRequestDto commentRequestDto) {
+		Comment comment = getCommentById(commentId);
 
-        comment.setContent(commentRequestDto.getContent());
+		if (comment.getWriter().getUserId() != user.getUserId()) {
+			throw new IllegalArgumentException("댓글 작성자가 아닙니다.");
+		}
 
-        return new ApiResponseDto("댓글 수정 성공", HttpStatus.OK.value());
-    }
+		comment.setContent(commentRequestDto.getContent());
 
-    @Transactional
-    @Override
-    public ApiResponseDto deleteComment(Long commentId, User user) {
-        Comment comment = getCommentById(commentId);
+		return new ApiResponseDto("댓글 수정 성공", HttpStatus.OK.value());
+	}
 
-        if(comment.getWriter().getUserId() != user.getUserId()) {
-            throw new IllegalArgumentException("댓글 작성자가 아닙니다.");
-        }
+	@Transactional
+	@Override
+	public ApiResponseDto deleteComment(Long commentId, User user) {
+		Comment comment = getCommentById(commentId);
 
-        if(comment.getChildren().size() != 0) {
-            comment.setIsDeleted(DeleteStatus.Y);
-        } else {
-            commentRepository.delete(getDeletableAncestorComment(comment));
-        }
+		if (comment.getWriter().getUserId() != user.getUserId()) {
+			throw new IllegalArgumentException("댓글 작성자가 아닙니다.");
+		}
 
-        return new ApiResponseDto("댓글 삭제 성공", HttpStatus.OK.value());
+		if (comment.getChildren().size() != 0) {
+			comment.setIsDeleted(DeleteStatus.Y);
+		} else {
+			commentRepository.delete(getDeletableAncestorComment(comment));
+		}
 
-    }
+		return new ApiResponseDto("댓글 삭제 성공", HttpStatus.OK.value());
 
-    @Override
-    public Comment getCommentById(Long commentId) {
-        return commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
-    }
+	}
 
-    private Comment getDeletableAncestorComment(Comment comment) {
-        Comment parent = comment.getParent();
-        if(parent != null && parent.getChildren().size() == 1 && parent.getIsDeleted().equals(DeleteStatus.Y)) {
-            return getDeletableAncestorComment(parent);
-        }
-        return comment;
-    }
+	@Override
+	public Comment getCommentById(Long commentId) {
+		return commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+	}
+
+	private Comment getDeletableAncestorComment(Comment comment) {
+		Comment parent = comment.getParent();
+		if (parent != null && parent.getChildren().size() == 1 && parent.getIsDeleted().equals(DeleteStatus.Y)) {
+			return getDeletableAncestorComment(parent);
+		}
+		return comment;
+	}
 }

@@ -3,8 +3,6 @@ package com.sparta.and.service;
 import com.sparta.and.dto.ApiResponseDto;
 import com.sparta.and.dto.request.PostRequestDto;
 import com.sparta.and.dto.response.PostResponseDto;
-import com.sparta.and.dto.response.PostResponseDto;
-import com.sparta.and.entity.Post;
 import com.sparta.and.entity.Post;
 import com.sparta.and.repository.PostRepository;
 import com.sparta.and.security.UserDetailsImpl;

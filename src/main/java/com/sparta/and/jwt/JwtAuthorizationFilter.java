@@ -3,6 +3,7 @@ package com.sparta.and.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.and.security.UserDetailsServiceImpl;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import io.jsonwebtoken.Claims;
 
 @Slf4j
 @RequiredArgsConstructor

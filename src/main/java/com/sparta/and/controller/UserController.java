@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +23,6 @@ public class UserController {
 	private final UserService userService;
 	private final KakaoService kakaoService;
 	private final GoogleService googleService;
-
 
 	@GetMapping("/kakao/callback")
 	public String KakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {

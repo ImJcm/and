@@ -11,14 +11,15 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class CommentRepositoryQueryImpl implements CommentRepositoryQuery {
-    private final JPAQueryFactory jpaQueryFactory;
-    @Override
-    public List<Comment> getCommentListFindByPostId(Long postId) {
-        QComment comment = QComment.comment;
+	private final JPAQueryFactory jpaQueryFactory;
 
-        return jpaQueryFactory.selectFrom(comment)
-                .where(comment.post.id.eq(postId))
-                .orderBy(comment.parent.id.asc(), comment.createdDate.asc())
-                .fetch();
-    }
+	@Override
+	public List<Comment> getCommentListFindByPostId(Long postId) {
+		QComment comment = QComment.comment;
+
+		return jpaQueryFactory.selectFrom(comment)
+				.where(comment.post.id.eq(postId))
+				.orderBy(comment.parent.id.asc(), comment.createdDate.asc())
+				.fetch();
+	}
 }

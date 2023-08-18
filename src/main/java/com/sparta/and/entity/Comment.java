@@ -14,52 +14,52 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "comments")
 public class Comment extends TimeStamped {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "comment_id")
+	private Long id;
 
-    @Column(nullable = false)
-    @Lob
-    private String content;
+	@Column(nullable = false)
+	@Lob
+	private String content;
 
-    @Enumerated(value = EnumType.STRING)
-    private DeleteStatus isDeleted;
+	@Enumerated(value = EnumType.STRING)
+	private DeleteStatus isDeleted;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User writer;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User writer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "post_id")
+	private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Comment parent;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "parent_id")
+	private Comment parent;
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true)
-    private List<Comment> children = new ArrayList<>();
+	@OneToMany(mappedBy = "parent", orphanRemoval = true)
+	private List<Comment> children = new ArrayList<>();
 
 
-    @Builder
-    public Comment(String content, DeleteStatus deleteStatus, User writer, Post post, Comment parent) {
-        this.content = content;
-        this.isDeleted = deleteStatus;
-        this.writer = writer;
-        this.post = post;
-        this.parent = parent;
-    }
+	@Builder
+	public Comment(String content, DeleteStatus deleteStatus, User writer, Post post, Comment parent) {
+		this.content = content;
+		this.isDeleted = deleteStatus;
+		this.writer = writer;
+		this.post = post;
+		this.parent = parent;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public void setParent(Comment parent) {
-        this.parent = parent;
-    }
+	public void setParent(Comment parent) {
+		this.parent = parent;
+	}
 
-    public void setIsDeleted(DeleteStatus deleteStatus) {
-        this.isDeleted = deleteStatus;
-    }
+	public void setIsDeleted(DeleteStatus deleteStatus) {
+		this.isDeleted = deleteStatus;
+	}
 }
