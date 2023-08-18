@@ -1,14 +1,13 @@
 package com.sparta.and.controller;
 
 import com.sparta.and.dto.ApiResponseDto;
-import com.sparta.and.dto.CommentRequestDto;
-import com.sparta.and.dto.CommentResponseDto;
+import com.sparta.and.dto.request.CommentRequestDto;
+import com.sparta.and.dto.response.CommentResponseDto;
 import com.sparta.and.security.UserDetailsImpl;
 import com.sparta.and.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

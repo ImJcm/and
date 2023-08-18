@@ -36,7 +36,7 @@ public class User {
 	private String googleId;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<CommunityPost> myPostList = new ArrayList<>();
+	private List<Post> myPostList = new ArrayList<>();
 
 	public User(String userName, String userPassword, String userEmail) {
 		this.userName = userName;

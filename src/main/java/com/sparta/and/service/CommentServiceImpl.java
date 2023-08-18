@@ -1,11 +1,11 @@
 package com.sparta.and.service;
 
 import com.sparta.and.dto.ApiResponseDto;
-import com.sparta.and.dto.CommentRequestDto;
-import com.sparta.and.dto.CommentResponseDto;
-import com.sparta.and.entity.Board;
+import com.sparta.and.dto.request.CommentRequestDto;
+import com.sparta.and.dto.response.CommentResponseDto;
 import com.sparta.and.entity.Comment;
 import com.sparta.and.entity.DeleteStatus;
+import com.sparta.and.entity.Post;
 import com.sparta.and.entity.User;
 import com.sparta.and.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +21,13 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
-    private final BoardService boardService;
+    private final PostService postService;
     private final CommentRepository commentRepository;
     @Override
-    public List<CommentResponseDto> getComments(Long boardId) {
-        Board board = boardService.getBoardById(boardId);
+    public List<CommentResponseDto> getComments(Long postId) {
+        Post post = postService.findPost(postId);
 
-        List<Comment> comments = commentRepository.getCommentListFindByBoardId(boardId)
+        List<Comment> comments = commentRepository.getCommentListFindByPostId(postId)
                 .stream()
                 .toList();
 
@@ -44,15 +44,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ApiResponseDto insertComment(Long boardId, User user, CommentRequestDto commentRequestDto) {
-        Board board = boardService.getBoardById(boardId);
+    public ApiResponseDto insertComment(Long postId, User user, CommentRequestDto commentRequestDto) {
+        Post post = postService.findPost(postId);
 
         Comment comment = Comment.builder()
                 .content(commentRequestDto.getContent())
                 .writer(user)
                 .deleteStatus(DeleteStatus.N)
                 .parent(null)
-                .board(board)
+                .post(post)
                 .build();
 
         if(commentRequestDto.getParentId() != null) {

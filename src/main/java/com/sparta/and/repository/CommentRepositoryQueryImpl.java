@@ -13,12 +13,12 @@ import java.util.List;
 public class CommentRepositoryQueryImpl implements CommentRepositoryQuery {
     private final JPAQueryFactory jpaQueryFactory;
     @Override
-    public List<Comment> getCommentListFindByBoardId(Long boardId) {
+    public List<Comment> getCommentListFindByPostId(Long postId) {
         QComment comment = QComment.comment;
 
         return jpaQueryFactory.selectFrom(comment)
-                .where(comment.board.id.eq(boardId))
-                .orderBy(comment.parent.id.asc(), comment.createdAt.asc())
+                .where(comment.post.id.eq(postId))
+                .orderBy(comment.parent.id.asc(), comment.createdDate.asc())
                 .fetch();
     }
 }

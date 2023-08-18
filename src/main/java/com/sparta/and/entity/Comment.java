@@ -1,6 +1,5 @@
 package com.sparta.and.entity;
 
-import com.sparta.and.dto.CommentRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,8 +31,8 @@ public class Comment extends TimeStamped {
     private User writer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -44,11 +43,11 @@ public class Comment extends TimeStamped {
 
 
     @Builder
-    public Comment(String content, DeleteStatus deleteStatus, User writer, Board board, Comment parent) {
+    public Comment(String content, DeleteStatus deleteStatus, User writer, Post post, Comment parent) {
         this.content = content;
         this.isDeleted = deleteStatus;
         this.writer = writer;
-        this.board = board;
+        this.post = post;
         this.parent = parent;
     }
 

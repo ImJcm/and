@@ -14,23 +14,22 @@ import java.time.format.DateTimeFormatter;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class TimeStamped {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+	@CreatedDate
+	@Column(updatable = false) //최초 생성시간만 초기화 되고 그 뒤 수정될 수 없음
+	private LocalDateTime createdDate;
 
-    @LastModifiedDate
-    @Column
-    private LocalDateTime modifiedAt;
+	@LastModifiedDate //변경될 때마다 시간 저장
+	@Column
+	private LocalDateTime modifiedDate;
 
-    public String getCreatedAtFormatted() {
-        return createdAt.format(FORMATTER);
-    }
+	public String getCreatedDateFormatted() {
+		return createdDate.format(FORMATTER);
+	}
 
-    public String getModifiedAtFormatted() {
-        return modifiedAt.format(FORMATTER);
-    }
+	public String getModifiedDateFormatted() {
+		return modifiedDate.format(FORMATTER);
+	}
 }
-
 

@@ -1,8 +1,8 @@
 package com.sparta.and.service;
 
 import com.sparta.and.dto.ApiResponseDto;
-import com.sparta.and.dto.CommentRequestDto;
-import com.sparta.and.dto.CommentResponseDto;
+import com.sparta.and.dto.request.CommentRequestDto;
+import com.sparta.and.dto.response.CommentResponseDto;
 import com.sparta.and.entity.Comment;
 import com.sparta.and.entity.User;
 

@@ -1,4 +1,4 @@
-package com.sparta.and.dto;
+package com.sparta.and.dto.response;
 
 import com.sparta.and.entity.Comment;
 import com.sparta.and.entity.DeleteStatus;
@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +28,8 @@ public class CommentResponseDto {
 
     public static CommentResponseDto convertCommentToDto(Comment comment) {
         return comment.getIsDeleted().equals(DeleteStatus.Y) ?
-                new CommentResponseDto(comment.getId(), "삭제된 댓글입니다.", comment.getWriter(), comment.getCreatedAtFormatted()) :
-                new CommentResponseDto(comment.getId(), comment.getContent(), comment.getWriter(), comment.getCreatedAtFormatted());
+                new CommentResponseDto(comment.getId(), "삭제된 댓글입니다.", comment.getWriter(), comment.getCreatedDateFormatted()) :
+                new CommentResponseDto(comment.getId(), comment.getContent(), comment.getWriter(), comment.getCreatedDateFormatted());
     }
 
     public CommentResponseDto(Comment comment) {
