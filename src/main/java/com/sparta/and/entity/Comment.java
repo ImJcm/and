@@ -14,17 +14,17 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "comments")
 public class Comment extends TimeStamped {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "comment_id")
+	private Long id;
 
-    @Column(nullable = false)
-    @Lob
-    private String content;
+	@Column(nullable = false)
+	@Lob
+	private String content;
 
-    @Enumerated(value = EnumType.STRING)
-    private DeleteStatus isDeleted;
+	@Enumerated(value = EnumType.STRING)
+	private DeleteStatus isDeleted;
 
     @Enumerated(value = EnumType.STRING)
     private SecretStatus isSecret;

@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ApiResponseDto {
-    private String msg;
-    private Integer status;
+	private String msg;
+	private Integer status;
 }

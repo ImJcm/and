@@ -20,12 +20,6 @@ public class CommentResponseDto {
     private String createdDate;
     private List<CommentResponseDto> child = new ArrayList<>();
 
-    /*public static CommentResponseDto convertCommentToDto(Comment comment) {
-        return comment.getIsDeleted().equals(DeleteStatus.Y) ?
-                new CommentResponseDto(comment.getId(), "삭제된 댓글입니다.", comment.getWriter(), comment.getCreatedDateFormatted()) :
-                new CommentResponseDto(comment.getId(), comment.getContent(), comment.getWriter(), comment.getCreatedDateFormatted());
-    }*/
-
     public CommentResponseDto(Comment comment) {
         this.commentId = comment.getId();
         this.content = comment.getContent();

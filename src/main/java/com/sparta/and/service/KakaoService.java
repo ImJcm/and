@@ -28,15 +28,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class KakaoService {
 
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    private final RestTemplate restTemplate;
-    private final JwtUtil jwtUtil;
-    @Value("${auth.kakao.client_id}")
-    private String restApiKey;
+	private final PasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
+	private final RestTemplate restTemplate;
+	private final JwtUtil jwtUtil;
+	@Value("${auth.kakao.client_id}")
+	private String restApiKey;
 
-    @Value("${auth.kakao.redirectURL}")
-    private String redirectURL;
+	@Value("${auth.kakao.redirectURL}")
+	private String redirectURL;
 
 	public String kakaoLogin(String code) throws JsonProcessingException {
 		// "인가 코드"로 "액세스 토큰" 요청
@@ -67,12 +67,12 @@ public class KakaoService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-        // HTTP Body 생성
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "authorization_code");
-        body.add("client_id", restApiKey);
-        body.add("redirect_uri", redirectURL);
-        body.add("code", code);
+		// HTTP Body 생성
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+		body.add("grant_type", "authorization_code");
+		body.add("client_id", restApiKey);
+		body.add("redirect_uri", redirectURL);
+		body.add("code", code);
 
 		RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
 				.post(uri)
