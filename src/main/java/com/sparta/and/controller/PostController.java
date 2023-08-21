@@ -28,7 +28,7 @@ public class PostController {
 
 		PostResponseDto result = postService.createPost(requestDto, userDetails);
 
-		log.info("Controller - createCommunityPost : 끝");
+		log.info("Controller - createPost : 끝");
 		return ResponseEntity.status(HttpStatus.CREATED).body(result);
 	}
 

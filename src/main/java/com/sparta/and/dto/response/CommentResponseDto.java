@@ -2,6 +2,7 @@ package com.sparta.and.dto.response;
 
 import com.sparta.and.entity.Comment;
 import com.sparta.and.entity.DeleteStatus;
+import com.sparta.and.entity.SecretStatus;
 import com.sparta.and.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,23 +20,20 @@ public class CommentResponseDto {
     private String createdDate;
     private List<CommentResponseDto> child = new ArrayList<>();
 
-    public CommentResponseDto(Long id, String content, User user, String createdDate) {
-        this.commentId = id;
-        this.content = content;
-        this.writer = user.getUserName();
-        this.createdDate = createdDate;
-    }
-
-    public static CommentResponseDto convertCommentToDto(Comment comment) {
+    /*public static CommentResponseDto convertCommentToDto(Comment comment) {
         return comment.getIsDeleted().equals(DeleteStatus.Y) ?
                 new CommentResponseDto(comment.getId(), "삭제된 댓글입니다.", comment.getWriter(), comment.getCreatedDateFormatted()) :
                 new CommentResponseDto(comment.getId(), comment.getContent(), comment.getWriter(), comment.getCreatedDateFormatted());
-    }
+    }*/
 
     public CommentResponseDto(Comment comment) {
         this.commentId = comment.getId();
         this.content = comment.getContent();
-        this.writer = comment.getWriter().getUserName();
-        this.child = comment.getChildren().stream().map(CommentResponseDto::new).toList();
+        this.writer = comment.getWriter().getNickname();
+        this.createdDate = comment.getCreatedDateFormatted();
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

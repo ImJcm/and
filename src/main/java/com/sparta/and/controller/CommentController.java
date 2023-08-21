@@ -20,8 +20,8 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/{boardId}")
-    public ResponseEntity<List<CommentResponseDto>> getComments(@PathVariable Long boardId) {
-        return ResponseEntity.ok().body(commentService.getComments(boardId));
+    public ResponseEntity<List<CommentResponseDto>> getComments(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok().body(commentService.getComments(boardId, userDetails));
     }
 
     @PostMapping("/{boardId}")

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentRequestDto {
     private Long parentId;
+    private String secret;
     private String content;
 
     public CommentRequestDto(String content) {

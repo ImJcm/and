@@ -26,6 +26,9 @@ public class Comment extends TimeStamped {
     @Enumerated(value = EnumType.STRING)
     private DeleteStatus isDeleted;
 
+    @Enumerated(value = EnumType.STRING)
+    private SecretStatus isSecret;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User writer;
@@ -43,9 +46,10 @@ public class Comment extends TimeStamped {
 
 
     @Builder
-    public Comment(String content, DeleteStatus deleteStatus, User writer, Post post, Comment parent) {
+    public Comment(String content, DeleteStatus deleteStatus, SecretStatus secretStatus, User writer, Post post, Comment parent) {
         this.content = content;
         this.isDeleted = deleteStatus;
+        this.isSecret = secretStatus;
         this.writer = writer;
         this.post = post;
         this.parent = parent;
@@ -61,5 +65,9 @@ public class Comment extends TimeStamped {
 
     public void setIsDeleted(DeleteStatus deleteStatus) {
         this.isDeleted = deleteStatus;
+    }
+
+    public void setIsSecret(SecretStatus secretStatus) {
+        this.isSecret = secretStatus;
     }
 }

@@ -24,11 +24,11 @@ public class User {
 	@Column(name = "password", nullable = false)
 	private String userPassword;
 
-	@Column(name = "email")
+	@Column(name = "email", nullable = false, unique = true)
 	private String userEmail;
 //   private enum role;
 
-	@Column(name = "nickname")
+	@Column(name = "nickname", nullable = false, unique = true)
 	private String nickname;
 
 	private Long kakaoId;
