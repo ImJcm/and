@@ -1,6 +1,7 @@
 package com.sparta.and.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,11 @@ public class BookmarkController {
 	@PostMapping("{contestboardid}")
 	public ResponseEntity<ApiResponseDto> bookmarkContest(@PathVariable Long contestboardid) {
 		return bookmarkService.bookmarkContest(contestboardid);
+	}
+
+	@DeleteMapping("{contestboardid}")
+	public ResponseEntity<ApiResponseDto> removeBookmark(@PathVariable Long contestboardid) {
+		return bookmarkService.removeBookmark(contestboardid);
 	}
 
 }
