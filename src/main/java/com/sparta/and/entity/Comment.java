@@ -26,40 +26,48 @@ public class Comment extends TimeStamped {
 	@Enumerated(value = EnumType.STRING)
 	private DeleteStatus isDeleted;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User writer;
+    @Enumerated(value = EnumType.STRING)
+    private SecretStatus isSecret;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "post_id")
-	private Post post;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User writer;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent_id")
-	private Comment parent;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
 
-	@OneToMany(mappedBy = "parent", orphanRemoval = true)
-	private List<Comment> children = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    private List<Comment> children = new ArrayList<>();
 
 
-	@Builder
-	public Comment(String content, DeleteStatus deleteStatus, User writer, Post post, Comment parent) {
-		this.content = content;
-		this.isDeleted = deleteStatus;
-		this.writer = writer;
-		this.post = post;
-		this.parent = parent;
-	}
+    @Builder
+    public Comment(String content, DeleteStatus deleteStatus, SecretStatus secretStatus, User writer, Post post, Comment parent) {
+        this.content = content;
+        this.isDeleted = deleteStatus;
+        this.isSecret = secretStatus;
+        this.writer = writer;
+        this.post = post;
+        this.parent = parent;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setParent(Comment parent) {
-		this.parent = parent;
-	}
+    public void setParent(Comment parent) {
+        this.parent = parent;
+    }
 
-	public void setIsDeleted(DeleteStatus deleteStatus) {
-		this.isDeleted = deleteStatus;
-	}
+    public void setIsDeleted(DeleteStatus deleteStatus) {
+        this.isDeleted = deleteStatus;
+    }
+
+    public void setIsSecret(SecretStatus secretStatus) {
+        this.isSecret = secretStatus;
+    }
 }
