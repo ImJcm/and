@@ -3,6 +3,7 @@ package com.sparta.and.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.and.security.UserDetailsServiceImpl;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,65 +20,67 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import io.jsonwebtoken.Claims;
 
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;
-    private final UserDetailsServiceImpl userDetailsService;
-    private final ObjectMapper objectMapper;
+	private final JwtUtil jwtUtil;
+	private final UserDetailsServiceImpl userDetailsService;
+	private final ObjectMapper objectMapper;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // request header 에서 토큰을 가져옵니다.
-        String tokenValue = jwtUtil.getJwtFromHeader(request);
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		// request header 에서 토큰을 가져옵니다.
+		String tokenValue = jwtUtil.getJwtFromHeader(request);
 
-        // 토큰이 존재하고, 로그인 메서드는 POST
-        //  if ( StringUtils.hasText(tokenValue) && !req.getMethod().equals("GET") ) { // 토큰이 있고, GET 메서드가 아닐 경우
-        if (StringUtils.hasText(tokenValue)) { // 토큰이 있고, GET 메서드가 아닐 경우
+		// 토큰이 존재하고, 로그인 메서드는 POST
+		//  if ( StringUtils.hasText(tokenValue) && !req.getMethod().equals("GET") ) { // 토큰이 있고, GET 메서드가 아닐 경우
+		if (StringUtils.hasText(tokenValue)) { // 토큰이 있고, GET 메서드가 아닐 경우
 
-            tokenValue = jwtUtil.substringToken(tokenValue);
+			tokenValue = jwtUtil.substringToken(tokenValue);
 
-            if (!jwtUtil.validateToken(tokenValue)) {
-                resultSetResponse(response,400,"유효하지 않은 토큰입니다.");
-                log.error("유효하지 않은 토큰입니다.");
-                return;
-            }
-        }
+			if (!jwtUtil.validateToken(tokenValue)) {
+				resultSetResponse(response, 400, "유효하지 않은 토큰입니다.");
+				log.error("유효하지 않은 토큰입니다.");
+				return;
+			}
 
-        filterChain.doFilter(request,response);
-    }
+			Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
+			setAuthentication(info.getSubject());
+		}
 
-    // 인증 처리 메서드
-    private void setAuthentication(String username) {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        Authentication authentication = createAuthentication(username);
-        context.setAuthentication(authentication);
+		filterChain.doFilter(request, response);
+	}
 
-        SecurityContextHolder.setContext(context);
-    }
+	// 인증 처리 메서드
+	private void setAuthentication(String username) {
+		SecurityContext context = SecurityContextHolder.createEmptyContext();
+		Authentication authentication = createAuthentication(username);
+		context.setAuthentication(authentication);
 
-
-    // 인증 객세 생성 메서드
-    private Authentication createAuthentication(String username) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-    }
+		SecurityContextHolder.setContext(context);
+	}
 
 
-    // Client 에 반환할 msg, status 세팅 메서드
-    private void resultSetResponse(HttpServletResponse res, int status, String msg) throws IOException {
-        String jsonResult = " {\"status\": " + status + ", \"message\": \"" + msg + "\"}";
+	// 인증 객세 생성 메서드
+	private Authentication createAuthentication(String username) {
+		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+	}
 
-        // Content-Type 및 문자 인코딩 설정
-        res.setContentType("application/json");
-        res.setCharacterEncoding("UTF-8");
 
-        // PrintWriter 를 사용하여 응답 데이터 전송
-        PrintWriter writer = res.getWriter();
-        writer.write(jsonResult);
-        writer.flush();
-    }
+	// Client 에 반환할 msg, status 세팅 메서드
+	private void resultSetResponse(HttpServletResponse res, int status, String msg) throws IOException {
+		String jsonResult = " {\"status\": " + status + ", \"message\": \"" + msg + "\"}";
+
+		// Content-Type 및 문자 인코딩 설정
+		res.setContentType("application/json");
+		res.setCharacterEncoding("UTF-8");
+
+		// PrintWriter 를 사용하여 응답 데이터 전송
+		PrintWriter writer = res.getWriter();
+		writer.write(jsonResult);
+		writer.flush();
+	}
 }
