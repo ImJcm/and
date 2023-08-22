@@ -54,6 +54,7 @@ public class CommentServiceImpl implements CommentService {
 
         Comment comment = Comment.builder()
                 .content(commentRequestDto.getContent())
+                .step(0L)
                 .writer(user)
                 .deleteStatus(DeleteStatus.N)
                 .secretStatus(SecretStatus.N)
@@ -64,6 +65,7 @@ public class CommentServiceImpl implements CommentService {
         if(commentRequestDto.getParentId() != null) {
             Comment parentComment = getCommentById(commentRequestDto.getParentId());
             comment.setParent(parentComment);
+            comment.setStep(parentComment.getStep() + 1);
         }
 
         if(commentRequestDto.getSecret() != null) {

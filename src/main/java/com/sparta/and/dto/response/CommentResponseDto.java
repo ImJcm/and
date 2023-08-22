@@ -16,6 +16,7 @@ import java.util.List;
 public class CommentResponseDto {
     private Long commentId;
     private String content;
+    private Long step;
     private String writer;
     private String createdDate;
     private List<CommentResponseDto> child = new ArrayList<>();
@@ -23,6 +24,7 @@ public class CommentResponseDto {
     public CommentResponseDto(Comment comment) {
         this.commentId = comment.getId();
         this.content = comment.getContent();
+        this.step = comment.getStep();
         this.writer = comment.getWriter().getNickname();
         this.createdDate = comment.getCreatedDateFormatted();
     }
