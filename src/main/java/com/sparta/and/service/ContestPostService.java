@@ -6,23 +6,23 @@ import org.springframework.stereotype.Service;
 
 import com.sparta.and.dto.request.ContestBoardRequestDto;
 import com.sparta.and.dto.response.ContestBoardResponseDto;
-import com.sparta.and.entity.ContestBoard;
-import com.sparta.and.repository.ContestBoardRepository;
+import com.sparta.and.entity.ContestPost;
+import com.sparta.and.repository.ContestPostRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class ContestBoardService {
+public class ContestPostService {
 
-	private final ContestBoardRepository contestBoardRepository;
+	private final ContestPostRepository contestBoardRepository;
 
 	public List<ContestBoardResponseDto> getContests() {
 		return contestBoardRepository.findAllByOrderByCreatedDateDesc().stream().map(ContestBoardResponseDto::new).toList();
 	}
 
 	public ContestBoardResponseDto createContest (ContestBoardRequestDto requestDto){
-		ContestBoard createContest = new ContestBoard(requestDto);
+		ContestPost createContest = new ContestPost(requestDto);
 		contestBoardRepository.save(createContest);
 
 		return new ContestBoardResponseDto(createContest);

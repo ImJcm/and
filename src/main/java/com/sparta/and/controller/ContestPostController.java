@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sparta.and.dto.request.ContestBoardRequestDto;
 import com.sparta.and.dto.response.ContestBoardResponseDto;
-import com.sparta.and.service.ContestBoardService;
+import com.sparta.and.service.ContestPostService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/contestBoards")
-public class ContestBoardController {
+public class ContestPostController {
 
-	private final ContestBoardService contestBoardService;
+	private final ContestPostService contestBoardService;
 
 	@GetMapping("")
 	public List<ContestBoardResponseDto> getContests() {

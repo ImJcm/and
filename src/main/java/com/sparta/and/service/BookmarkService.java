@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.sparta.and.dto.response.ApiResponseDto;
 import com.sparta.and.entity.Bookmark;
-import com.sparta.and.entity.ContestBoard;
+import com.sparta.and.entity.ContestPost;
 import com.sparta.and.repository.BookmarkRepository;
-import com.sparta.and.repository.ContestBoardRepository;
+import com.sparta.and.repository.ContestPostRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class BookmarkService {
 	private final BookmarkRepository bookmarkRepository;
-	private final ContestBoardRepository contestBoardRepository;
+	private final ContestPostRepository contestBoardRepository;
 
 	// 북마크
 	@Transactional
 	public ResponseEntity<ApiResponseDto> bookmarkContest (Long id) {
 		// 해당 게시글 존재 여부 확인
-		ContestBoard checkContest = contestBoardRepository.findById(id).orElse(null);
+		ContestPost checkContest = contestBoardRepository.findById(id).orElse(null);
 
 		if (checkContest == null) {
 			log.error("게시글이 존재하지 않습니다.");
@@ -46,7 +46,7 @@ public class BookmarkService {
 
 	public ResponseEntity<ApiResponseDto> removeBookmark(Long id) {
 		// 해당 게시글 존재 여부 확인
-		ContestBoard checkContest = contestBoardRepository.findById(id).orElse(null);
+		ContestPost checkContest = contestBoardRepository.findById(id).orElse(null);
 
 		if (checkContest == null) {
 			log.error("게시글이 존재하지 않습니다.");

@@ -25,14 +25,14 @@ public class Bookmark {
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "contest_board_id", nullable = false)
-	private ContestBoard contestBoard;
+	private ContestPost contestBoard;
 
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User userId;
 
-	public Bookmark(ContestBoard contestBoard) {
+	public Bookmark(ContestPost contestBoard) {
 		this.contestBoard = contestBoard;
 	}
 }

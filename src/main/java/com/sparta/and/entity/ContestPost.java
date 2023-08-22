@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "contest_boards")
 @NoArgsConstructor
-public class ContestBoard extends TimeStamped {
+public class ContestPost extends TimeStamped {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "contest_board_id")
@@ -50,7 +50,7 @@ public class ContestBoard extends TimeStamped {
 	@OneToMany(mappedBy = "contestBoard", cascade = CascadeType.REMOVE)
 	private List<Bookmark> bookmarkList = new ArrayList<>();
 
-	public ContestBoard(ContestBoardRequestDto requestDto) {
+	public ContestPost(ContestBoardRequestDto requestDto) {
 		this.author = requestDto.getAuthor();
 		this.title = requestDto.getTitle();
 		this.contents = requestDto.getContents();
