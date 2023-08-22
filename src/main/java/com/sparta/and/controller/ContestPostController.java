@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sparta.and.dto.request.ContestBoardRequestDto;
-import com.sparta.and.dto.response.ContestBoardResponseDto;
+import com.sparta.and.dto.request.ContestPostRequestDto;
+import com.sparta.and.dto.response.ContestPostResponseDto;
 import com.sparta.and.service.ContestPostService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,19 +18,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/contestBoards")
+@RequestMapping("/api/contestPosts")
 public class ContestPostController {
 
-	private final ContestPostService contestBoardService;
+	private final ContestPostService contestPostService;
 
 	@GetMapping("")
-	public List<ContestBoardResponseDto> getContests() {
-		return contestBoardService.getContests();
+	public List<ContestPostResponseDto> getContests() {
+		return contestPostService.getContests();
 	}
 
 	@PostMapping("")
-	public ContestBoardResponseDto createContest(@RequestBody ContestBoardRequestDto requestDto) {
-		return contestBoardService.createContest(requestDto);
+	public ContestPostResponseDto createContest(@RequestBody ContestPostRequestDto requestDto) {
+		return contestPostService.createContest(requestDto);
 	}
 
 }

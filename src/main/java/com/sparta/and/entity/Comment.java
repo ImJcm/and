@@ -44,6 +44,8 @@ public class Comment extends TimeStamped {
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    private List<ReportComment> reportCommentList = new ArrayList<>();
 
     @Builder
     public Comment(String content, DeleteStatus deleteStatus, SecretStatus secretStatus, User writer, Post post, Comment parent) {

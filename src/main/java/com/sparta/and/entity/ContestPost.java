@@ -3,7 +3,7 @@ package com.sparta.and.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sparta.and.dto.request.ContestBoardRequestDto;
+import com.sparta.and.dto.request.ContestPostRequestDto;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,12 +13,12 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "contest_boards")
+@Table(name = "contest_posts")
 @NoArgsConstructor
 public class ContestPost extends TimeStamped {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "contest_board_id")
+	@Column(name = "contest_post_id")
 	private Long id;
 
 	@Column(name = "author")
@@ -37,7 +37,7 @@ public class ContestPost extends TimeStamped {
 	private String homepage;
 
 	@Column(name = "postViews")
-	private Long contestBoardViews;
+	private Long contestPostViews;
 
 	@Column(name = "contents")
 	private String contents;
@@ -47,10 +47,10 @@ public class ContestPost extends TimeStamped {
 	private Long bookmarkCnt;
 
 	// 북마크
-	@OneToMany(mappedBy = "contestBoard", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "contestPost", cascade = CascadeType.REMOVE)
 	private List<Bookmark> bookmarkList = new ArrayList<>();
 
-	public ContestPost(ContestBoardRequestDto requestDto) {
+	public ContestPost(ContestPostRequestDto requestDto) {
 		this.author = requestDto.getAuthor();
 		this.title = requestDto.getTitle();
 		this.contents = requestDto.getContents();

@@ -42,6 +42,9 @@ public class User {
 	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
 	private List<Bookmark> bookmarkList = new ArrayList<>();
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<ReportComment> reportCommentList = new ArrayList<>();
+
 	public User(String userName, String userPassword, String userEmail) {
 		this.userName = userName;
 		this.userPassword = userPassword;

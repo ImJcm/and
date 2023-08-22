@@ -19,13 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class BookmarkService {
 	private final BookmarkRepository bookmarkRepository;
-	private final ContestPostRepository contestBoardRepository;
+	private final ContestPostRepository contestPostRepository;
 
 	// 북마크
 	@Transactional
 	public ResponseEntity<ApiResponseDto> bookmarkContest (Long id) {
 		// 해당 게시글 존재 여부 확인
-		ContestPost checkContest = contestBoardRepository.findById(id).orElse(null);
+		ContestPost checkContest = contestPostRepository.findById(id).orElse(null);
 
 		if (checkContest == null) {
 			log.error("게시글이 존재하지 않습니다.");
@@ -33,7 +33,7 @@ public class BookmarkService {
 		}
 
 		// 이미 북마크한 게시글인지 확인
-		Bookmark checkBookmark = bookmarkRepository.findByContestBoardId(id);
+		Bookmark checkBookmark = bookmarkRepository.findByContestPostId(id);
 		if (checkBookmark != null) {
 			log.error("이미 북마크한 공모전입니다.");
 			return ResponseEntity.status(400).body(new ApiResponseDto("이미 북마크한 공모전입니다.", HttpStatus.BAD_REQUEST.value()));
@@ -46,7 +46,7 @@ public class BookmarkService {
 
 	public ResponseEntity<ApiResponseDto> removeBookmark(Long id) {
 		// 해당 게시글 존재 여부 확인
-		ContestPost checkContest = contestBoardRepository.findById(id).orElse(null);
+		ContestPost checkContest = contestPostRepository.findById(id).orElse(null);
 
 		if (checkContest == null) {
 			log.error("게시글이 존재하지 않습니다.");
@@ -54,7 +54,7 @@ public class BookmarkService {
 		}
 
 		// 이미 북마크한 게시글인지 확인
-		Bookmark checkBookmark = bookmarkRepository.findByContestBoardId(id);
+		Bookmark checkBookmark = bookmarkRepository.findByContestPostId(id);
 		if (checkBookmark == null) {
 			log.error("북마크하지 않은 공모전입니다.");
 			return ResponseEntity.status(400).body(new ApiResponseDto("북마크하지 않은 공모전입니다.", HttpStatus.BAD_REQUEST.value()));
