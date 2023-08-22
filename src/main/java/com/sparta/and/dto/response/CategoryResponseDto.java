@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CategoryResponseDto {
-    private Long id;
-    private String categoryName;
+	private Long id;
+	private String categoryName;
 
     public CategoryResponseDto(Category category) {
         this.id = category.getId();
