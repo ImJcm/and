@@ -1,8 +1,10 @@
 package com.sparta.and.controller;
 
 import com.sparta.and.dto.ApiResponseDto;
+import com.sparta.and.dto.request.CommentReportRequestDto;
 import com.sparta.and.dto.request.CommentRequestDto;
 import com.sparta.and.dto.response.CommentResponseDto;
+import com.sparta.and.entity.ReportComment;
 import com.sparta.and.security.UserDetailsImpl;
 import com.sparta.and.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/comments")
 public class CommentController {
@@ -26,7 +28,7 @@ public class CommentController {
 
     @PostMapping("/{boardId}")
     public ResponseEntity<ApiResponseDto> createComment(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody CommentRequestDto commentRequestDto) {
-        return ResponseEntity.ok().body(commentService.insertComment(boardId,userDetails.getUser(), commentRequestDto));
+        return ResponseEntity.ok().body(commentService.createComment(boardId,userDetails.getUser(), commentRequestDto));
     }
 
     @PutMapping("/{commentId}")
@@ -37,6 +39,11 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public ResponseEntity<ApiResponseDto> deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok().body(commentService.deleteComment(commentId, userDetails.getUser()));
+    }
+
+    @PostMapping("/{commentId}/report")
+    public ResponseEntity<ApiResponseDto> reportComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody CommentReportRequestDto commentReportRequestDto) {
+        return ResponseEntity.ok().body(commentService.reportComment(commentId, userDetails.getUser(), commentReportRequestDto));
     }
 
 }

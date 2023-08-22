@@ -5,7 +5,7 @@ import com.sparta.and.entity.ContestPost;
 import lombok.Getter;
 
 @Getter
-public class ContestBoardResponseDto {
+public class ContestPostResponseDto {
 
 	private Long id;
 	private String author;
@@ -13,7 +13,7 @@ public class ContestBoardResponseDto {
 	private String contents;
 	private Long bookmarkCnt;
 
-	public ContestBoardResponseDto (ContestPost contestBoard){
+	public ContestPostResponseDto(ContestPost contestBoard){
 		this.id = contestBoard.getId();
 		this.author = contestBoard.getAuthor();
 		this.title = contestBoard.getTitle();

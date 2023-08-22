@@ -1,6 +1,7 @@
 package com.sparta.and.service;
 
 import com.sparta.and.dto.ApiResponseDto;
+import com.sparta.and.dto.request.CommentReportRequestDto;
 import com.sparta.and.dto.request.CommentRequestDto;
 import com.sparta.and.dto.response.CommentResponseDto;
 import com.sparta.and.entity.*;
@@ -28,7 +29,7 @@ public interface CommentService {
      *                              (댓글 등록 : parentId = null , 대댓글 등록 : parentId = 부모 댓글 Id)
      * @return                      요청 결과
      */
-    ApiResponseDto insertComment(Long boardId, User user, CommentRequestDto commentRequestDto);
+    ApiResponseDto createComment(Long boardId, User user, CommentRequestDto commentRequestDto);
 
     /**
      * 댓글 수정
@@ -103,4 +104,13 @@ public interface CommentService {
      * @return                      True or False
      */
     Boolean checkDeleteComment(DeleteStatus deleteStatus);
+
+    /**
+     * 댓글 신고
+     *
+     * @param commentId             신고할 댓글 id
+     * @param userDetails           신고자
+     * @return                      신고 요청 확인
+     */
+    ApiResponseDto reportComment(Long commentId, User connectUser, CommentReportRequestDto commentReportRequestDto);
 }

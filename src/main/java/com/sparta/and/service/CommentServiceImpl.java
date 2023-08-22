@@ -1,10 +1,12 @@
 package com.sparta.and.service;
 
 import com.sparta.and.dto.ApiResponseDto;
+import com.sparta.and.dto.request.CommentReportRequestDto;
 import com.sparta.and.dto.request.CommentRequestDto;
 import com.sparta.and.dto.response.CommentResponseDto;
 import com.sparta.and.entity.*;
 import com.sparta.and.repository.CommentRepository;
+import com.sparta.and.repository.ReportCommentRepository;
 import com.sparta.and.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.Map;
 public class CommentServiceImpl implements CommentService {
     private final PostService postService;
     private final CommentRepository commentRepository;
+    private final ReportCommentRepository reportCommentRepository;
     @Override
     public List<CommentResponseDto> getComments(Long postId, UserDetailsImpl userDetails) {
         Post post = postService.findPost(postId);
@@ -35,8 +38,6 @@ public class CommentServiceImpl implements CommentService {
         comments.forEach(c -> {
             CommentResponseDto commentResponseDto = new CommentResponseDto(c);
 
-            // 비밀댓글 체크
-            // 삭제여부 체크
             convertComment(commentResponseDto, c.getIsSecret(), c.getIsDeleted(), c.getWriter(), post, userDetails);
 
             commentResponseDtoHashMap.put(commentResponseDto.getCommentId(), commentResponseDto);
@@ -47,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ApiResponseDto insertComment(Long postId, User user, CommentRequestDto commentRequestDto) {
+    public ApiResponseDto createComment(Long postId, User user, CommentRequestDto commentRequestDto) {
         Post post = postService.findPost(postId);
 
         Comment comment = Comment.builder()
@@ -109,6 +110,21 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment getCommentById(Long commentId) {
         return commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+    }
+
+    @Override
+    public ApiResponseDto reportComment(Long commentId, User connectUser, CommentReportRequestDto commentReportRequestDto) {
+        Comment comment = getCommentById(commentId);
+
+        ReportComment reportComment = ReportComment.builder()
+                .reportReason(commentReportRequestDto.getReportReason())
+                .comment(comment)
+                .reporter(connectUser)
+                .build();
+
+        reportCommentRepository.save(reportComment);
+
+        return new ApiResponseDto("댓글 신고 성공", HttpStatus.OK.value());
     }
 
     public Comment getDeletableAncestorComment(Comment comment) {
