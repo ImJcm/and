@@ -1,14 +1,12 @@
 package com.sparta.and.controller;
 
-import com.sparta.and.dto.request.CategoryRequestDto;
-import com.sparta.and.dto.response.ApiResponseDto;
 import com.sparta.and.dto.response.CategoryListResponseDto;
-import com.sparta.and.dto.response.CategoryResponseDto;
 import com.sparta.and.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
