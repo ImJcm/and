@@ -1,11 +1,8 @@
 package com.sparta.and.service;
 
-import com.sparta.and.dto.request.CategoryRequestDto;
 import com.sparta.and.dto.response.CategoryListResponseDto;
 import com.sparta.and.dto.response.CategoryResponseDto;
-import com.sparta.and.entity.Category;
 import com.sparta.and.repository.CategoryRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
