@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UserController {
 
-	private final UserService userService;
 	private final KakaoService kakaoService;
 	private final GoogleService googleService;
 

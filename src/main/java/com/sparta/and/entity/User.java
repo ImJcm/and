@@ -18,11 +18,11 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 
-	@Column(name = "username", nullable = false, unique = true)
-	private String userName;
+    @Column(name = "username", nullable = false, unique = true)
+    private String userName;
 
-	@Column(name = "password", nullable = false)
-	private String userPassword;
+    @Column(name = "password", nullable = false)
+    private String userPassword;
 
 	@Column(name = "email", nullable = false, unique = true)
 	private String userEmail;
@@ -37,6 +37,10 @@ public class User {
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Post> myPostList = new ArrayList<>();
+
+	// 북마크 전체 보기
+	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	private List<Bookmark> bookmarkList = new ArrayList<>();
 
 	public User(String userName, String userPassword, String userEmail) {
 		this.userName = userName;
