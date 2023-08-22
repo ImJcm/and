@@ -21,14 +21,14 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
 
-    @GetMapping("/{boardId}")
-    public ResponseEntity<List<CommentResponseDto>> getComments(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok().body(commentService.getComments(boardId, userDetails));
+    @GetMapping("/{postId}")
+    public ResponseEntity<List<CommentResponseDto>> getComments(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok().body(commentService.getComments(postId, userDetails));
     }
 
-    @PostMapping("/{boardId}")
-    public ResponseEntity<ApiResponseDto> createComment(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody CommentRequestDto commentRequestDto) {
-        return ResponseEntity.ok().body(commentService.createComment(boardId,userDetails.getUser(), commentRequestDto));
+    @PostMapping("/{postId}")
+    public ResponseEntity<ApiResponseDto> createComment(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody CommentRequestDto commentRequestDto) {
+        return ResponseEntity.ok().body(commentService.createComment(postId,userDetails.getUser(), commentRequestDto));
     }
 
     @PutMapping("/{commentId}")
