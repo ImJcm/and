@@ -1,5 +1,7 @@
 package com.sparta.and.service;
 
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,8 @@ public class ReportPostService {
 	// 북마크
 	@Transactional
 	public ResponseEntity<ApiResponseDto> ReportPost (Long id, ReportPostRequestDto requestDto) {
+		String reportReason = requestDto.getReportReason();
+
 		// 해당 게시글 존재 여부 확인
 		Post checkPost = postRepository.findById(id).orElse(null);
 
@@ -35,14 +39,14 @@ public class ReportPostService {
 		}
 
 		// 이미 신고한 게시글인지 확인
-		// ReportPost checkReportLog = reportPostRepository.findByReportPostId(id);
-		// if (checkReportLog != null) {
-		// 	log.error("이미 신고한 게시글입니다.");
-		// 	return ResponseEntity.status(400).body(new ApiResponseDto("이미 신고한 게시글입니다.", HttpStatus.BAD_REQUEST.value()));
-		// } else {
-			ReportPost reportPost = new ReportPost(requestDto);
+		ReportPost checkReportLog = reportPostRepository.findByPostId(id);
+		if (checkReportLog != null) {
+			log.error("이미 신고한 게시글입니다.");
+			return ResponseEntity.status(400).body(new ApiResponseDto("이미 신고한 게시글입니다.", HttpStatus.BAD_REQUEST.value()));
+		} else {
+			ReportPost reportPost = new ReportPost(checkPost,reportReason);
 			reportPostRepository.save(reportPost);
-		// }
+		}
 		return ResponseEntity.status(200).body(new ApiResponseDto("게시글 신고가 완료되었습니다.", HttpStatus.OK.value()));
 	}
 

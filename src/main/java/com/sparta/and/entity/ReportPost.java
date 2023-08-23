@@ -33,7 +33,8 @@ public class ReportPost extends TimeStamped {
 	@Column
 	private String reportReason;
 
-	public ReportPost(ReportPostRequestDto requestDto) {
-		this.reportReason = requestDto.getReportReason();
+	public ReportPost(Post post, String reportReason) {
+		this.post = post;
+		this.reportReason = reportReason;
 	}
 }
