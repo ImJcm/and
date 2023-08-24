@@ -18,7 +18,7 @@ public class CommentResponseDto {
     private String content;
     private Long step;
     private String writer;
-    private String createdDate;
+    private String modifiedDate;
     private List<CommentResponseDto> child = new ArrayList<>();
 
     public CommentResponseDto(Comment comment) {
@@ -26,7 +26,7 @@ public class CommentResponseDto {
         this.content = comment.getContent();
         this.step = comment.getStep();
         this.writer = comment.getWriter().getNickname();
-        this.createdDate = comment.getCreatedDateFormatted();
+        this.modifiedDate = comment.getModifiedDateFormatted();
     }
 
     public void setContent(String content) {
