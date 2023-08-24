@@ -24,6 +24,7 @@ public class CommentServiceImpl implements CommentService {
     private final PostService postService;
     private final CommentRepository commentRepository;
     private final ReportCommentRepository reportCommentRepository;
+
     @Override
     public List<CommentResponseDto> getComments(Long postId, UserDetailsImpl userDetails) {
         Post post = postService.findPost(postId);
@@ -53,6 +54,7 @@ public class CommentServiceImpl implements CommentService {
 
         Comment comment = Comment.builder()
                 .content(commentRequestDto.getContent())
+                .step(0L)
                 .writer(user)
                 .deleteStatus(DeleteStatus.N)
                 .secretStatus(SecretStatus.N)
@@ -63,6 +65,7 @@ public class CommentServiceImpl implements CommentService {
         if(commentRequestDto.getParentId() != null) {
             Comment parentComment = getCommentById(commentRequestDto.getParentId());
             comment.setParent(parentComment);
+            comment.setStep(parentComment.getStep() + 1);
         }
 
         if(commentRequestDto.getSecret() != null) {
@@ -154,8 +157,6 @@ public class CommentServiceImpl implements CommentService {
                         true :
                         connectUser.getUser().getUserId().equals(writer.getUserId()) ||
                             connectUser.getUser().getUserId().equals(post.getUser().getUserId()) ?
-                                // ADMIN USER TABLE에서 접속유저와 같은지 검사해야함.
-                                // connectUser.getUser().getUserId().equals(ADMIN) ?
                                 false :
                                 true :
                 false;
