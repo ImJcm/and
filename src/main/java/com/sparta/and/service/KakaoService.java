@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.and.dto.KakaoUserInfoDto;
 import com.sparta.and.entity.User;
+import com.sparta.and.entity.UserBlackList;
 import com.sparta.and.jwt.JwtUtil;
 import com.sparta.and.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class KakaoService {
 	private final UserRepository userRepository;
 	private final RestTemplate restTemplate;
 	private final JwtUtil jwtUtil;
+	private final UserBlackList userBlackList;
 	@Value("${auth.kakao.client_id}")
 	private String restApiKey;
 	@Value("${auth.kakao.redirectURL}")
