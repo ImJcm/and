@@ -34,7 +34,6 @@ public class KakaoService {
 	private final JwtUtil jwtUtil;
 	@Value("${auth.kakao.client_id}")
 	private String restApiKey;
-
 	@Value("${auth.kakao.redirectURL}")
 	private String redirectURL;
 
@@ -136,6 +135,16 @@ public class KakaoService {
 			// 카카오 사용자 email 동일한 email 가진 회원이 있는지 확인
 			String kakaoUsername = kakaoUserInfo.getUsername();
 			User sameUsername = userRepository.findByUserName(kakaoUsername).orElse(null);
+
+			// 이거 테스트 안되면 밑에걸로 ㄱㄱ
+			if(kakaoUsername.equals(userBlackList.getUser().getUserName())) {
+				throw new IllegalArgumentException("응 안돼 돌아가.");
+			}
+
+//			if(kakaoUserInfo.getUsername().equals(userBlackList.getUser().getUserName())) {
+//				throw new IllegalArgumentException("응 안돼 돌아가.");
+//			}
+
 			if (sameUsername != null) {
 				kakaoUser = sameUsername;
 				// 기존 회원정보에 카카오 Id 추가

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.and.dto.GoogleUserInfoDto;
 import com.sparta.and.entity.User;
+import com.sparta.and.entity.UserBlackList;
 import com.sparta.and.jwt.JwtUtil;
 import com.sparta.and.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class GoogleService {
 	private final UserRepository userRepository;
 	private final RestTemplate restTemplate; // 수동 등록한 Bean
 	private final JwtUtil jwtUtil;
+	private final UserBlackList userBlackList;
 
 	public String googleLogin(String code) throws JsonProcessingException {
 		// 1. "인가 코드"로 "액세스 토큰" 요청
@@ -122,17 +124,19 @@ public class GoogleService {
 
 	// 3) 카카오 ID 정보로 회원가입
 	private User registerGoogleUserIfNeeded(GoogleUserInfoDto googleUserInfoDto) {
-		// DB 에 중복된 Kakao Id 가 있는지 확인
+
 		String googleId = googleUserInfoDto.getId();
 		User googleUser = userRepository.findByGoogleId(googleId).orElse(null);
-
+		if(googleUser.equals(userBlackList.getUser().getUserName())) {
+			throw new IllegalArgumentException("응 안돼 돌아가.");
+		}
 		if (googleUser == null) {
-			// 카카오 사용자 email 동일한 email 가진 회원이 있는지 확인
+			// 구글 사용자 email 동일한 email 가진 회원이 있는지 확인
 			String googleEmail = googleUserInfoDto.getEmail();
 			User sameEmailUser = userRepository.findByUserName(googleEmail).orElse(null);
 			if (sameEmailUser != null) {
 				googleUser = sameEmailUser;
-				// 기존 회원정보에 카카오 Id 추가
+				// 기존 회원정보에 구글 Id 추가
 				googleUser = googleUser.googleIdUpdate(googleId);
 			} else {
 				// 신규 회원가입
