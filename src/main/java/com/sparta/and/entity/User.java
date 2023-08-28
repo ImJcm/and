@@ -45,6 +45,12 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ReportComment> reportCommentList = new ArrayList<>();
 
+	@OneToMany(mappedBy = "founder", cascade = CascadeType.REMOVE)
+	private List<Chatroom> foundRoomlist = new ArrayList<>();
+
+	@OneToMany(mappedBy = "participant", cascade = CascadeType.REMOVE)
+	private List<Chatroom> partipantRoomlist = new ArrayList<>();
+
 	public User(String userName, String userPassword, String userEmail) {
 		this.userName = userName;
 		this.userPassword = userPassword;
