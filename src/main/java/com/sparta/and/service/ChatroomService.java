@@ -36,9 +36,7 @@ public class ChatroomService {
 
         // 동일한 chatroom이 있는지 검사하는 로직 필요
 
-        chatroomRepository.save(chatroom);
-
-        return new ChatroomResponseDto(chatroom);
+        return new ChatroomResponseDto(chatroomRepository.save(chatroom));
     }
 
 

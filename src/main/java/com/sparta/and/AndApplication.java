@@ -13,12 +13,4 @@ public class AndApplication {
     public static void main(String[] args) {
         SpringApplication.run(AndApplication.class, args);
     }
-
-    @Controller
-    public static class MainController {
-        @GetMapping("/")
-        public String main() {
-            return "redirect:/api/chat/rooms";
-        }
-    }
 }

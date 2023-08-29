@@ -12,19 +12,22 @@ public class ChatroomResponseDto {
     private Long roomId;
     private String chatroomName;
     private Long founder;
-    private Long participant;
-    private Set<WebSocketSession> sessions = new HashSet<>();
 
-    public ChatroomResponseDto(String chatroomName, Long founderId, Long participantId) {
-        this.chatroomName = chatroomName;
-        this.founder = founderId;
-        this.participant = participantId;
-    }
+    private String founder_nickname;
+    private Long participant;
+
+    private String participant_nickname;
+    private String createdDate;
+
+    private Set<WebSocketSession> sessions = new HashSet<>();
 
     public ChatroomResponseDto(Chatroom chatroom) {
         this.roomId = chatroom.getId();
         this.chatroomName = chatroom.getChatroomName();
         this.founder = chatroom.getFounder().getUserId();
+        this.founder_nickname = chatroom.getFounder().getNickname();
         this.participant = chatroom.getParticipant().getUserId();
+        this.participant_nickname = chatroom.getParticipant().getNickname();
+        this.createdDate = chatroom.getCreatedDateFormatted();
     }
 }

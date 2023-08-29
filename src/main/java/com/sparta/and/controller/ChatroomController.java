@@ -27,14 +27,14 @@ public class ChatroomController {
     }
 
     @PostMapping("/room")
-    public String createRoom(@RequestBody ChatroomRequestDto chatroomDto, @AuthenticationPrincipal UserDetailsImpl userDetails, RedirectAttributes rttr) {
-        rttr.addFlashAttribute("room", chatroomService.createChatroom(chatroomDto,userDetails));
+    public String createRoom(@ModelAttribute ChatroomRequestDto chatroomRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, RedirectAttributes rttr) {
+        rttr.addFlashAttribute("room", chatroomService.createChatroom(chatroomRequestDto,userDetails));
         return "redirect:/api/chat/rooms";
     }
 
     @GetMapping("/room")
-    //public void getRoom(@PathVariable Long roomId, @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-    public void getRoom(Long roomId, @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+    public String getRoom(@RequestParam Long roomId, @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
         model.addAttribute("room", chatroomService.getChatRoom(roomId, userDetails));
+        return "room";
     }
 }
