@@ -138,7 +138,7 @@ public class KakaoService {
 			String kakaoUsername = kakaoUserInfo.getUsername();
 			User sameUsername = userRepository.findByUserName(kakaoUsername).orElse(null);
 
-			// 이거 테스트 안되면 밑에걸로 ㄱㄱ
+			// 이거 테스트 안되면 밑에걸로
 			if(kakaoUsername.equals(userBlackList.getUser().getUserName())) {
 				throw new IllegalArgumentException("응 안돼 돌아가.");
 			}
