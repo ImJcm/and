@@ -1,6 +1,7 @@
 package com.sparta.and.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sparta.and.dto.request.UserBlackListRequestDto;
 import com.sparta.and.jwt.JwtUtil;
 import com.sparta.and.service.GoogleService;
 import com.sparta.and.service.KakaoService;
