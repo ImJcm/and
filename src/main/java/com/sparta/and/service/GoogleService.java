@@ -127,9 +127,11 @@ public class GoogleService {
 
 		String googleId = googleUserInfoDto.getId();
 		User googleUser = userRepository.findByGoogleId(googleId).orElse(null);
+
 		if(googleUser.equals(userBlackList.getUser().getUserName())) {
 			throw new IllegalArgumentException("응 안돼 돌아가.");
 		}
+
 		if (googleUser == null) {
 			// 구글 사용자 email 동일한 email 가진 회원이 있는지 확인
 			String googleEmail = googleUserInfoDto.getEmail();
