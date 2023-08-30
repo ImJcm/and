@@ -10,6 +10,7 @@ import com.sparta.and.jwt.JwtUtil;
 import com.sparta.and.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,12 @@ public class GoogleService {
 	private final RestTemplate restTemplate; // 수동 등록한 Bean
 	private final JwtUtil jwtUtil;
 	private final UserBlackList userBlackList;
+	@Value("${auth.google.client_id}")
+	private String restApiKey;
+	@Value("&{auth.google.client_secret}")
+	private String secretKey;
+	@Value("${auth.google.redirectURL}")
+	private String redirectURL;
 
 	public String googleLogin(String code) throws JsonProcessingException {
 		// 1. "인가 코드"로 "액세스 토큰" 요청
@@ -69,9 +76,9 @@ public class GoogleService {
 		// HTTP Body 생성
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.add("grant_type", "authorization_code");
-		body.add("client_id", "1098266395848-j9gih592701mq0q8n2bj4nq7mffg2hjd.apps.googleusercontent.com");
-		body.add("client_secret", "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"); // 두개 다 해야함
-		body.add("redirect_uri", "http://localhost:8080/api/users/google/callback"); // 애플리케이션 등록시 설정한 redirect_uri
+		body.add("client_id", restApiKey);
+		body.add("client_secret", secretKey); // 두개 다 해야함
+		body.add("redirect_uri", redirectURL); // 애플리케이션 등록시 설정한 redirect_uri
 		body.add("code",code); // 인가 코드
 
 
