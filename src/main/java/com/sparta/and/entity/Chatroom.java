@@ -32,4 +32,8 @@ public class Chatroom extends TimeStamped {
         this.founder = founder;
         this.participant = participant;
     }
+
+    public void setParticipant(User user) {
+        this.participant = user;
+    }
 }

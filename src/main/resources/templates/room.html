@@ -38,6 +38,36 @@
 
         console.log(roomName + ", " + roomId + ", " + username + ", " + founder + ", " + participant);
 
+        // room.html을 호출했기 때문에 실행되므로 채팅내역을 불러와 #msgArea에 추가
+        var chatHistory = [[${chatHistory}]];
+        chatHistory.forEach((chat) => {
+
+            var chatId = chat.chatId;
+            var writer = chat.writer;
+            var message = chat.message;
+            var createDate = chat.createDate;
+            var str = ``;
+
+            if (writer === username) {
+                str += `
+                        <div class='col-6' id="${chatId}">
+                            <div class='alert alert-secondary'>
+                                <b>${writer} : ${message} : ${createDate}</b>
+                            </div>
+                        </div>
+                    `;
+            } else {
+                str += `
+                        <div class='col-6' id="${chatId}">
+                            <div class='alert alert-warning'>
+                                <b>${writer} : ${message} : ${createDate}</b>
+                            </div>
+                        </div>
+                    `;
+            }
+            $("#msgArea").append(str);
+        });
+
         var sockJs = new SockJS("/stomp-chat");
         //1. SockJS를 내부에 들고있는 stomp를 내어줌
         var stomp = Stomp.over(sockJs);
@@ -52,13 +82,14 @@
 
                 var writer = content.writer;
                 var message = content.message;
+                var createDate = content.createDate;
                 var str = ``;
 
                 if (writer === username) {
                     str += `
                         <div class='col-6'>
                             <div class='alert alert-secondary'>
-                                <b>${writer} : ${message}</b>
+                                <b>${writer} : ${message} : ${createDate}</b>
                             </div>
                         </div>
                     `;
@@ -66,7 +97,7 @@
                     str += `
                         <div class='col-6'>
                             <div class='alert alert-warning'>
-                                <b>${writer} : ${message}</b>
+                                <b>${writer} : ${message} : ${createDate}</b>
                             </div>
                         </div>
                     `;
