@@ -83,7 +83,9 @@
             margin-top: 30px;
             width: 100%; /* Adjust the width as needed */
             height: 400px; /* Adjust the height as needed */
-            margin: 0 auto; /* Center the container */
+            margin: 0 auto;
+            margin-bottom: 20px;
+
         }
 
         .swiper-slide img {
@@ -92,6 +94,7 @@
             max-width: none; /* Remove max-width */
             margin: 0 auto;
             object-fit: cover;
+            margin-bottom: 20px;
         }
 
         .main-category-bar {
@@ -111,6 +114,26 @@
         .main-category-bar a:hover {
             color: lightsalmon;
         }
+        .image-boxes {
+            display: flex;
+            justify-content: center; /* Adjust this based on your spacing preference */
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 20px; /* Adjust margin as needed */
+        }
+
+        .image-box {
+            width: calc(33.33% - 5px); /* Adjust width and margin as needed */
+            margin-bottom: 10px; /* Adjust margin as needed */
+        }
+
+        .image-box img {
+            width: 70%;
+            height: auto;
+            border-radius: 10px; /* Optional: Add border-radius for rounded corners */
+            margin-right: 10px;
+        }
+
 
 
         /* Footer Styles */
@@ -209,9 +232,24 @@
             </div>
 
         </div>
-        <div class="swiper-pagination"></div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
+    </div>
+    <div class="container">
+        <a></a>
+        </div>
+
+    <div class="image-boxes">
+        <div class="image-box">
+            <img src="https://i.postimg.cc/3xMRpGJj/display-1.jpg" alt="Image 1">
+        </div>
+        <div class="image-box">
+            <img src="https://i.postimg.cc/Qd98dJLk/display.png" alt="Image 2">
+        </div>
+        <div class="image-box">
+            <img src="https://i.postimg.cc/qB16twF9/display-2.jpg" alt="Image 3">
+        </div>
+    </div>
     </div>
 </main>
 
