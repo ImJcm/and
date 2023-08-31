@@ -30,8 +30,26 @@ public class LoginCheckAop {
     @Pointcut("execution(* com.sparta..*Controller.reportComment(..))")
     public void reportComment() {}
 
-    @Before("createComment() || updateComment() || deleteComment() || reportComment()")
-    public void executeLoginCheck(JoinPoint joinPoint) throws Throwable {
+    @Pointcut("execution(* com.sparta..*Controller.createRoom(..))")
+    public void createRoom() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.deleteRoom(..))")
+    public void getRoom() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.deleteRoom(..))")
+    public void deleteRoom() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.getRooms(..))")
+    public void getRooms() {}
+
+    /**
+     * arg[1]에 @AuthenticationPrincipal이 존재
+     *
+     * @param joinPoint
+     * @throws Throwable
+     */
+    @Before("createComment() || updateComment() || deleteComment() || reportComment() || createRoom() || getRoom() || deleteRoom()")
+    public void executeLoginCheck_MultiArgs(JoinPoint joinPoint) throws Throwable {
         log.info("If method executing, Need Login");
         Object[] argument = joinPoint.getArgs();
         UserDetailsImpl user = (UserDetailsImpl) argument[1];
@@ -39,7 +57,24 @@ public class LoginCheckAop {
         if(user == null) {
             throw new RejectedExecutionException("로그인이 필요합니다.");
         }
+    }
 
+
+    /**
+     * arg[0]에 @AuthenticationPrincipal이 존재
+     *
+     * @param joinPoint
+     * @throws Throwable
+     */
+    @Before("getRooms()")
+    public void executeLoginCheck_SingleArgs(JoinPoint joinPoint) throws Throwable {
+        log.info("If method executing, Need Login");
+        Object[] argument = joinPoint.getArgs();
+        UserDetailsImpl user = (UserDetailsImpl) argument[0];
+
+        if(user == null) {
+            throw new RejectedExecutionException("로그인이 필요합니다.");
+        }
     }
 
 }

@@ -1,48 +1,46 @@
 package com.sparta.and.service;
 
+import com.sparta.and.dto.ApiResponseDto;
 import com.sparta.and.dto.chat.ChatroomRequestDto;
 import com.sparta.and.dto.chat.ChatroomResponseDto;
-import com.sparta.and.entity.Chatroom;
 import com.sparta.and.entity.User;
-import com.sparta.and.repository.ChatroomRepository;
-import com.sparta.and.repository.UserRepository;
 import com.sparta.and.security.UserDetailsImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class ChatroomService {
-    private final UserRepository userRepository;
-    private final ChatroomRepository chatroomRepository;
+public interface ChatroomService {
+    /**
+     * 현재 사용자의 모든 채팅방 목록 조회
+     *
+     * @param userDetails           현재 접속한 사용자
+     * @return                      모든 채팅방 목록
+     */
+    List<ChatroomResponseDto> getChatRooms(UserDetailsImpl userDetails);
 
-    public List<ChatroomResponseDto> getChatRooms(UserDetailsImpl userDetails) {
-        List<Chatroom> chatroomList = chatroomRepository.findAllByFounderOrParticipant(userDetails.getUser(), userDetails.getUser());
+    /**
+     * 채팅방 생성
+     *
+     * @param ChatroomRequestDto    채팅방 정보(채팅방 이름, 채팅 참여자)
+     * @param userDetails           현재 사용자
+     * @return                      생성한 채팅방 정보
+     */
+    ChatroomResponseDto createChatroom(ChatroomRequestDto ChatroomRequestDto, UserDetailsImpl userDetails);
 
-        return chatroomList.stream().map(ChatroomResponseDto::new).toList();
-    }
+    /**
+     * 채팅방 상세 조회
+     *
+     * @param roomId                채팅방 id
+     * @param userDetails           현재 접속한 사용자
+     * @return                      채팅방 상세 정보
+     */
+    ChatroomResponseDto getChatRoom(Long roomId, UserDetailsImpl userDetails);
 
-
-    public ChatroomResponseDto createChatroom(ChatroomRequestDto ChatroomRequestDto, UserDetailsImpl userDetails) {
-        User participant = userRepository.findById(ChatroomRequestDto.getParticipant()).orElseThrow(() -> new IllegalArgumentException("해당되는 사용자가 없습니다."));
-
-        Chatroom chatroom = Chatroom.builder()
-                .chatroomName(ChatroomRequestDto.getChatroomName())
-                .founder(userDetails.getUser())
-                .participant(participant)
-                .build();
-
-        // 동일한 chatroom이 있는지 검사하는 로직 필요
-
-        return new ChatroomResponseDto(chatroomRepository.save(chatroom));
-    }
-
-
-    public ChatroomResponseDto getChatRoom(Long roomId, UserDetailsImpl userDetails) {
-        Chatroom chatroom = chatroomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("채팅방이 존재하지 않습니다."));
-
-        return new ChatroomResponseDto(chatroom);
-    }
+    /**
+     * 채팅방 삭제
+     *
+     * @param roomId                채팅방 id
+     * @param userDetails           현재 접속한 사용자
+     * @return                      삭제 결과
+     */
+    ApiResponseDto deleteRoom(Long roomId, UserDetailsImpl userDetails);
 }

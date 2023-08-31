@@ -1,22 +1,32 @@
 package com.sparta.and.service;
 
 import com.sparta.and.dto.chat.ChatMessageDto;
+import com.sparta.and.entity.ChatHistory;
+import com.sparta.and.entity.TimeStamped;
+import com.sparta.and.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 public class StompChatService {
     private final SimpMessagingTemplate template;
+    private final ChatHistoryServiceImpl chathistoryServiceImpl;
 
-    public void enter(@RequestBody ChatMessageDto message) {
+    public void enter(ChatMessageDto message) {
         message.setMessage(message.getWriter() + "님이 채팅방에 참여하였습니다.");
+        message.setCreateDate(LocalDateTime.now().format(TimeStamped.FORMATTER));
         template.convertAndSend("/sub/api/chat/room/" + message.getRoomId(), message);
     }
 
-    public void message(@RequestBody ChatMessageDto message) {
+    public void message(ChatMessageDto message) {
+        ChatHistory chatHistory = chathistoryServiceImpl.createChatHistory(message);
+
+        message.setCreateDate(chatHistory.getCreateDateTime().format(TimeStamped.FORMATTER));
         template.convertAndSend("/sub/api/chat/room/" + message.getRoomId(), message);
     }
+
 }

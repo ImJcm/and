@@ -19,8 +19,6 @@ public class ChatroomResponseDto {
     private String participant_nickname;
     private String createdDate;
 
-    private Set<WebSocketSession> sessions = new HashSet<>();
-
     public ChatroomResponseDto(Chatroom chatroom) {
         this.roomId = chatroom.getId();
         this.chatroomName = chatroom.getChatroomName();

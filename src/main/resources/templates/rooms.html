@@ -16,8 +16,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
-
-
 </head>
 <body>
 <div>
@@ -30,8 +28,8 @@
     </div>
 </div>
 <form id="create-room-form" action="/api/chat/room" method="post">
-    <input type="text" id="chatroomName" placeholder="채팅방 이름">
-    <input type="text" id="participant" placeholder="참가자 이름">
+    <input type="text" id="chatroomName" name="chatroomName" placeholder="채팅방 이름">
+    <input type="text" id="participant" name="participant" placeholder="참가자 이름">
     <button id="create-room-btn" class="btn-create btn-secondary">개설하기</button>
 </form>
 </body>
@@ -56,12 +54,6 @@
                 </div>
             `;
             roomList.append(html);
-            /*const li = $("<li>");
-            const a = $("<a>").attr("href", `/api/chat/room?roomId=${room.roomId}`).text(room.chatroomName);
-            const p = $("<p>").text(room.createdDate);
-            li.append(a);
-            li.append(p);
-            roomList.append(li);*/
         });
 
         // 개설 버튼 클릭 시 폼 데이터 전송
@@ -79,15 +71,9 @@
             else
                 createRoomForm.submit();
 
-            // // 전송 완료 후 채팅방 목록 갱신
-            // const li = $("<li>");
-            // const a = $("<a>").attr("href", "#").text(chatroomName);
-            // li.append(a);
-            // roomList.append(li);
-            //
-            // // 입력 필드 초기화
-            // chatroomNameInput.val("");
-            // participantInput.val("");
+            // 입력 필드 초기화
+            chatroomNameInput.val("");
+            participantInput.val("");
         });
     });
 </script>
