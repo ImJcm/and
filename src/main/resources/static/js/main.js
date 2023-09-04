@@ -3,7 +3,7 @@ const pageBtnSize = 5;
 let loginUsername = undefined;
 let stomp = null;
 
-document.addEventListener("DOMContentLoaded",function () {
+document.addEventListener("DOMContentLoaded", function () {
     const token = Cookies.get('Authorization');
     const host = "http://" + window.location.host;
 
@@ -20,7 +20,7 @@ function loginCheck(token) {
 
     authSection.empty();
 
-    if(token == undefined) {
+    if (token == undefined) {
         html += `
             <button onClick="redirectToLogin()">Login / Signup</button>
         `;
@@ -29,8 +29,8 @@ function loginCheck(token) {
         let userEmailName;
         let userNickName;
         $.ajax({
-            type:'GET',
-            url:`/api/users`
+            type: 'GET',
+            url: `/api/users`
         })
             .done(function (response, status, xhr) {
                 userEmailName = response['username'];
@@ -53,6 +53,7 @@ function redirectToLogin() {
     //window.location.href = "login.html";
     window.location.href = "/api/view/login";
 }
+
 // 공모전 카테고리 출력
 function showContests() {
     let html = `
@@ -74,30 +75,32 @@ function showContests() {
             <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
         </div>
-    
         <div class="container">
-            <h2 class="section-title">List of Contests</h2>
-            <ul class="contest-list">
-                <li class="contest-item">
-                    <div class="contest-details">
-                        <h3>Contest Title</h3>
-                        <p>Contest Description</p>
-                    </div>
-                </li>
-                <!-- Add more contest items as needed -->
-            </ul>
+        <a></a>
         </div>
+        
+
+  <div class="image-boxes">
+    <div class="image-box">
+      <img src="https://i.postimg.cc/3xMRpGJj/display-1.jpg" alt="Image 1">
+    </div>
+    <div class="image-box">
+      <img src="https://i.postimg.cc/Qd98dJLk/display.png" alt="Image 2">
+    </div>
+    <div class="image-box">
+      <img src="https://i.postimg.cc/qB16twF9/display-2.jpg" alt="Image 3">
+    </div>
+    <div class="image-box">
+      <img src="https://i.postimg.cc/Pr3ZkCBv/display-3.jpg" alt="Image 4">
+    </div>
+    <div class="image-box">
+      <img src="https://i.postimg.cc/gJypv6vM/20230904-115038.png" alt="Image 5">
+    </div>
+    <div class="image-box">
+      <img src="https://i.postimg.cc/VLRg0s2z/e3755407f5d1465089d57d79f35d3703.png" alt="Image 6">
+    </div>
+  </div>
     
-        <div class="container">
-            <h2 class="section-title">List of Boards</h2>
-            <ul class="board-list">
-                <li class="board-item">
-                    <h3>Board Title</h3>
-                    <p>Board Description</p>
-                </li>
-                <!-- Add more board items as needed -->
-            </ul>
-        </div>
     `;
 
     $('.main').empty();
@@ -119,7 +122,7 @@ function showContests() {
 
 // 자유게시판 페이징 출력
 function showPosts(page, size) {
-    if(page <= 0) {
+    if (page <= 0) {
         page = 1;
     }
 
@@ -130,7 +133,7 @@ function showPosts(page, size) {
         .done(function (response, status, xhr) {
             let pages = response['totalPages'];
 
-            if(page > pages) {
+            if (page > pages) {
                 page = pages;
             }
 
@@ -150,7 +153,7 @@ function showPosts(page, size) {
                               <div class="count">조회수</div>
                             </div>`;
 
-            let startNum = (page-1) * pageSize;
+            let startNum = (page - 1) * pageSize;
             response['content'].forEach((post) => {
                 startNum += 1;
                 html += `
@@ -177,8 +180,8 @@ function showPosts(page, size) {
             let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
             let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
 
-            for(let i=startPage;i<=endPage;i++) {
-                if(page === i) {
+            for (let i = startPage; i <= endPage; i++) {
+                if (page === i) {
                     html += `
                             <a onclick="showPosts(${i},pageSize)" class="num on">${i}</a>
                         `;
@@ -199,7 +202,7 @@ function showPosts(page, size) {
             $(".main").empty();
             $(".main").append(html);
         })
-        .fail(function(response) {
+        .fail(function (response) {
             alert("자유게시글 조회 실패 : " + response.responseJSON.errorMessage);
             console.log(response);
         });
@@ -208,8 +211,8 @@ function showPosts(page, size) {
 // // 1:1 채팅 화면 구성
 function showChats() {
     $.ajax({
-        type:'GET',
-        url:`/api/chat/rooms`,
+        type: 'GET',
+        url: `/api/chat/rooms`,
     })
         .done(function (response, status, xhr) {
             let html = `
@@ -290,7 +293,7 @@ function createChatroomHandler() {
     const memberSearchBtn = document.querySelector(".search-member-button");
 
     // 사용자 이메일 실시간 검색
-    memberInput.addEventListener('keyup', function() {
+    memberInput.addEventListener('keyup', function () {
         let search = $('#search-term').val().trim();
         let chatroomName = $('#chatroom-name-term').val().trim();
 
@@ -332,7 +335,7 @@ function createChatroomHandler() {
     });
 
     // 사용자 이메일 검색
-    memberSearchBtn.addEventListener('click', function() {
+    memberSearchBtn.addEventListener('click', function () {
         let search = $('#search-term').val().trim();
 
         if (search === "") {
@@ -379,8 +382,8 @@ function createChatroomHandler() {
 
 function createChatroom(chatroomName, userId) {
     $.ajax({
-        type:'POST',
-        url:`/api/chat/room?chatroomName=${chatroomName}&participant=${userId}`
+        type: 'POST',
+        url: `/api/chat/room?chatroomName=${chatroomName}&participant=${userId}`
     })
         .done(function (response, status, xhr) {
             let room = response;
@@ -403,8 +406,8 @@ function createChatroom(chatroomName, userId) {
 // chatroom 삭제
 function deleteChat(roomId) {
     $.ajax({
-        type:'DELETE',
-        url:`/api/chat/room?roomId=${roomId}`
+        type: 'DELETE',
+        url: `/api/chat/room?roomId=${roomId}`
     })
         .done(function (response, status, xhr) {
             $(`#room-${roomId}`).remove();
@@ -418,8 +421,8 @@ function deleteChat(roomId) {
 // 채팅방으로 접속과 동시에 채팅 내역을 출력
 function showChat(roomId) {
     $.ajax({
-        type:'GET',
-        url:`/api/chat/room?roomId=${roomId}`
+        type: 'GET',
+        url: `/api/chat/room?roomId=${roomId}`
     })
         .done(async function (response, status, xhr) {
             let roomInfo = response;
@@ -457,7 +460,7 @@ function showChat(roomId) {
 
             await sleep(2);
 
-            if(stomp != null) {
+            if (stomp != null) {
                 stomp.disconnect();
             }
 
@@ -473,8 +476,8 @@ function showChat(roomId) {
 // 채팅 내역 출력
 function showChatHistory(roomId) {
     $.ajax({
-        type:'GET',
-        url:`/api/chat/room/chatting?roomId=${roomId}`
+        type: 'GET',
+        url: `/api/chat/room/chatting?roomId=${roomId}`
     })
         .done(function (response, status, xhr) {
             $('.chat-room-wrap').empty();
@@ -538,7 +541,7 @@ function connectChat(roomId) {
             let createDate = content.createDate;
             let html = ``;
 
-            if(messageType == "enter") {
+            if (messageType == "enter") {
                 html += `
                         <div class="chat ch3">
                             <div class="textbox">${message}</div>
@@ -571,7 +574,7 @@ function connectChat(roomId) {
         });
 
         //3. send(path, header, message)로 메세지를 보낼 수 있음
-        stomp.send('/pub/api/chat/enter', {contentType:'application/json'}, JSON.stringify({
+        stomp.send('/pub/api/chat/enter', {contentType: 'application/json'}, JSON.stringify({
             roomId: roomId,
             writer: loginUsername,
             messageType: "enter"
@@ -582,7 +585,7 @@ function connectChat(roomId) {
         let msg = document.getElementById("msg");
 
         console.log(loginUsername + ":" + msg.value);
-        stomp.send('/pub/api/chat/message', {'content-type':'application/json'}, JSON.stringify({
+        stomp.send('/pub/api/chat/message', {'content-type': 'application/json'}, JSON.stringify({
             roomId: roomId,
             message: msg.value,
             writer: loginUsername,

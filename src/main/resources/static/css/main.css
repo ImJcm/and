@@ -29,7 +29,6 @@ header {
 }
 
 .search-bar {
-    width: 50%;
     display: flex;
     justify-content: center;
 }
@@ -87,10 +86,29 @@ header {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    margin: 20px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+
+.image-boxes {
+    display: flex;
+    justify-content: center; /* Adjust this based on your spacing preference */
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.image-box {
+    width :200px;
+    height:200px;
+    margin-top:20px;
+    margin-bottom: 20px; /* Adjust margin as needed */
+}
+
+.image-box img {
+    width: 95%;
+    height: 95%;
+    object-fit: cover;
+    border-radius: 10px; /* Optional: Add border-radius for rounded corners */
 }
 
 .swiper-container {
@@ -130,15 +148,7 @@ header {
     color : lightsalmon;
 }
 
-/* Add your existing styles here */
 
-.container {
-    margin: 20px;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
 
 .section-title {
     font-size: 24px;
