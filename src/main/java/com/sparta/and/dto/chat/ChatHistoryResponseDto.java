@@ -15,6 +15,6 @@ public class ChatHistoryResponseDto {
         this.chatId = chatHistory.getChatId();
         this.writer = chatHistory.getWriter();
         this.message = chatHistory.getChatContent();
-        this.createDate = chatHistory.getCreateDateTime().format(TimeStamped.FORMATTER);
+        this.createDate = chatHistory.getCreateDateTime().format(TimeStamped.FORMATTER_DATE_HOUR_MINUTE);
     }
 }

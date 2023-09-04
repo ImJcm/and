@@ -1,6 +1,7 @@
 package com.sparta.and.dto.chat;
 
 import com.sparta.and.entity.Chatroom;
+import com.sparta.and.entity.TimeStamped;
 import lombok.Getter;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -26,6 +27,6 @@ public class ChatroomResponseDto {
         this.founder_nickname = chatroom.getFounder().getNickname();
         this.participant = chatroom.getParticipant().getUserId();
         this.participant_nickname = chatroom.getParticipant().getNickname();
-        this.createdDate = chatroom.getCreatedDateFormatted();
+        this.createdDate = chatroom.getCreatedDateFormatted(TimeStamped.FORMATTER_DATE);
     }
 }
