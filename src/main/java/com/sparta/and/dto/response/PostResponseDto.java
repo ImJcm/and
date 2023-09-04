@@ -18,7 +18,7 @@ public class PostResponseDto {
 		this.title = post.getTitle();
 		this.writer = post.getUser().getNickname();
 		this.contents = post.getContents();
-		this.modifiedDate = post.getModifiedDateFormatted(TimeStamped.FORMATTER);
+		this.modifiedDate = post.getModifiedDateFormatted(TimeStamped.FORMATTER_DATE_HOUR_MINUTE);
 		this.communityPostViews = post.getPostviews();
 	}
 }

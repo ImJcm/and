@@ -1,13 +1,11 @@
 package com.sparta.and.service;
 
-import java.util.Optional;
-
+import com.sparta.and.dto.ApiResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.sparta.and.dto.request.ReportPostRequestDto;
-import com.sparta.and.dto.response.ApiResponseDto;
 import com.sparta.and.entity.Post;
 import com.sparta.and.entity.ReportPost;
 import com.sparta.and.repository.PostRepository;

@@ -17,6 +17,8 @@ public abstract class TimeStamped {
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	public static final DateTimeFormatter FORMATTER_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+	public static final DateTimeFormatter FORMATTER_DATE_HOUR_MINUTE = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
 	@CreatedDate
 	@Column(updatable = false) //최초 생성시간만 초기화 되고 그 뒤 수정될 수 없음
 	private LocalDateTime createdDate;
