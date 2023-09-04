@@ -79,6 +79,7 @@ function showContests() {
         <a></a>
         </div>
         
+<div class="banner-text">공모전 모아보기</div>
 
   <div class="image-boxes">
     <div class="image-box">

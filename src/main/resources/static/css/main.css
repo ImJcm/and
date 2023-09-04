@@ -27,6 +27,14 @@ header {
     width: 150px;
     height: auto;
 }
+.banner-text {
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    color: darkblue;
+}
 
 .search-bar {
     display: flex;
