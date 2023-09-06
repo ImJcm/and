@@ -28,8 +28,8 @@ public class User {
 	private String nickname;
 
 	private Long kakaoId;
-
 	private String googleId;
+	private String naverId;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Post> myPostList = new ArrayList<>();
@@ -66,6 +66,10 @@ public class User {
 		this.googleId = googleId;
 	}
 
+	public User(String naverId) {
+		this.naverId = naverId;
+	}
+
 	public User kakaoIdUpdate(Long kakaoId) {
 		this.kakaoId = kakaoId;
 		return this;
@@ -76,4 +80,8 @@ public class User {
 		return this;
 	}
 
+	public User naverIdUpdate(String naverId) {
+		this.naverId = naverId;
+		return this;
+	}
 }
