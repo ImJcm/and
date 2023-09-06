@@ -1,6 +1,9 @@
 package com.sparta.and.security;
 
 import com.sparta.and.entity.User;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,6 +29,8 @@ public class UserDetailsImpl implements UserDetails {
 	public UserDetailsImpl(User user) {
 		this.user = user;
 	}
+
+	public UserDetailsImpl() {this.user = null;};
 
 	public User getUser() {
 		return user;

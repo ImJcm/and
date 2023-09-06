@@ -1,21 +1,25 @@
 package com.sparta.and.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sparta.and.dto.response.UserResponseDto;
+import com.sparta.and.dto.response.UserSearchResponseDto;
 import com.sparta.and.jwt.JwtUtil;
+import com.sparta.and.security.UserDetailsImpl;
 import com.sparta.and.service.GoogleService;
 import com.sparta.and.service.KakaoService;
 import com.sparta.and.service.NaverService;
+import com.sparta.and.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.logging.Logger;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -26,6 +30,13 @@ public class UserController {
 	private final KakaoService kakaoService;
 	private final GoogleService googleService;
 	private final NaverService naverService;
+	private final UserService userService;
+
+	@GetMapping
+	@ResponseBody
+	public ResponseEntity<UserResponseDto> getUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+		return ResponseEntity.ok().body(userService.getUser(userDetails));
+	}
 
 	@GetMapping("/kakao/callback")
 	public String KakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
@@ -50,6 +61,12 @@ public class UserController {
 		response.addCookie(cookie);
 
 		return "redirect:/";
+	}
+
+	@GetMapping("/search")
+	@ResponseBody
+	public ResponseEntity<List<UserSearchResponseDto>> searchUser(@RequestParam String keyword, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+		return ResponseEntity.ok().body(userService.searchUsers(keyword));
 	}
 
 	@GetMapping("/naver/callback")
