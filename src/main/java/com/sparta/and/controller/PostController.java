@@ -32,7 +32,7 @@ public class PostController {
 	}
 
 	// 자유게시판 글 작성
-	@PostMapping
+	@PostMapping("")
 	public ResponseEntity<?> createPost(@RequestBody PostRequestDto requestDto,
 	                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
 		log.info("Controller - createPost : 시작");

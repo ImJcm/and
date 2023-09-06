@@ -75,5 +75,4 @@ public class User {
 		this.googleId = googleId;
 		return this;
 	}
-
 }

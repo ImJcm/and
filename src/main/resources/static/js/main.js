@@ -38,7 +38,7 @@ function loginCheck(token) {
 
                 html += `
                     <p>${userNickName}</p>
-                    <button onClick="logout()">logout</button>
+                    <button onclick="logout()">Logout</button>
                 `;
                 authSection.append(html);
             })
@@ -49,9 +49,14 @@ function loginCheck(token) {
     }
 }
 
+function logout() {
+    Cookies.remove("Authorization");
+    window.location.href = "/";
+}
+
 function redirectToLogin() {
     //window.location.href = "login.html";
-    window.location.href = "/api/view/login";
+    window.location.href = "/view/login";
 }
 
 // 공모전 카테고리 출력
@@ -160,7 +165,7 @@ function showPosts(page, size) {
                 html += `
                         <div>
                           <div class="num">${startNum}</div>
-                          <div class="title"><a href="#">${post.title}</a></div>
+                          <div class="title" id="post-${post.postId}"><a href="#">${post.title}</a></div>
                           <div class="writer">${post.writer}</div>
                           <div class="date">${post.modifiedDate}</div>
                           <div class="count">${post.communityPostViews}</div>
@@ -171,7 +176,7 @@ function showPosts(page, size) {
             html += `
                     </div>
                      <div class="post-btn">
-                       <button>글쓰기</button>
+                     <button onclick="location.href='/view/posting'">글쓰기</button>
                      </div>
                      <div class="post-page">
                         <a onclick="showPosts(1,pageSize)" class="bt first"><<</a>
@@ -285,8 +290,6 @@ function showChats() {
             console.log(response);
             window.location.href = "/";
         });
-
-
 }
 
 function createChatroomHandler() {

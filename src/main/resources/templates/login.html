@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <meta charset="UTF-8">
@@ -96,8 +96,9 @@
 
     <div class="social-login">
         <!--<div class="social-btn kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=5350636bd29cb95d69ce8c1da3ba4102&redirect_uri=http://localhost:8080/api/users/kakao/callback&response_type=code'">-->
-        <div class="social-btn kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=cd669ccdc97565b5ebdfc0f3e1efb7e2&redirect_uri=http://localhost:8080/api/users/kakao/callback&response_type=code'">
-
+        <!--<div class="social-btn kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=cd669ccdc97565b5ebd
+        <div class="social-btn kakao-btn" th:onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=${kakaoClientKey}&redirect_uri=${kakaoRedirectURL}&response_type=code'">-->
+        <div class="social-btn kakao-btn" th:onclick="|location.href='https://kauth.kakao.com/oauth/authorize?client_id=@{${kakaoClientKey}}&redirect_uri=@{${kakaoRedirectURL}}&response_type=code'|">
             <img src="https://i.postimg.cc/xT0znjN3/ka.png">
         </div>
         <div class="social-btn google-btn"
