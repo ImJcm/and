@@ -15,4 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	// 구글 아이디 찾기
 	Optional<User> findByGoogleId(String googleID);
+
+	//네이버 아이디 찾기
+	Optional<User> findByNaverId(String naverId);
 }
