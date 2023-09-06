@@ -1,11 +1,11 @@
 package com.sparta.and.service;
 
 import com.sparta.and.dto.ApiResponseDto;
-import com.sparta.and.dto.chat.ChatMessageDto;
+import com.sparta.and.dto.chat.ChatHistoryRequestDto;
+import com.sparta.and.dto.chat.ChatHistoryResponseDto;
 import com.sparta.and.dto.chat.ChatroomRequestDto;
 import com.sparta.and.dto.chat.ChatroomResponseDto;
 import com.sparta.and.entity.Chatroom;
-import com.sparta.and.entity.TimeStamped;
 import com.sparta.and.entity.User;
 import com.sparta.and.repository.ChatroomRepository;
 import com.sparta.and.repository.UserRepository;
@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,11 +32,11 @@ public class ChatroomServiceImpl implements ChatroomService{
     }
 
     @Override
-    public ChatroomResponseDto createChatroom(ChatroomRequestDto ChatroomRequestDto, UserDetailsImpl userDetails) {
-        User participant = userRepository.findById(ChatroomRequestDto.getParticipant()).orElseThrow(() -> new IllegalArgumentException("해당되는 사용자가 없습니다."));
+    public ChatroomResponseDto createChatroom(ChatroomRequestDto chatroomRequestDto, UserDetailsImpl userDetails) {
+        User participant = userRepository.findById(chatroomRequestDto.getParticipant()).orElseThrow(() -> new IllegalArgumentException("해당되는 사용자가 없습니다."));
 
         Chatroom chatroom = Chatroom.builder()
-                .chatroomName(ChatroomRequestDto.getChatroomName())
+                .chatroomName(chatroomRequestDto.getChatroomName())
                 .founder(userDetails.getUser())
                 .participant(participant)
                 .build();
@@ -70,15 +69,15 @@ public class ChatroomServiceImpl implements ChatroomService{
         if(user.getUserId() == chatroom.getFounder().getUserId()) {
             chatroomRepository.delete(chatroom);
             chatHistoryService.deleteChatHistorys(roomId);
+
         } else if(user.getUserId() == chatroom.getParticipant().getUserId()){
             chatroom.setParticipant(null);
 
-            ChatMessageDto chatMessageDto = new ChatMessageDto();
-            chatMessageDto.setRoomId(String.valueOf(roomId));
-            chatMessageDto.setMessage(user.getNickname() + "님이 나갔습니다.");
-            chatMessageDto.setWriter(user.getUserName());
-            chatMessageDto.setCreateDate(LocalDateTime.now().format(TimeStamped.FORMATTER));
-            chatHistoryService.createChatHistory(chatMessageDto);
+            ChatHistoryRequestDto chatHistoryRequestDto = new ChatHistoryRequestDto();
+            chatHistoryRequestDto.setRoomId(roomId);
+            chatHistoryRequestDto.setMessage(user.getNickname() + "님이 나갔습니다.");
+            chatHistoryRequestDto.setWriter(user.getUserName());
+            chatHistoryService.createChatHistory(chatHistoryRequestDto);
         }
 
         return new ApiResponseDto("채팅방 삭제 성공", HttpStatus.OK.value());

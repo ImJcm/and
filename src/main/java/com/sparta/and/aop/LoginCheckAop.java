@@ -34,7 +34,7 @@ public class LoginCheckAop {
     @Pointcut("execution(* com.sparta..*Controller.createRoom(..))")
     public void createRoom() {}
 
-    @Pointcut("execution(* com.sparta..*Controller.deleteRoom(..))")
+    @Pointcut("execution(* com.sparta..*Controller.getRoom(..))")
     public void getRoom() {}
 
     @Pointcut("execution(* com.sparta..*Controller.deleteRoom(..))")

@@ -29,6 +29,5 @@ public class UserService {
     // 유저 검색
     public List<UserSearchResponseDto> searchUsers(String keyword) {
         return userRepository.findAllByUserNameContaining(keyword).stream().map(UserSearchResponseDto::new).toList();
-
     }
 }

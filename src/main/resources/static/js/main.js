@@ -269,7 +269,7 @@ function showChats() {
             })
 
             html += `
-                </div>
+                        </div>
                     </div>
                     <div class="chat-room">
                     </div>
@@ -412,6 +412,7 @@ function deleteChat(roomId) {
     })
         .done(function (response, status, xhr) {
             $(`#room-${roomId}`).remove();
+            $('.chat-room').empty();
         })
         .fail(function (response) {
             alert("채팅방 삭제 실패 : " + response.responseJSON.errorMessage);
@@ -489,7 +490,7 @@ function showChatHistory(roomId) {
                 let chatId = chat.chatId;
                 let writer = chat.writer;
                 let message = chat.message;
-                let createDate = chat.createDate;
+                let sendDate = chat.sendDate;
                 let html = ``;
 
                 if (writer === loginUsername) {
@@ -497,7 +498,7 @@ function showChatHistory(roomId) {
                         <div class="chat ch2" id="${chatId}">
                             <div class="icon"><i class="fa-solid fa-user"></i></div>
                             <div class="textbox">${message}</div>
-                            <div class="timebox">${createDate}</div>
+                            <div class="timebox">${sendDate}</div>
                         </div>
                     `;
                 } else {
@@ -505,7 +506,7 @@ function showChatHistory(roomId) {
                         <div class="chat ch1" id="${chatId}">
                             <div class="icon"><i class="fa-solid fa-user"></i></div>
                             <div class="textbox">${message}</div>
-                            <div class="timebox">${createDate}</div>
+                            <div class="timebox">${sendDate}</div>
                         </div>
                     `;
                 }
@@ -539,14 +540,14 @@ function connectChat(roomId) {
             let writer = content.writer;
             let message = content.message;
             let messageType = content.messageType;
-            let createDate = content.createDate;
+            let sendDate = content.sendDate;
             let html = ``;
 
             if (messageType == "enter") {
                 html += `
                         <div class="chat ch3">
                             <div class="textbox">${message}</div>
-                            <div class="timebox">${createDate}</div>
+                            <div class="timebox">${sendDate}</div>
                         </div>
                     `;
             } else {
@@ -555,7 +556,7 @@ function connectChat(roomId) {
                         <div class="chat ch2" id="${chatId}">
                             <div class="icon"><i class="fa-solid fa-user"></i></div>
                             <div class="textbox">${message}</div>
-                            <div class="timebox">${createDate}</div>
+                            <div class="timebox">${sendDate}</div>
                         </div>
                     `;
                 } else {
@@ -563,7 +564,7 @@ function connectChat(roomId) {
                         <div class="chat ch1" id="${chatId}">
                             <div class="icon"><i class="fa-solid fa-user"></i></div>
                             <div class="textbox">${message}</div>
-                            <div class="timebox">${createDate}</div>
+                            <div class="timebox">${sendDate}</div>
                         </div>
                     `;
                 }

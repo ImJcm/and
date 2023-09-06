@@ -24,10 +24,6 @@ public class User {
     @Column(name = "password", nullable = false)
     private String userPassword;
 
-	@Column(name = "email", nullable = false, unique = true)
-	private String userEmail;
-//   private enum role;
-
 	@Column(name = "nickname", nullable = false, unique = true)
 	private String nickname;
 
@@ -51,10 +47,9 @@ public class User {
 	@OneToMany(mappedBy = "participant", cascade = CascadeType.REMOVE)
 	private List<Chatroom> partipantRoomlist = new ArrayList<>();
 
-	public User(String userName, String userPassword, String userEmail) {
+	public User(String userName, String userPassword) {
 		this.userName = userName;
 		this.userPassword = userPassword;
-		this.userEmail = userEmail;
 	}
 
 	public User(String userName, String userPassword, String nickname, Long kakaoId) {

@@ -59,14 +59,12 @@ public class ChatroomController {
     @GetMapping("/room")
     public ResponseEntity<ChatroomResponseDto> getRoom(@RequestParam Long roomId, @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
         return ResponseEntity.ok().body(chatroomService.getChatRoom(roomId, userDetails));
-
     }
 
     @GetMapping("/room/chatting")
     public ResponseEntity<List<ChatHistoryResponseDto>> getChatting(@RequestParam Long roomId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok().body(chatHistoryService.getChatHistorys(roomId));
     }
-
 
     @DeleteMapping("/room")
     public ResponseEntity<ApiResponseDto> deleteRoom(@RequestParam Long roomId, @AuthenticationPrincipal UserDetailsImpl userDetails) {

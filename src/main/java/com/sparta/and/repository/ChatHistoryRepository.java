@@ -1,7 +1,10 @@
 package com.sparta.and.repository;
 
 import com.sparta.and.entity.ChatHistory;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ChatHistoryRepository extends CrudRepository<ChatHistory, String> {
+import java.util.List;
+
+public interface ChatHistoryRepository extends JpaRepository<ChatHistory, String> {
+    List<ChatHistory> findTop100ByChatroomIdOrderByCreatedDateAsc(Long roomId);
 }

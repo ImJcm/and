@@ -30,10 +30,11 @@ public class GoogleService {
 	private final UserRepository userRepository;
 	private final RestTemplate restTemplate; // 수동 등록한 Bean
 	private final JwtUtil jwtUtil;
+	//private final UserBlackList userBlackList;
 	private final UserBlackList userBlackList;
 	@Value("${auth.google.client_id}")
 	private String restApiKey;
-	@Value("&{auth.google.client_secret}")
+	@Value("${auth.google.client_secret}")
 	private String secretKey;
 	@Value("${auth.google.redirectURL}")
 	private String redirectURL;
@@ -136,9 +137,9 @@ public class GoogleService {
 		String googleId = googleUserInfoDto.getId();
 		User googleUser = userRepository.findByGoogleId(googleId).orElse(null);
 
-		if(googleUser.equals(userBlackList.getUser().getUserName())) {
-			throw new IllegalArgumentException("응 안돼 돌아가.");
-		}
+//		if(googleUser.equals(userBlackList.getUser().getUserName())) {
+//			throw new IllegalArgumentException("응 안돼 돌아가.");
+//		}
 
 		if (googleUser == null) {
 			// 구글 사용자 email 동일한 email 가진 회원이 있는지 확인
