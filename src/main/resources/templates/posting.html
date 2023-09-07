@@ -1,25 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
+    <title>자유게시판</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <title>글쓰기</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+    <!-- js Cookie -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="/js/posting.js"></script>
 </head>
 <body>
-<h1>글쓰기</h1>
 
-<form id="postForm">
-    <label for="title">제목:</label>
-    <input type="text" class="posting-input-box" id="title" placeholder="내용 입력"><br><br>
+<div data-include-path="main.html"></div>
 
-    <label for="contents">내용:</label><br>
-    <textarea type="text" class="posting-input-box" id="contents" placeholder="내용 입력"></textarea><br><br>
+<script>
+    window.addEventListener('load', function() {
+        const allElements = document.getElementsByTagName('*');
+        Array.prototype.forEach.call(allElements, function(el) {
+            const includePath = el.dataset.includePath;
+            if (includePath) {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        el.outerHTML = this.responseText;
+                    }
+                };
+                xhttp.open('GET', includePath, true);
+                xhttp.send();
+            }
+        });
+    });
+</script>
 
-    <button id="submitPost">작성하기</button>
-</form>
+<script>
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            placeholder: 'contents',
+            minHeight: 370,
+            maxHeight: null,
+            focus: true,
+            lang: 'ko-KR'
+        });
+    });
+</script>
+<h2 style="text-align: center;">글 작성</h2><br><br><br>
 
+<div style="width: 60%; margin: auto;">
+    <div id="postForm">
+        <input type="text" class="posting-input-box" id="title" style="width: 40%;" placeholder="제목"><br><br>
+        <textarea type="text" class="posting-input-box" id="summernote" name="contents"></textarea>
+        <input id="subBtn" type="button" value="작성하기" style="float: right;" onclick="createPost()"/>
+    </div>
+</div>
 </body>
 </html>

@@ -165,7 +165,7 @@ function showPosts(page, size) {
                 html += `
                         <div>
                           <div class="num">${startNum}</div>
-                          <div class="title" id="post-${post.postId}"><a href="#">${post.title}</a></div>
+                          <div class="title" id="post-${post.postId}"><a href="/onepost">${post.title}</a></div>
                           <div class="writer">${post.writer}</div>
                           <div class="date">${post.modifiedDate}</div>
                           <div class="count">${post.communityPostViews}</div>
@@ -292,6 +292,7 @@ function showChats() {
         });
 }
 
+// 채팅 관련
 function createChatroomHandler() {
     const memberInput = document.querySelector("#search-term");
     const memberSearchBtn = document.querySelector(".search-member-button");
@@ -384,6 +385,7 @@ function createChatroomHandler() {
     });
 }
 
+// 채팅방 생성
 function createChatroom(chatroomName, userId) {
     $.ajax({
         type: 'POST',
@@ -407,7 +409,7 @@ function createChatroom(chatroomName, userId) {
         })
 }
 
-// chatroom 삭제
+// 채팅방 삭제
 function deleteChat(roomId) {
     $.ajax({
         type: 'DELETE',

@@ -1,10 +1,8 @@
-$('#submitPost').click(function (event) {
-    let authCookie = Cookies.get("Authorization");
+function createPost() {
     console.log("js 진입")
 
-    event.preventDefault();
     let postTitle = $('#title').val();
-    let postContents = $('#contents').val();
+    let postContents = $('#summernote').val();
 
     let data = {
         title: postTitle,
@@ -23,19 +21,17 @@ $('#submitPost').click(function (event) {
         url: '/api/posts',
         type: 'POST',
         contentType: 'application/json',
-        headers: {
-            'Authorization': authCookie
-        },
         data: JSON.stringify(data),
         success: function (xhr) {
             console.log(xhr);
             //console.log(response.id);
             alert("게시글 등록 성공");
             // location.reload();
-            //window.location.href = `${window.location.origin}/home/mainpage`;
+            // window.location.href = `${window.location.origin}/home/mainpage`;
+            window.history.back();
         },
         error: function () {
             console.log('게시글 등록 error 실패');
         }
     });
-});
+}
