@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.*;
 import com.sparta.and.dto.NaverUserInfoDto;
 import com.sparta.and.entity.*;
 import com.sparta.and.jwt.JwtUtil;
+import com.sparta.and.repository.UserBlackListRepository;
 import com.sparta.and.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class NaverService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate; // 수동 등록한 Bean
     private final JwtUtil jwtUtil;
-    private final UserBlackList userBlackList;
+    private final UserBlackListRepository userBlackListRepository;
 
     @Value("${auth.naver.client_id}")
     private String restApiKey;
@@ -127,10 +128,6 @@ public class NaverService {
         String naverId = naverUserInfoDto.getId();
         User naverUser = userRepository.findByNaverId(naverId).orElse(null);
 
-        if(naverUser.equals(userBlackList.getUser().getUserName())) {
-            throw new IllegalArgumentException("응 안돼 돌아가.");
-        }
-
         if (naverUser == null) {
 
             String NaverEmail = naverUserInfoDto.getEmail();
@@ -138,6 +135,10 @@ public class NaverService {
             if (sameEmailUser != null) {
                 naverUser = sameEmailUser;
                 naverUser = naverUser.naverIdUpdate(naverId);
+
+                userBlackListRepository.findByUsername(NaverEmail).ifPresent((blackUser) -> {
+                    throw new IllegalArgumentException("블랙리스트 사용자입니다.");
+                });
             } else {
                 // 신규 회원가입
                 // password: random UUID

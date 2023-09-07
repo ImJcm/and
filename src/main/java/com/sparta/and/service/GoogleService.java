@@ -7,6 +7,7 @@ import com.sparta.and.dto.GoogleUserInfoDto;
 import com.sparta.and.entity.User;
 import com.sparta.and.entity.UserBlackList;
 import com.sparta.and.jwt.JwtUtil;
+import com.sparta.and.repository.UserBlackListRepository;
 import com.sparta.and.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ public class GoogleService {
 	private final UserRepository userRepository;
 	private final RestTemplate restTemplate; // 수동 등록한 Bean
 	private final JwtUtil jwtUtil;
-	private final UserBlackList userBlackList;
+	private final UserBlackListRepository userBlackListRepository;
 	@Value("${auth.google.client_id}")
 	private String restApiKey;
 	@Value("${auth.google.client_secret}")
@@ -131,18 +132,23 @@ public class GoogleService {
 
 	// 3)  회원가입
 	private User registerGoogleUserIfNeeded(GoogleUserInfoDto googleUserInfoDto) {
-
 		String googleId = googleUserInfoDto.getId();
 		User googleUser = userRepository.findByGoogleId(googleId).orElse(null);
 
-		if(googleUser.equals(userBlackList.getUser().getUserName())) {
-			throw new IllegalArgumentException("응 안돼 돌아가.");
-		}
+		// 블랙리스트에 해당 email이 존재하는지 확인
+//		userBlackListRepository.findByUsername(kakaoUsername).ifPresent((blackUser) -> {
+//			throw new IllegalArgumentException("블랙리스트 사용자입니다.");
+//		});
 
 		if (googleUser == null) {
 			// 구글 사용자 email 동일한 email 가진 회원이 있는지 확인
 			String googleEmail = googleUserInfoDto.getEmail();
 			User sameEmailUser = userRepository.findByUserName(googleEmail).orElse(null);
+
+			userBlackListRepository.findByUsername(googleEmail).ifPresent((blackUser) -> {
+				throw new IllegalArgumentException("블랙리스트 사용자입니다.");
+			});
+
 			if (sameEmailUser != null) {
 				googleUser = sameEmailUser;
 				// 기존 회원정보에 구글 Id 추가
@@ -156,7 +162,7 @@ public class GoogleService {
 				// email: kakao email
 				String email = googleUserInfoDto.getEmail();
 
-				googleUser = new User(email, encodedPassword, googleUserInfoDto.getNickname(), googleId);
+				googleUser = new User(email, encodedPassword, googleUserInfoDto.getEmail(), googleId);
 			}
 
 			userRepository.save(googleUser);
