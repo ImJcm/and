@@ -7,10 +7,13 @@ import com.sparta.and.security.UserDetailsImpl;
 import com.sparta.and.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -20,8 +23,16 @@ public class PostController {
 
 	private final PostService postService;
 
+	// 자유게시판 전체 조회
+	@GetMapping
+	public ResponseEntity<Page<PostResponseDto>> getPosts(
+			@RequestParam("page") int page,
+			@RequestParam("size") int size) {
+		return ResponseEntity.ok().body(postService.getPosts(page-1,size));
+	}
+
 	// 자유게시판 글 작성
-	@PostMapping
+	@PostMapping("")
 	public ResponseEntity<?> createPost(@RequestBody PostRequestDto requestDto,
 	                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
 		log.info("Controller - createPost : 시작");

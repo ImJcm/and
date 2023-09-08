@@ -5,6 +5,9 @@ import com.sparta.and.dto.request.PostRequestDto;
 import com.sparta.and.dto.response.PostResponseDto;
 import com.sparta.and.entity.Post;
 import com.sparta.and.security.UserDetailsImpl;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface PostService {
 
@@ -50,4 +53,10 @@ public interface PostService {
 	 */
 	Post findPost(Long id);
 
+	/**
+	 * 모든 자유게시글 조회
+	 *
+	 * @return			모든 자유게시글 반환
+	 */
+    Page<PostResponseDto> getPosts(int page, int size);
 }

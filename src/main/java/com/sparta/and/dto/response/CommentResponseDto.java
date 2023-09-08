@@ -1,9 +1,6 @@
 package com.sparta.and.dto.response;
 
-import com.sparta.and.entity.Comment;
-import com.sparta.and.entity.DeleteStatus;
-import com.sparta.and.entity.SecretStatus;
-import com.sparta.and.entity.User;
+import com.sparta.and.entity.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +23,7 @@ public class CommentResponseDto {
         this.content = comment.getContent();
         this.step = comment.getStep();
         this.writer = comment.getWriter().getNickname();
-        this.modifiedDate = comment.getModifiedDateFormatted();
+        this.modifiedDate = comment.getModifiedDateFormatted(TimeStamped.FORMATTER_DATE_HOUR_MINUTE);
     }
 
     public void setContent(String content) {

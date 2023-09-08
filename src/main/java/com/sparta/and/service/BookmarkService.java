@@ -1,10 +1,10 @@
 package com.sparta.and.service;
 
+import com.sparta.and.dto.ApiResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.sparta.and.dto.response.ApiResponseDto;
 import com.sparta.and.entity.Bookmark;
 import com.sparta.and.entity.ContestPost;
 import com.sparta.and.repository.BookmarkRepository;

@@ -16,9 +16,11 @@ public class UserBlackList {
     @Column(name = "blackListId")
     private Long blackListId;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "userId")
-    private User user;
+    private User user;*/
+
+    private String username;
 
     public UserBlackList(Long blackListId) {
         this.blackListId = blackListId;
