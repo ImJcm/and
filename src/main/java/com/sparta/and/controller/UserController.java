@@ -7,7 +7,6 @@ import com.sparta.and.jwt.JwtUtil;
 import com.sparta.and.security.UserDetailsImpl;
 import com.sparta.and.service.GoogleService;
 import com.sparta.and.service.KakaoService;
-import com.sparta.and.service.NaverService;
 import com.sparta.and.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,7 +30,7 @@ public class UserController {
 
 	private final KakaoService kakaoService;
 	private final GoogleService googleService;
-	private final NaverService naverService;
+//	private final NaverService naverService;
 	private final UserService userService;
 
 	@GetMapping
