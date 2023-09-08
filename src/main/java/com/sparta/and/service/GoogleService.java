@@ -56,7 +56,6 @@ public class GoogleService {
 		return createToken;
 	}
 
-
 	// 애플리케이션은 인증 코드로 구글 서버에 토큰을 요청하고, 토큰을 전달 받습니다.
 	// 1) 액세스 토큰 요청 메서드
 	public String getToken(String code) throws JsonProcessingException {
@@ -129,7 +128,6 @@ public class GoogleService {
 
 	}
 
-
 	// 3)  회원가입
 	private User registerGoogleUserIfNeeded(GoogleUserInfoDto googleUserInfoDto) {
 		String googleId = googleUserInfoDto.getId();
@@ -170,6 +168,4 @@ public class GoogleService {
 
 		return googleUser;
 	}
-
-
 }

@@ -38,7 +38,7 @@ function loginCheck(token) {
 
                 html += `
                     <p>${userNickName}</p>
-                    <button onClick="logout()">logout</button>
+                    <button onclick="logout()">Logout</button>
                 `;
                 authSection.append(html);
             })
@@ -49,9 +49,14 @@ function loginCheck(token) {
     }
 }
 
+function logout() {
+    Cookies.remove("Authorization");
+    window.location.href = "/";
+}
+
 function redirectToLogin() {
     //window.location.href = "login.html";
-    window.location.href = "/api/view/login";
+    window.location.href = "/view/login";
 }
 
 // 공모전 카테고리 출력
@@ -59,7 +64,7 @@ function showContests() {
     let html = `
             <div class="swiper-container">
             <div class="swiper-wrapper">
-    
+
                 <div class="swiper-slide">
                     <img src="https://i.postimg.cc/yN8DBxHq/image.png" alt="Banner 1">
                 </div>
@@ -70,7 +75,7 @@ function showContests() {
                 <div class="swiper-slide">
                     <img src="https://i.postimg.cc/yN8DBxHq/image.png" alt="Banner 3">
                 </div>
-    
+
             </div>
             <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
@@ -78,7 +83,7 @@ function showContests() {
         <div class="container">
         <a></a>
         </div>
-        
+
 <div class="banner-text">📢 공모전 모아보기</div>
 
   <div class="image-boxes">
@@ -101,7 +106,7 @@ function showContests() {
       <img src="https://i.postimg.cc/VLRg0s2z/e3755407f5d1465089d57d79f35d3703.png" alt="Image 6">
     </div>
   </div>
-    
+
     `;
 
     $('.main').empty();
@@ -160,7 +165,7 @@ function showPosts(page, size) {
                 html += `
                         <div>
                           <div class="num">${startNum}</div>
-                          <div class="title"><a href="#">${post.title}</a></div>
+                          <div class="title" id="post-${post.postId}"><a href="/onepost">${post.title}</a></div>
                           <div class="writer">${post.writer}</div>
                           <div class="date">${post.modifiedDate}</div>
                           <div class="count">${post.communityPostViews}</div>
@@ -171,7 +176,7 @@ function showPosts(page, size) {
             html += `
                     </div>
                      <div class="post-btn">
-                       <button>글쓰기</button>
+                     <button onclick="createPost()">글쓰기</button>
                      </div>
                      <div class="post-page">
                         <a onclick="showPosts(1,pageSize)" class="bt first"><<</a>
@@ -209,6 +214,45 @@ function showPosts(page, size) {
         });
 }
 
+// 글쓰기(작성)
+function createPost() {
+    console.log("js 진입")
+
+    let postTitle = $('#title').val();
+    let postContents = $('#summernote').val();
+
+    let data = {
+        title: postTitle,
+        contents: postContents
+    };
+
+    console.log(postTitle);
+    console.log(postContents);
+
+    if (postTitle.trim() === '' || postContents.trim() === '') {
+        alert('제목과 내용을 입력하세요');
+        return;
+    }
+
+    $.ajax({
+        url: '/api/posts',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function (xhr) {
+            console.log(xhr);
+            //console.log(response.id);
+            alert("게시글 등록 성공");
+            // location.reload();
+            // window.location.href = `${window.location.origin}/home/mainpage`;
+            window.history.back();
+        },
+        error: function () {
+            console.log('게시글 등록 error 실패');
+        }
+    });
+}
+
 // // 1:1 채팅 화면 구성
 function showChats() {
     $.ajax({
@@ -225,7 +269,7 @@ function showChats() {
                                 data-bs-target="#createChatoffcanvasScrolling" aria-controls="offcanvasScrolling">
                                 <i class="fas fa-solid fa-plus" aria-hidden="true"></i>
                             </button>
-                           
+
                             <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
                                  id="createChatoffcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
                                 <div class="offcanvas-header">
@@ -236,7 +280,7 @@ function showChats() {
                                 <div class="offcanvas-body">
                                     <!-- chatroomName -->
                                     <div class="chatroom-name-wrap">
-                                        <input type="text" class="chatroom-name-term" id="chatroom-name-term" placeholder="채팅방 이름을 입력하세요">    
+                                        <input type="text" class="chatroom-name-term" id="chatroom-name-term" placeholder="채팅방 이름을 입력하세요">
                                     </div>
                                     <!-- search -->
                                     <div class="invite-member-wrap">
@@ -249,7 +293,7 @@ function showChats() {
                                     </div>
                                     <div class="member-list-wrapper" ng-app="app" ng-controller="MainCtrl as ctrl">
                                         <ul class="member-list" id="member-list">
-                        
+
                                         </ul>
                                     </div>
                                 </div>
@@ -285,10 +329,9 @@ function showChats() {
             console.log(response);
             window.location.href = "/";
         });
-
-
 }
 
+// 채팅 관련
 function createChatroomHandler() {
     const memberInput = document.querySelector("#search-term");
     const memberSearchBtn = document.querySelector(".search-member-button");
@@ -325,7 +368,7 @@ function createChatroomHandler() {
                             <button class="member-setting-btn btn-primary" onclick="createChatroom('${chatroomName}',${user.userId})" type="button">
                                     <i class="fas fa-solid fa-plus" aria-hidden="true"></i>
                             </button>
-                        </li>   
+                        </li>
                     `;
                 })
                 $('#member-list').empty();
@@ -370,7 +413,7 @@ function createChatroomHandler() {
                             <button class="member-setting-btn btn-primary" onclick="createChatroom('${chatroomName}',${user.userId})" type="button">
                                     <i class="fas fa-plus" aria-hidden="true"></i>
                             </button>
-                        </li>   
+                        </li>
                     `;
                 })
                 $('#member-list').empty();
@@ -381,6 +424,7 @@ function createChatroomHandler() {
     });
 }
 
+// 채팅방 생성
 function createChatroom(chatroomName, userId) {
     $.ajax({
         type: 'POST',
@@ -404,7 +448,7 @@ function createChatroom(chatroomName, userId) {
         })
 }
 
-// chatroom 삭제
+// 채팅방 삭제
 function deleteChat(roomId) {
     $.ajax({
         type: 'DELETE',
