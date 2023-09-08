@@ -15,14 +15,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
@@ -81,5 +83,4 @@ public class UserController {
 
 		return "redirect:/";
 	}
-	//로그아웃은 토큰 만료로 할 것인가, 레디스로 할 것인가... 나중에 구현하겠습니다.
 }

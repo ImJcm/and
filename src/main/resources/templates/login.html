@@ -101,10 +101,15 @@
         <div class="social-btn kakao-btn" th:onclick="|location.href='https://kauth.kakao.com/oauth/authorize?client_id=@{${kakaoClientKey}}&redirect_uri=@{${kakaoRedirectURL}}&response_type=code'|">
             <img src="https://i.postimg.cc/xT0znjN3/ka.png">
         </div>
+<!--        <div class="social-btn google-btn"-->
+<!--             onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=1098266395848-j9gih592701mq0q8n2bj4nq7mffg2hjd.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/users/google/callback&response_type=code&scope=email'">-->
+<!--            <img src="https://i.postimg.cc/fy4TyCb9/goo2.png">-->
+<!--        </div>-->
         <div class="social-btn google-btn"
-             onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=1098266395848-j9gih592701mq0q8n2bj4nq7mffg2hjd.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/users/google/callback&response_type=code&scope=email'">
+             onclick="location.href='https://accounts.google.com/o/oauth2/auth?client_id=1098266395848-j9gih592701mq0q8n2bj4nq7mffg2hjd.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/users/google/callback&response_type=code&scope=https://www.googleapis.com/auth/drive.metadata.readonly'">
             <img src="https://i.postimg.cc/fy4TyCb9/goo2.png">
         </div>
+
     </div>
 </div>
 </body>

@@ -320,6 +320,21 @@ header {
     border-left: 1px solid #ddd;
 }
 
+.posting-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    height: 600px;
+}
+
+
 /* 채팅 CSS */
 .chat-wrap {
     display: flex;
