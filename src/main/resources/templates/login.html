@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
-    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+<!--    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
@@ -116,19 +116,19 @@
              onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=1098266395848-j9gih592701mq0q8n2bj4nq7mffg2hjd.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/users/google/callback&response_type=code&scope=email profile'">
             <img src="https://i.postimg.cc/fy4TyCb9/goo2.png">
         </div>
-        <div id="naver_id_login"
-             onclick="location.href='https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=VFk_PKrsqLSppkOws65A&client_secret=nKHijE6OBw&code=EIc5bFrl4RibFls1&state=9kgsGTfH4j7IyAkg '">
-            <img src="https://i.postimg.cc/1Xnk7pCN/image.png">
-        </div>
-        <script type="text/javascript">
-            var naver_id_login = new naver_id_login("VFk_PKrsqLSppkOws65A", "http://localhost:8080/naver-login");
-            var state = naver_id_login.getUniqState();
-            naver_id_login.setButton("white", 2,40);
-            naver_id_login.setDomain("http://localhost:8080");
-            naver_id_login.setState(state);
-            naver_id_login.setPopup();
-            naver_id_login.init_naver_id_login();
-        </script>
+<!--        <div id="naver_id_login"-->
+<!--             onclick="location.href='https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=VFk_PKrsqLSppkOws65A&state=1234&redirect_uri=http://localhost:8080/api/users/naver/callback'">-->
+<!--            <img src="https://i.postimg.cc/1Xnk7pCN/image.png">-->
+<!--        </div>-->
+<!--        <script type="text/javascript">-->
+<!--            var naver_id_login = new naver_id_login("VFk_PKrsqLSppkOws65A", "http://localhost:8080/api/users/naver/callback");-->
+<!--            var state = naver_id_login.getUniqState();-->
+<!--            naver_id_login.setButton("white", 2,40);-->
+<!--            naver_id_login.setDomain("http://localhost:8080");-->
+<!--            naver_id_login.setState(state);-->
+<!--            naver_id_login.setPopup();-->
+<!--            naver_id_login.init_naver_id_login();-->
+<!--        </script>-->
     </div>
 </div>
 </div>
