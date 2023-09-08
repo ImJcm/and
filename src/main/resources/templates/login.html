@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <meta charset="UTF-8">
@@ -68,6 +68,15 @@
         button:hover {
             background-color: #000;
         }
+        .auth-buttons button {
+            margin-left: 10px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background-color: lightsalmon;
+            color: white;
+            cursor: pointer;
+        }
         .social-login {
             display: flex;
             flex-direction: column; /* 위아래 배치로 변경 */
@@ -96,24 +105,32 @@
     <h3>SNS 간편 로그인/회원가입</h3>
 
     <div class="social-login">
-        <!--<div class="social-btn kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=5350636bd29cb95d69ce8c1da3ba4102&redirect_uri=http://localhost:8080/api/users/kakao/callback&response_type=code'">-->
-        <!--<div class="social-btn kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=cd669ccdc97565b5ebd
-        <div class="social-btn kakao-btn" th:onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=${kakaoClientKey}&redirect_uri=${kakaoRedirectURL}&response_type=code'">-->
-        <div class="social-btn kakao-btn" th:onclick="|location.href='https://kauth.kakao.com/oauth/authorize?client_id=@{${kakaoClientKey}}&redirect_uri=@{${kakaoRedirectURL}}&response_type=code'|">
+        <div class="social-btn kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=5350636bd29cb95d69ce8c1da3ba4102&redirect_uri=http://localhost:8080/api/users/kakao/callback&response_type=code'">
             <img src="https://i.postimg.cc/xT0znjN3/ka.png">
         </div>
-<!--        <div class="social-btn google-btn"-->
-<!--             onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=1098266395848-j9gih592701mq0q8n2bj4nq7mffg2hjd.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/users/google/callback&response_type=code&scope=email'">-->
-<!--            <img src="https://i.postimg.cc/fy4TyCb9/goo2.png">-->
-<!--        </div>-->
+        <!--        <div class="social-btn google-btn"-->
+        <!--             onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=1098266395848-j9gih592701mq0q8n2bj4nq7mffg2hjd.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/users/google/callback&response_type=code&scope=email'">-->
+        <!--            <img src="https://i.postimg.cc/fy4TyCb9/goo2.png">-->
+        <!--        </div>-->
         <div class="social-btn google-btn"
-             onclick="location.href='https://accounts.google.com/o/oauth2/auth?client_id=1098266395848-j9gih592701mq0q8n2bj4nq7mffg2hjd.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/users/google/callback&response_type=code&scope=https://www.googleapis.com/auth/drive.metadata.readonly'">
+             onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=1098266395848-j9gih592701mq0q8n2bj4nq7mffg2hjd.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/users/google/callback&response_type=code&scope=email profile'">
             <img src="https://i.postimg.cc/fy4TyCb9/goo2.png">
         </div>
-
-
-
+        <div id="naver_id_login"
+             onclick="location.href='https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=VFk_PKrsqLSppkOws65A&client_secret=nKHijE6OBw&code=EIc5bFrl4RibFls1&state=9kgsGTfH4j7IyAkg '">
+            <img src="https://i.postimg.cc/1Xnk7pCN/image.png">
+        </div>
+        <script type="text/javascript">
+            var naver_id_login = new naver_id_login("VFk_PKrsqLSppkOws65A", "http://localhost:8080/naver-login");
+            var state = naver_id_login.getUniqState();
+            naver_id_login.setButton("white", 2,40);
+            naver_id_login.setDomain("http://localhost:8080");
+            naver_id_login.setState(state);
+            naver_id_login.setPopup();
+            naver_id_login.init_naver_id_login();
+        </script>
     </div>
+</div>
 </div>
 </body>
 </html>
