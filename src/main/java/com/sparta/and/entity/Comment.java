@@ -23,6 +23,9 @@ public class Comment extends TimeStamped {
 	@Lob
 	private String content;
 
+    @Column
+    private Long step;
+
 	@Enumerated(value = EnumType.STRING)
 	private DeleteStatus isDeleted;
 
@@ -44,10 +47,13 @@ public class Comment extends TimeStamped {
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    private List<ReportComment> reportCommentList = new ArrayList<>();
 
     @Builder
-    public Comment(String content, DeleteStatus deleteStatus, SecretStatus secretStatus, User writer, Post post, Comment parent) {
+    public Comment(String content, Long step, DeleteStatus deleteStatus, SecretStatus secretStatus, User writer, Post post, Comment parent) {
         this.content = content;
+        this.step = step;
         this.isDeleted = deleteStatus;
         this.isSecret = secretStatus;
         this.writer = writer;
@@ -69,5 +75,9 @@ public class Comment extends TimeStamped {
 
     public void setIsSecret(SecretStatus secretStatus) {
         this.isSecret = secretStatus;
+    }
+
+    public void setStep(Long step) {
+        this.step = step;
     }
 }

@@ -8,9 +8,14 @@ import com.sparta.and.repository.PostRepository;
 import com.sparta.and.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Slf4j(topic = "PostService")
@@ -18,6 +23,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostServiceImpl implements PostService {
 
 	private final PostRepository postRepository;
+
+	@Transactional
+	@Override
+	public Page<PostResponseDto> getPosts(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+
+		Page<Post> postList = postRepository.findAll(pageable);
+
+		return postList.map(PostResponseDto::new);
+	}
 
 	@Override
 	public PostResponseDto createPost(PostRequestDto requestDto, UserDetailsImpl userDetails) {

@@ -1,6 +1,7 @@
 package com.sparta.and.service;
 
 import com.sparta.and.dto.ApiResponseDto;
+import com.sparta.and.dto.request.CommentReportRequestDto;
 import com.sparta.and.dto.request.CommentRequestDto;
 import com.sparta.and.dto.response.CommentResponseDto;
 import com.sparta.and.entity.*;
@@ -13,22 +14,22 @@ public interface CommentService {
     /**
      * 댓글 전체 조회
      *
-     * @param boardId               조회할 보드 ID
+     * @param postId                조회할 게시글 ID
      * @param userDetails           비밀댓글 출력용 접속 사용자 확인
      * @return                      보드의 전체 댓글 리스트
      */
-    List<CommentResponseDto> getComments(Long boardId, UserDetailsImpl userDetails);
+    List<CommentResponseDto> getComments(Long postId, UserDetailsImpl userDetails);
 
     /**
      * 댓글 등록
      *
-     * @param boardId               댓글을 등록할 보드 ID
+     * @param postId                댓글을 등록할 게시글 ID
      * @param user                  댓글 작성자 ID
      * @param commentRequestDto     댓글 작성 데이터
      *                              (댓글 등록 : parentId = null , 대댓글 등록 : parentId = 부모 댓글 Id)
      * @return                      요청 결과
      */
-    ApiResponseDto insertComment(Long boardId, User user, CommentRequestDto commentRequestDto);
+    ApiResponseDto createComment(Long postId, User user, CommentRequestDto commentRequestDto);
 
     /**
      * 댓글 수정
@@ -103,4 +104,13 @@ public interface CommentService {
      * @return                      True or False
      */
     Boolean checkDeleteComment(DeleteStatus deleteStatus);
+
+    /**
+     * 댓글 신고
+     *
+     * @param commentId             신고할 댓글 id
+     * @param userDetails           신고자
+     * @return                      신고 요청 확인
+     */
+    ApiResponseDto reportComment(Long commentId, User connectUser, CommentReportRequestDto commentReportRequestDto);
 }

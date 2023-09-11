@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GoogleUserInfoDto {
 	private String id;
-	private String nickname;
+	private String userName;
 	private String email;
 
-	public GoogleUserInfoDto(String id, String nickname, String email) {
+	public GoogleUserInfoDto(String id, String userName, String email) {
 		this.id = id;
-		this.nickname = nickname;
+		this.userName = userName;
 		this.email = email;
 	}
 }

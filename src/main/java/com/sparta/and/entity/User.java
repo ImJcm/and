@@ -24,16 +24,12 @@ public class User {
     @Column(name = "password", nullable = false)
     private String userPassword;
 
-	@Column(name = "email", nullable = false, unique = true)
-	private String userEmail;
-//   private enum role;
-
 	@Column(name = "nickname", nullable = false, unique = true)
 	private String nickname;
 
 	private Long kakaoId;
-
 	private String googleId;
+	private String naverId;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Post> myPostList = new ArrayList<>();
@@ -42,10 +38,18 @@ public class User {
 	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
 	private List<Bookmark> bookmarkList = new ArrayList<>();
 
-	public User(String userName, String userPassword, String userEmail) {
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<ReportComment> reportCommentList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "founder", cascade = CascadeType.REMOVE)
+	private List<Chatroom> foundRoomlist = new ArrayList<>();
+
+	@OneToMany(mappedBy = "participant", cascade = CascadeType.REMOVE)
+	private List<Chatroom> partipantRoomlist = new ArrayList<>();
+
+	public User(String userName, String userPassword) {
 		this.userName = userName;
 		this.userPassword = userPassword;
-		this.userEmail = userEmail;
 	}
 
 	public User(String userName, String userPassword, String nickname, Long kakaoId) {
@@ -62,6 +66,10 @@ public class User {
 		this.googleId = googleId;
 	}
 
+	public User(String naverId) {
+		this.naverId = naverId;
+	}
+
 	public User kakaoIdUpdate(Long kakaoId) {
 		this.kakaoId = kakaoId;
 		return this;
@@ -72,4 +80,8 @@ public class User {
 		return this;
 	}
 
+	public User naverIdUpdate(String naverId) {
+		this.naverId = naverId;
+		return this;
+	}
 }

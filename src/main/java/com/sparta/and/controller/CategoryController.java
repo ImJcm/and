@@ -15,14 +15,11 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-
-    // 카테고리 전체조회
     @GetMapping("/category")
     public ResponseEntity<CategoryListResponseDto> getCategory() {
-        CategoryListResponseDto getCategory = categoryService.getCategory();
-        return ResponseEntity.ok().body(getCategory);
+        CategoryListResponseDto categoryListResponse = categoryService.getCategory();
+        return ResponseEntity.ok().body(categoryListResponse);
     }
-
 }
 
 

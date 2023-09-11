@@ -23,11 +23,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurityConfig {
-
 	private final JwtUtil jwtUtil;
 	private final UserDetailsServiceImpl userDetailsService;
 	private final ObjectMapper objectMapper;
-	private final AuthenticationConfiguration authenticationConfiguration;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -59,8 +57,9 @@ public class WebSecurityConfig {
 				authorizeHttpRequests
 						.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
 						.permitAll() // resources 접근 허용 설정
-						.requestMatchers("/api/user/**").permitAll() // 로그인, 회원가입 누구나 가능.
-						.requestMatchers("/api/**").permitAll()
+						.requestMatchers("/api/users/**").permitAll() // 로그인, 회원가입 누구나 가능.
+						.requestMatchers("/api/posts/**").permitAll()
+						.requestMatchers("/view/**").permitAll()
 						.requestMatchers("/").permitAll()
 
 						.anyRequest().permitAll() // 그 외 모든 요청 인증처리
