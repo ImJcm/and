@@ -2,15 +2,15 @@ package com.sparta.and.controller;
 
 import java.util.List;
 
+import com.sparta.and.dto.request.ContestRequestDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sparta.and.dto.request.ContestPostRequestDto;
-import com.sparta.and.dto.response.ContestPostResponseDto;
-import com.sparta.and.service.ContestPostService;
+import com.sparta.and.dto.response.ContestResponseDto;
+import com.sparta.and.service.ContestService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,18 +19,18 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/contestPosts")
-public class ContestPostController {
+public class ContestController {
 
-	private final ContestPostService contestPostService;
+	private final ContestService contestService;
 
 	@GetMapping("")
-	public List<ContestPostResponseDto> getContests() {
-		return contestPostService.getContests();
+	public List<ContestResponseDto> getContests() {
+		return contestService.getContests();
 	}
 
 	@PostMapping("")
-	public ContestPostResponseDto createContest(@RequestBody ContestPostRequestDto requestDto) {
-		return contestPostService.createContest(requestDto);
+	public ContestResponseDto createContest(@RequestBody ContestRequestDto requestDto) {
+		return contestService.createContest(requestDto);
 	}
 
 }

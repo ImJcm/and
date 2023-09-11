@@ -6,5 +6,5 @@ import com.sparta.and.entity.Bookmark;
 import org.springframework.stereotype.Repository;
 
 public interface BookmarkRepository extends JpaRepository <Bookmark, Long> {
-	Bookmark findByContestPostId(Long id);
+	Bookmark findByContestId(Long id);
 }
