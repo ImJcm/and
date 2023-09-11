@@ -7,7 +7,6 @@ import com.sparta.and.jwt.JwtUtil;
 import com.sparta.and.security.UserDetailsImpl;
 import com.sparta.and.service.GoogleService;
 import com.sparta.and.service.KakaoService;
-import com.sparta.and.service.NaverService;
 import com.sparta.and.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,7 +30,7 @@ public class UserController {
 
 	private final KakaoService kakaoService;
 	private final GoogleService googleService;
-	private final NaverService naverService;
+//	private final NaverService naverService;
 	private final UserService userService;
 
 	@GetMapping
@@ -71,16 +70,16 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.searchUsers(keyword));
 	}
 
-	@GetMapping("/naver/callback")
-	public String naverLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
-		String token = naverService.naverLogin(code); // 반환 값이 JWT 토큰
-
-		token = token.substring(7);
-		token = "Bearer%20" + token;
-		Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token);
-		cookie.setPath("/");
-		response.addCookie(cookie);
-
-		return "redirect:/";
-	}
+//	@GetMapping("/naver/callback")
+//	public String naverLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+//		String token = naverService.naverLogin(code); // 반환 값이 JWT 토큰
+//
+//		token = token.substring(7);
+//		token = "Bearer%20" + token;
+//		Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token);
+//		cookie.setPath("/");
+//		response.addCookie(cookie);
+//
+//		return "redirect:/";
+//	}
 }
