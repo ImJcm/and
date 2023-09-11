@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sparta.and.dto.request.ContestPostRequestDto;
-
 import com.sparta.and.dto.request.ContestRequestDto;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

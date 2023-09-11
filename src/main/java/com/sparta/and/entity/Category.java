@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -13,13 +15,15 @@ import lombok.Setter;
 public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long CategoryId;
 
 	@Column(name = "category_name", nullable = false)
 	private String categoryName;
 
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
+	@OneToMany(mappedBy = "category", orphanRemoval = true)
+	private List<MiddleCategory> middleCategories;
 
-    }
+	public Category(String categoryName) {
+		this.categoryName = categoryName;
+	}
 }
