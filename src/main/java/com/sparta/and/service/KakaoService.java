@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.and.dto.KakaoUserInfoDto;
 import com.sparta.and.entity.User;
+import com.sparta.and.entity.UserBlackList;
 import com.sparta.and.jwt.JwtUtil;
+import com.sparta.and.repository.UserBlackListRepository;
 import com.sparta.and.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +34,9 @@ public class KakaoService {
 	private final UserRepository userRepository;
 	private final RestTemplate restTemplate;
 	private final JwtUtil jwtUtil;
+	private final UserBlackListRepository userBlackListRepository;
 	@Value("${auth.kakao.client_id}")
 	private String restApiKey;
-
 	@Value("${auth.kakao.redirectURL}")
 	private String redirectURL;
 
@@ -133,9 +135,16 @@ public class KakaoService {
 		User kakaoUser = userRepository.findByKakaoId(kakaoId).orElse(null);
 
 		if (kakaoUser == null) {
-			// 카카오 사용자 email 동일한 email 가진 회원이 있는지 확인
+			// 카카오 사용자 email 동일한 email 가진 회원이 있는지 확인 = kakao 외의 OAuth 계정정보
 			String kakaoUsername = kakaoUserInfo.getUsername();
 			User sameUsername = userRepository.findByUserName(kakaoUsername).orElse(null);
+
+			// 블랙리스트에 해당 email이 존재하는지 확인
+			userBlackListRepository.findByUsername(kakaoUsername).ifPresent((blackUser) -> {
+				throw new IllegalArgumentException("블랙리스트 사용자입니다.");
+			});
+
+
 			if (sameUsername != null) {
 				kakaoUser = sameUsername;
 				// 기존 회원정보에 카카오 Id 추가

@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.concurrent.RejectedExecutionException;
 
 @Component
@@ -30,16 +31,62 @@ public class LoginCheckAop {
     @Pointcut("execution(* com.sparta..*Controller.reportComment(..))")
     public void reportComment() {}
 
-    @Before("createComment() || updateComment() || deleteComment() || reportComment()")
-    public void executeLoginCheck(JoinPoint joinPoint) throws Throwable {
+    @Pointcut("execution(* com.sparta..*Controller.createRoom(..))")
+    public void createRoom() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.getRoom(..))")
+    public void getRoom() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.deleteRoom(..))")
+    public void deleteRoom() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.getRooms(..))")
+    public void getRooms() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.getUser(..))")
+    public void getUser() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.enter(..))")
+    public void enter() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.message(..))")
+    public void message() {}
+
+
+    /**
+     * arg[1]에 @AuthenticationPrincipal이 존재
+     *
+     * @param joinPoint
+     * @throws Throwable
+     */
+    @Before("createComment() || updateComment() || deleteComment() || reportComment() || createRoom() || getRoom() || deleteRoom() || enter() || message()")
+    public void executeLoginCheck_MultiArgs(JoinPoint joinPoint) throws Throwable {
         log.info("If method executing, Need Login");
         Object[] argument = joinPoint.getArgs();
+
         UserDetailsImpl user = (UserDetailsImpl) argument[1];
 
         if(user == null) {
             throw new RejectedExecutionException("로그인이 필요합니다.");
         }
+    }
 
+
+    /**
+     * arg[0]에 @AuthenticationPrincipal이 존재
+     *
+     * @param joinPoint
+     * @throws Throwable
+     */
+    @Before("getRooms() || getUser()")
+    public void executeLoginCheck_SingleArgs(JoinPoint joinPoint) throws Throwable {
+        log.info("If method executing, Need Login");
+        Object[] argument = joinPoint.getArgs();
+        UserDetailsImpl user = (UserDetailsImpl) argument[0];
+
+        if(user == null) {
+            throw new RejectedExecutionException("로그인이 필요합니다.");
+        }
     }
 
 }
