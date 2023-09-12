@@ -30,11 +30,16 @@ public class ReportPost extends TimeStamped {
 	@JoinColumn(name = "post_id")
 	private Post post;
 
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	private User user;
+
 	@Column
 	private String reportReason;
 
-	public ReportPost(Post post, String reportReason) {
+	public ReportPost(Post post, String reportReason, User reporter) {
 		this.post = post;
 		this.reportReason = reportReason;
+		this.user = reporter;
 	}
 }
