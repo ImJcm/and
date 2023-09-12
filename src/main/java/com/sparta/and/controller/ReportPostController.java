@@ -1,6 +1,7 @@
 package com.sparta.and.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sparta.and.dto.request.ReportPostRequestDto;
 import com.sparta.and.dto.response.ApiResponseDto;
+import com.sparta.and.security.UserDetailsImpl;
 import com.sparta.and.service.ReportPostService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,8 +24,9 @@ public class ReportPostController {
 
 	private final ReportPostService reportPostService;
 
-	@PostMapping("/{postid}")
-	public ResponseEntity<ApiResponseDto> ReportPost(@PathVariable Long postid, @RequestBody ReportPostRequestDto requestDto) {
-		return reportPostService.ReportPost(postid, requestDto);
+	@PostMapping("/{postId}")
+	public ResponseEntity<ApiResponseDto> ReportPost(@PathVariable Long postId,
+		@RequestBody ReportPostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+		return reportPostService.ReportPost(postId, requestDto, userDetails.getUser());
 	}
 }
