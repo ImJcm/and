@@ -28,6 +28,10 @@ public class ContestService {
 	}
 
 	public List<ContestResponseDto> searchContest(SearchRequestDto requestDto) {
+		if (requestDto.getKeyword().isBlank()) {
+			return getContests();
+		}
+
 		List<ContestResponseDto> list = contestRepository.findByTitleContaining(
 				requestDto.getKeyword()).stream().map(ContestResponseDto::new).toList();
 
