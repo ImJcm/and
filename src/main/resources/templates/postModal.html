@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>CKEditor 5 – Classic editor</title>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <!-- js Cookie -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <!-- ckeditor -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/31.1.0/classic/ckeditor.js"></script>
+    <script src="/js/postModal.js"></script>
+    -->
+</head>
+<body>
+<h1>Classic editor</h1>
+
+<!--<div id="editor">-->
+<!--    <p>This is some sample content.</p>-->
+<!--</div>-->
+
+<div class="posting-wrap">
+    <div style="width: 60%; margin: auto;">
+        <div id="postForm">
+            <input type="text" class="posting-input-box" id="title" style="width: 40%;" placeholder="제목"><br><br>
+            <textarea type="text" class="posting-input-box" id="editor" name="contents" placeholder="내용"></textarea>
+            <input id="subBtn" type="button" value="작성하기" onclick="createPost()" style="float: right;"/>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+</html>

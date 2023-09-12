@@ -48,7 +48,7 @@ public class Contest extends TimeStamped {
 	@Column(name = "homepage", nullable = false)
 	private String homepage;
 
-	@Column(name = "contents", nullable = false)
+	@Column(columnDefinition = "LONGTEXT", nullable = false)
 	private String contents;
 
 	@Column(name = "contestViews")
