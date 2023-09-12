@@ -35,7 +35,7 @@ public class ViewController {
 
 	@GetMapping("/posting")
 	public String postPage() {
-		return "posting";
+		return "postModal";
 	}
 
 	@GetMapping("/onepost/{postId}")
