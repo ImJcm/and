@@ -41,4 +41,13 @@ public class GlobalExceptionHandler {
 				HttpStatus.BAD_REQUEST
 		);
 	}
+
+	@ExceptionHandler({RuntimeException.class})
+	public ResponseEntity<RestApiException> RuntimeExceptionHandler(RuntimeException e) {
+		RestApiException restApiException = new RestApiException(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+		return new ResponseEntity<>(
+				restApiException,
+				HttpStatus.BAD_REQUEST
+		);
+	}
 }

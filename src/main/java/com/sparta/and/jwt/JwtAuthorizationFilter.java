@@ -41,6 +41,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 			tokenValue = jwtUtil.substringToken(tokenValue);
 
 			if (!jwtUtil.validateToken(tokenValue)) {
+
 				resultSetResponse(response, 400, "유효하지 않은 토큰입니다.");
 				log.error("유효하지 않은 토큰입니다.");
 				return;
@@ -72,7 +73,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 	// Client 에 반환할 msg, status 세팅 메서드
 	private void resultSetResponse(HttpServletResponse res, int status, String msg) throws IOException {
-		String jsonResult = " {\"status\": " + status + ", \"message\": \"" + msg + "\"}";
+		String jsonResult = " {\"status\": " + status + ", \"errorMessage\": \"" + msg + "\"}";
 
 		// Content-Type 및 문자 인코딩 설정
 		res.setContentType("application/json");

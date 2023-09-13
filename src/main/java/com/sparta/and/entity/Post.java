@@ -29,13 +29,14 @@ public class Post extends TimeStamped {
 	@Column(name = "contents", nullable = false)
 	private String contents;
 
+	@Column(name = "communityPostViews")
 	private Long postviews = 0L;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
 	private User user;
 
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
 	private List<Comment> commentList = new ArrayList<>();
 
 	public Post(PostRequestDto requestDto, User user) {

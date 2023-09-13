@@ -2,6 +2,7 @@ const pageSize = 10;
 const pageBtnSize = 5;
 let loginUsername = undefined;
 let stomp = null;
+let UserId = null;
 
 document.addEventListener("DOMContentLoaded", function () {
     const token = Cookies.get('Authorization');
@@ -18,44 +19,271 @@ function loginCheck(token) {
     let html = ``;
     const authSection = $('.auth-section');
 
-    authSection.empty();
-
     if (token == undefined) {
         html += `
-            <button onClick="redirectToLogin()">Login / Signup</button>
+            <button class="auth-section-btn" onClick="redirectToLogin()">Login / Signup</button>
         `;
+        authSection.empty();
         authSection.append(html);
     } else {
         let userEmailName;
         let userNickName;
+        let userId;
+        let check = unreadAlertCheck();
+
         $.ajax({
             type: 'GET',
             url: `/api/users`
         })
             .done(function (response, status, xhr) {
+                UserId = userId = response['userId'];
                 userEmailName = response['username'];
                 loginUsername = userNickName = response['nickname'];
 
+                // 읽지않은 알림이 있는지 체크
+                if(check) {
+                    html += `
+                        <div class="alert-container">
+                            <button class="alert-btn" type="button" onclick="showAlerts()" data-bs-toggle="collapse" data-bs-target="#collapseAlert" aria-expanded="false" aria-controls="collapseAlert"><i id="bellIcon" class="fa-solid fa-bell fa-bounce fa-lg" style="color: #e5e826;"></i></button>
+                            <div class="collapse" id="collapseAlert">
+                              <div class="card card-body alert-card-body">
+                              </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="alert-container">
+                            <button class="alert-btn" type="button" onclick="showAlerts()" data-bs-toggle="collapse" data-bs-target="#collapseAlert" aria-expanded="false" aria-controls="collapseAlert"><i id="bellIcon" class="fa-solid fa-bell fa-lg" style="color: #000"></i></button>
+                            <div class="collapse" id="collapseAlert">
+                              <div class="card card-body alert-card-body">
+                              </div>
+                            </div>
+                        </div>  
+                    `;
+                }
+
                 html += `
                     <p>${userNickName}</p>
-                    <button onclick="logout()">Logout</button>
+                    <button class="auth-section-btn" onclick="logout()">Logout</button>
                 `;
+                authSection.empty();
                 authSection.append(html);
+
+                alertConnection(userId);
             })
             .fail(function (response) {
-                alert(response.responseJSON.msg);
-                window.location.href = "/";
+                let errorMessage = response.responseJSON.errorMessage;
+                alert("자유게시글 조회 실패 : " + errorMessage);
+                if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                    window.location.href = "/view/login";
+                } else if(errorMessage == "연결 오류!") {
+                    alertConnection(UserId);
+                }
             })
     }
 }
 
+// 읽지 않은 알림 체크
+function unreadAlertCheck() {
+    let check = false;
+    $.ajax({
+        type:'GET',
+        url:`/api/notification`,
+        async:false
+    })
+        .done(function (response, status, xhr) {
+            let notifications = response;
+
+            notifications.forEach((notification) => {
+                if(!notification.isRead) {
+                    check = true;
+                    return;
+                }
+            })
+        })
+        .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("자유게시글 조회 실패 : " + errorMessage);
+            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            } else if(errorMessage == "연결 오류!") {
+                alertConnection(UserId);
+            }
+        })
+    return Boolean(check);
+}
+
+// 알림 버튼 클릭 시, 현재 접속한 사용자에게 전달된 알림 목록 조회
+function showAlerts() {
+    $.ajax({
+        type:'GET',
+        url:`/api/notification`
+    })
+        .done(function (response, status, xhr) {
+            let notification = response;
+            let html = `
+                <div class="card-header alert-card-header">
+                    <p>알림</p>
+                    <button class="btn btn-outline-secondary alert-in-btn" id="all-read-alert" onclick="readAllAlert()">모든 알람 읽기</button>
+                </div>
+                <div class="alert-list-group">
+            `;
+
+            notification.forEach((notification) => {
+                html += showAlert(notification);
+            })
+
+            html += `</div>`;
+
+            $('.alert-card-body').empty();
+            $('.alert-card-body').append(html);
+        })
+
+}
+
+// 세부 알림 목록 조회
+function showAlert(notification) {
+    let notificationType = notification['notificationType'];
+    let notificationId = notification['notificationId'];
+    let isRead = notification['isRead'];
+    let html = ``;
+
+    if(notificationType == 'CHAT') {
+        if(isRead) {
+            html += `
+                <div class="alert-list-group-item"id="alert-${notificationId}">
+                    <div class="alert-item-header">
+                        <div class="alert-item-header-check" onclick="readAlert('${notificationType}',${notificationId})" id="alert-header-check-${notificationId}">
+                            <h5>${notificationType}</h5>
+                            <i class="fa-solid fa-check" style="color: #2acb68;"></i>
+                        </div>
+                        <i class="fa-solid fa-xmark" style="color: #9fa0a3" onclick="deleteAlert(${notificationId})"></i>
+                    </div>
+                    <div class="alert-item-body">
+                        <p style="color:#666666">새로운 채팅이 도착하였습니다.</p>
+                        <p style="color:#999999">${notification.content}</p>
+                    </div>
+                </div>
+            `;
+        } else {
+            html += `
+            <div class="alert-list-group-item" id="alert-${notificationId}">
+                <div class="alert-item-header">
+                    <div class="alert-item-header-check" onclick="readAlert('${notificationType}',${notificationId})" id="alert-header-check-${notificationId}">
+                        <h5>${notificationType}</h5>
+                    </div>
+                    <i class="fa-solid fa-xmark" style="color: #9fa0a3" onclick="deleteAlert(${notificationId})"></i>
+                </div>
+                <div class="alert-item-body">
+                    <p style="color:#666666">새로운 채팅이 도착하였습니다.</p>
+                    <p style="color:#999999">${notification.content}</p>
+                </div>
+            </div>
+        `;
+        }
+
+    } else {
+        // 추후, 알림 Type을 고려했을 때 If 조건을 통해 검사하여 html 코드를 Type에 맞게 추가
+    }
+
+    return html;
+}
+
+// 읽지 않은 알림이 있는지 확인 후, Alert BellIcon 업데이트
+function updateAlert() {
+    let check = unreadAlertCheck();
+    let bellIcon = document.getElementById("bellIcon");
+
+    if(check) {
+        bellIcon.classList.add("fa-bounce");
+        bellIcon.style.color = "#e5e826";
+    } else {
+        bellIcon.classList.remove("fa-bounce");
+        bellIcon.style.color = "#000";
+    }
+}
+
+// 알림 읽음 처리
+function readAlert(notificationType,notificationId) {
+    $.ajax({
+        type:'POST',
+        url:`/api/notification/${notificationId}`
+    })
+        .done(function (response, status, xhr) {
+            let type = notificationType;
+            let id = notificationId;
+
+            let html = `
+                <h5>${type}</h5>
+                <i class="fa-solid fa-check" style="color: #2acb68;"></i>
+            `;
+            $(`#alert-header-check-${id}`).empty();
+            $(`#alert-header-check-${id}`).append(html);
+
+            updateAlert();
+        })
+        .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("알림 읽기 실패 : " + errorMessage);
+            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            } else if(errorMessage == "연결 오류!") {
+                alertConnection(UserId);
+            }
+        })
+}
+
+// 모든 알림 읽음 처리
+function readAllAlert() {
+    const alertItems = document.getElementsByClassName("alert-item-header-check");
+
+    for (let i = 0; i < alertItems.length; i++) {
+        alertItems[i].click();
+    }
+}
+
+// 알림 삭제
+function deleteAlert(notificationId) {
+    $.ajax({
+        type:'DELETE',
+        url:`/api/notification/${notificationId}`
+    })
+        .done(function (response, status, xhr) {
+            $(`#alert-${notificationId}`).remove();
+            updateAlert();
+        })
+        .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("알람 삭제 실패 : " + errorMessage);
+            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            } else if(errorMessage == "연결 오류!") {
+                alertConnection(UserId);
+            }
+        })
+}
+
+// 알림 SSE 연결
+function alertConnection(userId) {
+    let bellIcon = document.getElementById("bellIcon");
+    const eventSource = new EventSource(`/api/notification/sub`);
+
+    eventSource.addEventListener("sse", function (event) {
+        // sse 연결 시도를 제외한 sse 통신 - sse 프로토콜 생성
+        if(!event.data.includes("EventStream Created.")) {
+            bellIcon.classList.add("fa-bounce");
+            bellIcon.style.color = "#e5e826";
+        }
+    })
+}
+
 function logout() {
     Cookies.remove("Authorization");
-    window.location.href = "/";
+    window.location.href = "/view/";
 }
 
 function redirectToLogin() {
-    //window.location.href = "login.html";
     window.location.href = "/view/login";
 }
 
@@ -106,7 +334,6 @@ function showContests() {
       <img src="https://i.postimg.cc/VLRg0s2z/e3755407f5d1465089d57d79f35d3703.png" alt="Image 6">
     </div>
   </div>
-
     `;
 
     $('.main').empty();
@@ -209,8 +436,13 @@ function showPosts(page, size) {
             $(".main").append(html);
         })
         .fail(function (response) {
-            alert("자유게시글 조회 실패 : " + response.responseJSON.errorMessage);
-            console.log(response);
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("자유게시글 조회 실패 : " + errorMessage);
+            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            } else if(errorMessage == "연결 오류!") {
+                alertConnection(UserId);
+            }
         });
 }
 
@@ -241,7 +473,6 @@ function createPost() {
         data: JSON.stringify(data),
         success: function (xhr) {
             console.log(xhr);
-            //console.log(response.id);
             alert("게시글 등록 성공");
             // location.reload();
             // window.location.href = `${window.location.origin}/home/mainpage`;
@@ -325,13 +556,17 @@ function showChats() {
             createChatroomHandler();
         })
         .fail(function (response) {
-            alert("채팅 목록 불러오기 실패 : " + response.responseJSON.errorMessage);
-            console.log(response);
-            window.location.href = "/";
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("채팅 목록 불러오기 실패 : " + errorMessage);
+            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            } else if(errorMessage == "연결 오류!") {
+                alertConnection(UserId);
+            }
         });
 }
 
-// 채팅 관련
+// 채팅 관련 Handler
 function createChatroomHandler() {
     const memberInput = document.querySelector("#search-term");
     const memberSearchBtn = document.querySelector(".search-member-button");
@@ -375,6 +610,11 @@ function createChatroomHandler() {
                 $('#member-list').append(html);
             })
             .fail(function (response, status, xhr) {
+                let errorMessage = response.responseJSON.errorMessage;
+                alert("사용자 검색 실패 : " + errorMessage);
+                if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                    window.location.href = "/view/login";
+                }
             })
     });
 
@@ -420,6 +660,11 @@ function createChatroomHandler() {
                 $('#member-list').append(html);
             })
             .fail(function (response, status, xhr) {
+                let errorMessage = response.responseJSON.errorMessage;
+                alert("사용자 검색 실패 : " + errorMessage);
+                if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                    window.location.href = "/view/login";
+                }
             })
     });
 }
@@ -443,8 +688,11 @@ function createChatroom(chatroomName, userId) {
             $('.room-lists').append(html);
         })
         .fail(function (response) {
-            alert("채팅방 생성 실패 : " + response.responseJSON.errorMessage);
-            console.log(response);
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("채팅방 생성 실패 : " + errorMessage);
+            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            }
         })
 }
 
@@ -455,12 +703,14 @@ function deleteChat(roomId) {
         url: `/api/chat/room?roomId=${roomId}`
     })
         .done(function (response, status, xhr) {
+            alert("채팅방 삭제 성공");
             $(`#room-${roomId}`).remove();
             $('.chat-room').empty();
         })
         .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
             alert("채팅방 삭제 실패 : " + response.responseJSON.errorMessage);
-            window.location.href = "/";
+            window.location.href = "/view/";
         })
 }
 
@@ -531,28 +781,38 @@ function showChatHistory(roomId) {
             let chatHistories = response;
 
             chatHistories.forEach((chat) => {
-                let chatId = chat.chatId;
+                let chatId = chat.id;
                 let writer = chat.writer;
                 let message = chat.message;
+                let messageType = chat.messageType;
                 let sendDate = chat.sendDate;
                 let html = ``;
 
-                if (writer === loginUsername) {
+                if (messageType == "enter" || messageType == "out") {
                     html += `
+                        <div class="chat ch3">
+                            <div class="textbox">${message}</div>
+                            <div class="timebox">${sendDate}</div>
+                        </div>
+                    `;
+                } else if(messageType == "message") {
+                    if (writer == loginUsername) {
+                        html += `
                         <div class="chat ch2" id="${chatId}">
                             <div class="icon"><i class="fa-solid fa-user"></i></div>
                             <div class="textbox">${message}</div>
                             <div class="timebox">${sendDate}</div>
                         </div>
                     `;
-                } else {
-                    html += `
+                    } else {
+                        html += `
                         <div class="chat ch1" id="${chatId}">
                             <div class="icon"><i class="fa-solid fa-user"></i></div>
                             <div class="textbox">${message}</div>
                             <div class="timebox">${sendDate}</div>
                         </div>
                     `;
+                    }
                 }
                 $(".chat-room-wrap").append(html);
             })
@@ -560,9 +820,11 @@ function showChatHistory(roomId) {
             connectChat(roomId);
         })
         .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
             alert("채팅내역 불러오기 실패 : " + response.responseJSON.errorMessage);
-            console.log(response);
-            window.location.href = "/";
+            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            }
         });
 }
 
@@ -587,15 +849,15 @@ function connectChat(roomId) {
             let sendDate = content.sendDate;
             let html = ``;
 
-            if (messageType == "enter") {
+            if (messageType == "enter" || messageType == "out") {
                 html += `
                         <div class="chat ch3">
                             <div class="textbox">${message}</div>
                             <div class="timebox">${sendDate}</div>
                         </div>
                     `;
-            } else {
-                if (writer === loginUsername) {
+            } else if(messageType == "message") {
+                if (writer == loginUsername) {
                     html += `
                         <div class="chat ch2" id="${chatId}">
                             <div class="icon"><i class="fa-solid fa-user"></i></div>
@@ -630,7 +892,6 @@ function connectChat(roomId) {
     $("#button-send").on("click", function (e) {
         let msg = document.getElementById("msg");
 
-        console.log(loginUsername + ":" + msg.value);
         stomp.send('/pub/api/chat/message', {'content-type': 'application/json'}, JSON.stringify({
             roomId: roomId,
             message: msg.value,
@@ -638,8 +899,16 @@ function connectChat(roomId) {
             messageType: "message"
         }));
         msg.value = '';
-
-    });
+    })
+        .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("채팅 전송 실패 : " + errorMessage);
+            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            } else if(errorMessage == "연결 오류!") {
+                alertConnection(UserId);
+            }
+        })
 }
 
 function sleep(sec) {

@@ -48,7 +48,7 @@ public class UserController {
 		cookie.setPath("/");
 		response.addCookie(cookie);
 
-		return "redirect:/"; //프론트 연결;
+		return "redirect:/view/"; //프론트 연결;
 	}
 
 	@GetMapping("/google/callback")
@@ -61,7 +61,7 @@ public class UserController {
 		cookie.setPath("/");
 		response.addCookie(cookie);
 
-		return "redirect:/";
+		return "redirect:/view/";
 	}
 
 	@GetMapping("/search")
