@@ -79,13 +79,17 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Notification createNotification(User receiver, NotificationType notificationType, String content, String url) {
-        return Notification.builder()
-                .receiver(receiver)
-                .content(content)
-                .notificationType(notificationType)
-                .url(url)
-                .isRead(false)
-                .build();
+        if(notificationType.equals("CHAT")) {
+            return Notification.builder()
+                    .receiver(receiver)
+                    .content(content)
+                    .notificationType(notificationType)
+                    .url("showChats()")
+                    .isRead(false)
+                    .build();
+        } else {
+            return null;
+        }
     }
 
     @Transactional
