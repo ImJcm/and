@@ -161,7 +161,7 @@ function showAlert(notification) {
                         <i class="fa-solid fa-xmark" style="color: #9fa0a3" onclick="deleteAlert(${notificationId})"></i>
                     </div>
                     <div class="alert-item-body">
-                        <p style="color:#666666">새로운 채팅이 도착하였습니다.</p>
+                        <p style="color:#666666" onclick="showChats()">새로운 채팅이 도착하였습니다.</p>
                         <p style="color:#999999">${notification.content}</p>
                     </div>
                 </div>
