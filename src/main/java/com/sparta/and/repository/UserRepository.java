@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	// keyword가 포함된 User 검색
 	List<User> findAllByUserNameContaining(String keyword);
+
+	Optional<User> findByNickname(String nickname);
 }

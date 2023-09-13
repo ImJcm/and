@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <meta charset="UTF-8">
@@ -105,6 +105,7 @@
     <h3>SNS 간편 로그인/회원가입</h3>
 
     <div class="social-login">
+        <!--<div class="social-btn kakao-btn" th:onclick="|location.href='https://kauth.kakao.com/oauth/authorize?client_id=@{${kakaoClientKey}}&redirect_uri=@{${kakaoRedirectURL}}&response_type=code'|">-->
         <div class="social-btn kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=5350636bd29cb95d69ce8c1da3ba4102&redirect_uri=http://localhost:8080/api/users/kakao/callback&response_type=code'">
             <img src="https://i.postimg.cc/xT0znjN3/ka.png">
         </div>

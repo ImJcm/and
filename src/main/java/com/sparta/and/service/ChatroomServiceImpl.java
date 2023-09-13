@@ -8,6 +8,7 @@ import com.sparta.and.dto.chat.ChatroomResponseDto;
 import com.sparta.and.entity.Chatroom;
 import com.sparta.and.entity.User;
 import com.sparta.and.repository.ChatroomRepository;
+import com.sparta.and.repository.NotificationRepository;
 import com.sparta.and.repository.UserRepository;
 import com.sparta.and.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class ChatroomServiceImpl implements ChatroomService{
     private final UserRepository userRepository;
     private final ChatroomRepository chatroomRepository;
     private final ChatHistoryService chatHistoryService;
+    private final StompChatService stompChatService;
 
     @Override
     public List<ChatroomResponseDto> getChatRooms(UserDetailsImpl userDetails) {
@@ -77,7 +79,9 @@ public class ChatroomServiceImpl implements ChatroomService{
             chatHistoryRequestDto.setRoomId(roomId);
             chatHistoryRequestDto.setMessage(user.getNickname() + "님이 나갔습니다.");
             chatHistoryRequestDto.setWriter(user.getUserName());
-            chatHistoryService.createChatHistory(chatHistoryRequestDto);
+            chatHistoryRequestDto.setMessageType("out");
+
+            stompChatService.message(chatHistoryRequestDto);
         }
 
         return new ApiResponseDto("채팅방 삭제 성공", HttpStatus.OK.value());
