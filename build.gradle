@@ -98,3 +98,8 @@ sourceSets {
 clean {
     delete file(generated)
 }
+
+// build 시에 -plain.jar 생기지 않도록 함
+jar {
+    enabled = false
+}
