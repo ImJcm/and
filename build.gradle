@@ -48,6 +48,7 @@ dependencies {
     // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     // AWS - RDS
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 //    implementation 'mysql:mysql-connector-java'
 
     // Spring Security
