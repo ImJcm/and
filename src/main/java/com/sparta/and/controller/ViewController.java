@@ -34,7 +34,7 @@ public class ViewController {
 	}
 
 	@GetMapping("/onepost/{postId}")
-	public String getOnePost(@PathVariable Long postId, Model model) {
+	public String viewOnePost(@PathVariable Long postId, Model model) {
 		model.addAttribute("postId", postId);
 
 		return "onepost";

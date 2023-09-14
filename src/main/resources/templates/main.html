@@ -313,7 +313,7 @@
                     html += `
                         <div>
                           <div class="num">${startNum}</div>
-                          <div class="title" id="post-${post.postId}"><a href="/view/onepost">${post.title}</a></div>
+                          <div class="title"><a href="/view/onepost/${post.postId}">${post.title}</a></div>
                           <div class="writer">${post.writer}</div>
                           <div class="date">${post.modifiedDate}</div>
                           <div class="count">${post.communityPostViews}</div>
@@ -358,6 +358,27 @@
             })
             .fail(function (response) {
                 alert("자유게시글 조회 실패 : " + response.responseJSON.errorMessage);
+                console.log(response);
+            });
+    }
+
+    // 글 상세 보기
+    // Function to fetch a specific post by ID
+    function getPost(postId) {
+        $.ajax({
+            type: 'GET',
+            url: `/api/posts/${postId}`, // Replace with your API endpoint
+        })
+            .done(function (response) {
+                // Handle the response here
+                // You can display the post content or perform any other action
+                console.log(response); // Log the response for testing
+
+                // Example: Display the post content in a div with id 'postContent'
+                $('#postContent').html(response.contents);
+            })
+            .fail(function (response) {
+                alert("Failed to fetch post: " + response.responseJSON.errorMessage);
                 console.log(response);
             });
     }
