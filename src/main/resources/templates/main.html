@@ -64,7 +64,7 @@
 
     <div class="category-list-container">
         <div class="category-item">공지사항</div>
-        <div onclick="showContests()" class="category-item">공모전</div>
+        <div class="category-item">공모전</div>
         <div class="category-item">이벤트</div>
         <div onclick="showPosts(1,pageSize)" class="category-item">자유게시판</div>
         <div onclick="showChats()" class="category-item">공모전 채팅방</div>
@@ -73,51 +73,6 @@
 <main class="main">
 
 </main>
-
-<footer>
-    <div id="footer" class="re_text" module="Layout_footer">
-        <ul>
-
-            <li>
-            <span>
-                <strong>CS CENTER</strong> <br>
-                02-2033-0816 <br><br>
-            </span>
-                <span>
-                업무시간   09:00 - 21:00 <br>
-                점심시간   13:00 - 14:00 <br>
-                저녁시간   18:00 - 19:00 <br>
-                휴무일자   토요일,일요일,공휴일
-            </span>
-            </li>
-        </ul>
-        <ul>
-            <li>
-
-                <p>
-                    회사명 : 주식회사 사리추가 대표 : 조혜연<br>
-                    사업자등록번호 : 000-00-00000 <br>
-                    통신판매업 신고 : 2023-서울강남-2023 <br>
-                    주소 : 02023 서울특별시 스파코구 게더길 4<br>
-                    스파르타코딩클럽4조, 4호<br>
-                    개인정보관리책임자 : 박해리 <br>
-                    <br>
-                </p>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <img src="https://i.postimg.cc/T3KxY0gd/2.png" width="30%"/><br><br>
-                <p>
-                    &nd는 주식회사 사리추가가 소유하고 있습니다. <br>
-                    &nd에서 사용되는 모든 콘텐츠는 무단복제하여 사용할 수 없으며,<br>
-                    해당 콘텐츠의 소유권은 주식회사 사리추가에 있습니다.<br>
-                    Copyright © 4riplus. All rights reserved.
-                </p>
-            </li>
-        </ul>
-    </div>
-</footer>
 
 <script>
     const pageSize = 10;
@@ -133,7 +88,7 @@
         loginCheck(token);
 
         //초기화면
-        showContests();
+        showBanners();
     })
 
     function loginCheck(token) {
@@ -182,7 +137,6 @@
         window.location.href = "/view/login";
     }
 
-
     async function fetchCategories() {
         try {
             const response = await fetch('/auth/category'); // Replace with your API endpoint
@@ -203,12 +157,9 @@
         }
     }
 
-    // Call the function to fetch and display categories
     fetchCategories();
 
-
-
-    function showContests() {
+    function showBanners() {
         let html = `
             <div class="swiper-container">
             <div class="swiper-wrapper">

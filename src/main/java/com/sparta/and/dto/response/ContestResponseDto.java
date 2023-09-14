@@ -3,22 +3,32 @@ package com.sparta.and.dto.response;
 import com.sparta.and.entity.Contest;
 
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Getter
 public class ContestResponseDto {
-
-	private Long id;
 	private String author;
 	private String title;
+	private String company;
+	private LocalDateTime endDate;
+	private LocalDateTime startDate;
+	private String status;
+	private String homepage;
 	private String contents;
-	private Long bookmarkCnt;
+	private Long contestViews;
 
-	public ContestResponseDto(Contest contestBoard){
-		this.id = contestBoard.getId();
-		this.author = contestBoard.getAuthor();
-		this.title = contestBoard.getTitle();
-		this.contents = contestBoard.getContents();
-		this.bookmarkCnt = (long)contestBoard.getBookmarkList().size();
+	public ContestResponseDto(Contest contest) {
+		this.author = contest.getAuthor();
+		this.title = contest.getTitle();
+		this.company = contest.getCompany();
+		this.endDate = contest.getEndDate();
+		this.startDate = contest.getStartDate();
+		this.status = contest.getStatus().getDisplayText();
+		this.homepage = contest.getHomepage();
+		this.contents = contest.getContents();
+		this.contestViews = contest.getContestViews();
 	}
 
 }

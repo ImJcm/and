@@ -2,6 +2,7 @@ package com.sparta.and.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 @NoArgsConstructor
 @Getter
 public enum ContestStatus {

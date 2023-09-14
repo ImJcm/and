@@ -16,7 +16,7 @@ public class MiddleCategoryController {
 	private final MiddleCategoryService middleCategoryService;
 
 	//조회
-	@GetMapping("/middlecategory")
+	@GetMapping("/middleCategory")
 	public ResponseEntity<MiddleCategoryListResponseDto> getMiddleCategory() {
 		MiddleCategoryListResponseDto getMiddleCategory = middleCategoryService.getMiddleCategory();
 		return ResponseEntity.ok().body(getMiddleCategory);
