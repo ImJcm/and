@@ -1,5 +1,6 @@
 package com.sparta.and.controller;
 
+import com.sparta.and.dto.SearchRequestDto;
 import com.sparta.and.dto.request.ContestRequestDto;
 import com.sparta.and.dto.response.ContestResponseDto;
 import com.sparta.and.service.ContestService;
@@ -12,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/contestPosts")
+@RequestMapping("/api/contest")
 public class ContestController {
 
 	private final ContestService contestService;
@@ -25,5 +26,10 @@ public class ContestController {
 	@PostMapping("")
 	public ContestResponseDto createContest(@RequestBody ContestRequestDto requestDto) {
 		return contestService.createContest(requestDto);
+	}
+
+	@PostMapping("/search")
+	public List<ContestResponseDto> searchContest(@RequestBody SearchRequestDto requestDto) {
+		return contestService.searchContest(requestDto);
 	}
 }

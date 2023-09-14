@@ -133,28 +133,24 @@ header {
     margin: 0 auto;
     object-fit: cover;
 }
-
-.main-category-bar {
+.category-list-container {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap; /* Wrap items to the next line if they don't fit */
+    gap: 10px; /* Adjust the gap between items */
+    justify-content: flex-start; /* Adjust alignment as needed */
+    align-items: center; /* Adjust alignment as needed */
 }
 
-.main-category-bar a {
-    margin: 0 30px;
-    text-decoration: none;
+.category-item {
+    padding: 10px 20px;
     color: black;
+    border-radius: 5px;
+    cursor: pointer;
     font-weight: bold;
-    font-size: 20px;
-    transition: color 0.3s ease;
+    /* Add more styling as needed */
 }
 
-.main-category-bar a:hover {
-    color: lightsalmon;
-}
 
-.main-category-bar .select-category {
-    color : lightsalmon;
-}
 
 
 

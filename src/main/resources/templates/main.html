@@ -59,13 +59,15 @@
 
 </header>
 <div class="container">
-    <nav class="main-category-bar">
-        <a onclick="showContests()">공모전</a>
-        <a href="#">공지사항</a>
-        <a href="#">이벤트</a>
-        <a onclick="showPosts(1,pageSize)">자유게시판</a>
-        <a onclick="showChats()">1:1 채팅</a>
-    </nav>
+
+
+    <div class="category-list-container">
+        <div class="category-item">공지사항</div>
+        <div onclick="showContests()" class="category-item">공모전</div>
+        <div class="category-item">이벤트</div>
+        <div onclick="showPosts(1,pageSize)" class="category-item">자유게시판</div>
+        <div onclick="showChats()" class="category-item">공모전 채팅방</div>
+    </div>
 </div>
 <main class="main">
 
@@ -179,7 +181,32 @@
         window.location.href = "/view/login";
     }
 
-    // 공모전 카테고리 출력
+
+    async function fetchCategories() {
+        try {
+            const response = await fetch('/auth/category'); // Replace with your API endpoint
+            const data = await response.json();
+
+            if (data && data.categoryList) {
+                const categoryListContainer = document.querySelector('.category-list-container');
+
+                data.categoryList.forEach(category => {
+                    const categoryItem = document.createElement('div');
+                    categoryItem.classList.add('category-item');
+                    categoryItem.textContent = category.categoryName;
+                    categoryListContainer.appendChild(categoryItem);
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+    }
+
+    // Call the function to fetch and display categories
+    fetchCategories();
+
+
+
     function showContests() {
         let html = `
             <div class="swiper-container">
