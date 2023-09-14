@@ -27,6 +27,7 @@ dependencies {
 
     //구글
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
+
     //Sping QueryDsl
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
@@ -38,7 +39,6 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
-
     // Jackson
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
 
@@ -47,6 +47,8 @@ dependencies {
 
     // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // AWS - RDS
+//    implementation 'mysql:mysql-connector-java'
 
     // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -73,12 +75,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-
-    //구글
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
-
-    // AWS - RDS
-    implementation 'mysql:mysql-connector-java'
 }
 
 tasks.named('test') {
