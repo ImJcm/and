@@ -1,6 +1,5 @@
 package com.sparta.and.repository;
 
-import com.sparta.and.dto.SearchRequestDto;
 import com.sparta.and.entity.Contest;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,6 +1,6 @@
 package com.sparta.and.controller;
 
-import com.sparta.and.dto.SearchRequestDto;
+import com.sparta.and.dto.request.SearchRequestDto;
 import com.sparta.and.dto.request.ContestRequestDto;
 import com.sparta.and.dto.response.ContestResponseDto;
 import com.sparta.and.service.ContestService;
