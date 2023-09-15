@@ -77,6 +77,7 @@
             <div class="card-header">
                 <button id="updatePost">수정</button>
                 <button id="deletePost">삭제</button>
+                <button id="reportPost">신고</button>
             </div>
             <div class="card-body">
                 <h5 class="card-title" id="postTitle"></h5>
@@ -102,6 +103,7 @@
                 <p class="card-text" id="commentDate"></p>
                 <p class="card-text" id="commentContent"></p>
                 <button class="delete-comment-btn" data-comment-id="${comment.commentId}">댓글 삭제</button>
+<!--                <button class="report-comment-btn" data-comment-id="${reportComment.commentId}">댓글 삭제</button>-->
             </div>
     </div>
     </body>
@@ -315,6 +317,49 @@
         });
     });
 
+    $(document).ready(function () {
+        // Extract the postId from the HTML
+        var postId = $('#postIdParagraph span').text();
+
+        $('#reportPost').click(function () {
+            // Use the prompt dialog to get the report reason from the user
+            var reportReason = prompt('게시글을 신고하려는 이유를 입력해주세요:');
+
+            // Validate if the report reason is not empty
+            if (!reportReason) {
+                alert('신고 이유를 입력해주세요.'); // Provide feedback to the user
+                return;
+            }
+
+            // Create a report object with the reason
+            var reportData = {
+                reportReason: reportReason
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: `/api/posts/${postId}/report`, // Adjust the URL to match your API endpoint
+                contentType: 'application/json',
+                data: JSON.stringify(reportData),
+            })
+                .done(function (response) {
+                    console.log('Server response:', response); // Log the server response for debugging
+
+                    if (response.status === 200) {
+                        alert('게시글 신고가 완료되었습니다.');
+                    } else if (response.status === 400) {
+                        alert('이미 신고한 게시글입니다.'); // Display an error message if the user has already reported the post
+                    }
+
+                    // Redirect to the main homepage after successful reporting
+                    window.location.href = `/view/onepost/${postId}`; // Change the URL to your homepage URL
+                })
+                .fail(function (error) {
+                    console.error('게시물 신고에 실패했습니다.', error);
+                });
+        });
+    });
+
     // 코멘트
     $(document).ready(function () {
         var postId = $('#postId').val();
@@ -324,13 +369,13 @@
 
             // Build the content for the comment card
             var cardContent = `
-        <div class="card-body">
-            <p class="card-text comment-writer">작성자: ${comment.writer}</p>
-            <p class="card-text comment-date">작성일: ${comment.modifiedDate}</p>
-            <p class="card-text comment-content">${comment.content}</p>
-        </div>
-        <button type="button" class="btn btn-danger delete-comment-btn" data-comment-id="${comment.commentId}">댓글 삭제</button>
-        `;
+                <div class="card-body">
+                    <p class="card-text comment-writer">작성자: ${comment.writer}</p>
+                    <p class="card-text comment-date">작성일: ${comment.modifiedDate}</p>
+                    <p class="card-text comment-content">${comment.content}</p>
+                </div>
+                <button type="button" class="btn btn-danger delete-comment-btn" data-comment-id="${comment.commentId}">댓글 삭제</button>
+                `;
 
             commentCard.html(cardContent);
 
@@ -411,5 +456,7 @@
             });
         }
     });
+
+
 
 </script>
