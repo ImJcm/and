@@ -392,7 +392,7 @@ function showPosts(page, size) {
                 html += `
                         <div>
                           <div class="num">${startNum}</div>
-                          <div class="title" id="post-${post.postId}"><a href="/onepost">${post.title}</a></div>
+                          <div class="title"><a href="/view/onepost/${post.postId}">${post.title}</a></div>
                           <div class="writer">${post.writer}</div>
                           <div class="date">${post.modifiedDate}</div>
                           <div class="count">${post.communityPostViews}</div>
@@ -403,7 +403,7 @@ function showPosts(page, size) {
             html += `
                     </div>
                      <div class="post-btn">
-                     <button onclick="createPost()">글쓰기</button>
+                     <button onclick="postingBtn()">글쓰기</button>
                      </div>
                      <div class="post-page">
                         <a onclick="showPosts(1,pageSize)" class="bt first"><<</a>
@@ -438,20 +438,48 @@ function showPosts(page, size) {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("자유게시글 조회 실패 : " + errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
-            } else if(errorMessage == "연결 오류!") {
+            } else if (errorMessage == "연결 오류!") {
                 alertConnection(UserId);
             }
         });
 }
 
 // 글쓰기(작성)
-function createPost() {
-    console.log("js 진입")
+function postingBtn() {
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            placeholder: 'contents',
+            minHeight: 370,
+            maxHeight: null,
+            focus: true,
+            lang: 'ko-KR'
+        });
+    });
 
+    let html = `
+                <div class="posting-wrap">
+                    <div style="width: 60%; margin: auto;">
+                        <div id="postForm">
+                            <input type="text" class="posting-input-box" id="title" style="width: 40%;" placeholder="제목"><br><br>
+                            <textarea type="text" class="posting-input-box" id="summernote" name="contents"></textarea>
+                            <input id="subBtn" type="button" value="작성하기" style="float: right;" onclick="createPost()"/>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+    $('.main').empty();
+    $('.main').append(html);
+}
+
+function createPost() {
     let postTitle = $('#title').val();
     let postContents = $('#summernote').val();
+
+    console.log("postTitle:", postTitle);
+    console.log("postContents:", postContents);
 
     let data = {
         title: postTitle,
@@ -474,9 +502,7 @@ function createPost() {
         success: function (xhr) {
             console.log(xhr);
             alert("게시글 등록 성공");
-            // location.reload();
-            // window.location.href = `${window.location.origin}/home/mainpage`;
-            window.history.back();
+            showPosts(1, pageSize);
         },
         error: function () {
             console.log('게시글 등록 error 실패');

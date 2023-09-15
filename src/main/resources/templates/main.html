@@ -360,7 +360,6 @@
     }
 
     // 글 상세 보기
-    // Function to fetch a specific post by ID
     function getPost(postId) {
         $.ajax({
             type: 'GET',
@@ -380,68 +379,7 @@
             });
     }
 
-    // 글쓰기(작성)
-    function postingBtn() {
-        $(document).ready(function () {
-            $('#summernote').summernote({
-                placeholder: 'contents',
-                minHeight: 370,
-                maxHeight: null,
-                focus: true,
-                lang: 'ko-KR'
-            });
-        });
-
-        let html = `
-                <div class="posting-wrap">
-                    <div style="width: 60%; margin: auto;">
-                        <div id="postForm">
-                            <input type="text" class="posting-input-box" id="title" style="width: 40%;" placeholder="제목"><br><br>
-                            <textarea type="text" class="posting-input-box" id="summernote" name="contents"></textarea>
-                            <input id="subBtn" type="button" value="작성하기" style="float: right;" onclick="createPost()"/>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-        $('.main').empty();
-        $('.main').append(html);
-    }
-
-    function createPost() {
-        let postTitle = $('#title').val();
-        let postContents = $('#summernote').val();
-
-        let data = {
-            title: postTitle,
-            contents: postContents
-        };
-
-        console.log(postTitle);
-        console.log(postContents);
-
-        if (postTitle.trim() === '' || postContents.trim() === '') {
-            alert('제목과 내용을 입력하세요');
-            return;
-        }
-
-        $.ajax({
-            url: '/api/posts',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function (xhr) {
-                console.log(xhr);
-                alert("게시글 등록 성공");
-                showPosts(1,pageSize);
-            },
-            error: function () {
-                console.log('게시글 등록 error 실패');
-            }
-        });
-    }
-
-    // // 1:1 채팅 화면 구성
+    // 1:1 채팅 화면 구성
     function showChats() {
         $.ajax({
             type: 'GET',
