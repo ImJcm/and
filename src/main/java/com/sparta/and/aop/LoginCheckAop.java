@@ -52,6 +52,14 @@ public class LoginCheckAop {
     @Pointcut("execution(* com.sparta..*Controller.message(..))")
     public void message() {}
 
+    @Pointcut("execution(* com.sparta..*Controller.getNotification(..))")
+    public void getNotifications() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.readNotification(..))")
+    public void readNotification() {}
+
+    @Pointcut("execution(* com.sparta..*Controller.deleteNotification(..))")
+    public void deleteNotification() {}
 
     /**
      * arg[1]에 @AuthenticationPrincipal이 존재
@@ -59,7 +67,7 @@ public class LoginCheckAop {
      * @param joinPoint
      * @throws Throwable
      */
-    @Before("createComment() || updateComment() || deleteComment() || reportComment() || createRoom() || getRoom() || deleteRoom() || enter() || message()")
+    @Before("createComment() || updateComment() || deleteComment() || reportComment() || createRoom() || getRoom() || deleteRoom() || enter() || message() || readNotification() || deleteNotification()")
     public void executeLoginCheck_MultiArgs(JoinPoint joinPoint) throws Throwable {
         log.info("If method executing, Need Login");
         Object[] argument = joinPoint.getArgs();
@@ -67,7 +75,7 @@ public class LoginCheckAop {
         UserDetailsImpl user = (UserDetailsImpl) argument[1];
 
         if(user == null) {
-            throw new RejectedExecutionException("로그인이 필요합니다.");
+            throw new RejectedExecutionException("로그인이 필요합니다");
         }
     }
 
@@ -78,14 +86,14 @@ public class LoginCheckAop {
      * @param joinPoint
      * @throws Throwable
      */
-    @Before("getRooms() || getUser()")
+    @Before("getRooms() || getUser() || getNotifications()")
     public void executeLoginCheck_SingleArgs(JoinPoint joinPoint) throws Throwable {
         log.info("If method executing, Need Login");
         Object[] argument = joinPoint.getArgs();
         UserDetailsImpl user = (UserDetailsImpl) argument[0];
 
         if(user == null) {
-            throw new RejectedExecutionException("로그인이 필요합니다.");
+            throw new RejectedExecutionException("로그인이 필요합니다");
         }
     }
 

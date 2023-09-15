@@ -2,6 +2,7 @@ package com.sparta.and.controller;
 
 import java.util.List;
 
+import com.sparta.and.dto.SearchRequestDto;
 import com.sparta.and.dto.request.ContestRequestDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/contestPosts")
+@RequestMapping("/api/contest")
 public class ContestController {
 
 	private final ContestService contestService;
@@ -33,4 +34,8 @@ public class ContestController {
 		return contestService.createContest(requestDto);
 	}
 
+	@PostMapping("/search")
+	public List<ContestResponseDto> searchContest(@RequestBody SearchRequestDto requestDto) {
+		return contestService.searchContest(requestDto);
+	}
 }

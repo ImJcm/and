@@ -23,7 +23,7 @@ public class ChatHistoryResponseDto {
         this.roomId = chatHistory.getChatroom().getId();
         this.writer = chatHistory.getWriter();
         this.message = chatHistory.getMessage();
-        this.messageType = "message";
+        this.messageType = chatHistory.getMessageType();
         this.sendDate = chatHistory.getSendDate();
     }
 

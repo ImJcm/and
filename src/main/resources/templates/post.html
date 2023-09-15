@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&nd 개발자들의 공모전 커뮤니티</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+  <!--<link rel="stylesheet" href="/css/main.css"/>-->
+  <link rel="stylesheet" href="/css/main.css"/>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+  <!-- js Cookie -->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+
+</head>
+<script>
+
+</script>
+<body>
+<header>
+  <div class="logo">
+    <img src="https://i.postimg.cc/T3KxY0gd/2.png" alt="Logo">
+  </div>
+
+  <div class="search-bar">
+    <input type="text" placeholder="공모전 검색">
+    <div class="search-icon">
+      <img src="https://i.postimg.cc/MT8tf3Qy/searchmagnifierinterfacesymbol-79894.png" alt="Search Icon">
+
+    </div>
+  </div>
+  <div class="auth-buttons">
+    <button onclick="redirectToLogin()">Login / Signup</button>
+  </div>
+</header>
+<subheader>
+  <div class="container">
+    <nav class="main-category-bar">
+      <a href="#">공모전</a>
+      <a href="#">공지사항</a>
+      <a href="#">이벤트</a>
+      <a href="#" class="select-category">자유게시판</a>
+      <a href="#">1:1 채팅</a>
+    </nav>
+  </div>
+</subheader>
+<main>
+  <div class="post-wrap">
+    <div class="post-title">
+      <strong>자유게시판</strong>
+      <p>자유로운 정보 공유와 공모전을 위한 커뮤니티입니다.</p>
+    </div>
+    <div class="post-list-wrap">
+      <div class="post-list">
+        <div class="top">
+          <div class="num">번호</div>
+          <div class="title">제목</div>
+          <div class="writer">작성자</div>
+          <div class="date">작성일</div>
+          <div class="count">조회수</div>
+        </div>
+        <div>
+          <div class="num">1</div>
+          <div class="title"><a href="#">글 제목</a></div>
+          <div class="writer">JCM</div>
+          <div class="date">2023-08-31</div>
+          <div class="count">58000</div>
+        </div>
+        <div>
+          <div class="num">2</div>
+          <div class="title"><a href="#">글 제목2</a></div>
+          <div class="writer">Test</div>
+          <div class="date">2023-08-31</div>
+          <div class="count">58000</div>
+        </div>
+        <div>
+          <div class="num">3</div>
+          <div class="title"><a href="#">글 제목3</a></div>
+          <div class="writer">Test</div>
+          <div class="date">2023-08-31</div>
+          <div class="count">58000</div>
+        </div>
+        <div>
+          <div class="num">4</div>
+          <div class="title"><a href="#">글 제목4</a></div>
+          <div class="writer">Test</div>
+          <div class="date">2023-08-31</div>
+          <div class="count">58000</div>
+        </div>
+        <div>
+          <div class="num">5</div>
+          <div class="title"><a href="#">글 제목5</a></div>
+          <div class="writer">Test</div>
+          <div class="date">2023-08-31</div>
+          <div class="count">58000</div>
+        </div>
+        <div>
+          <div class="num">6</div>
+          <div class="title"><a href="#">글 제목6</a></div>
+          <div class="writer">Test</div>
+          <div class="date">2023-08-31</div>
+          <div class="count">58000</div>
+        </div>
+        <div>
+          <div class="num">7</div>
+          <div class="title"><a href="#">글 제목7</a></div>
+          <div class="writer">Test</div>
+          <div class="date">2023-08-31</div>
+          <div class="count">58000</div>
+        </div>
+      </div>
+      <div class="post-btn">
+        <button>글쓰기</button>
+      </div>
+      <div class="post-page">
+        <a href="#" class="bt first"><<</a>
+        <a href="#" class="bt prev"><</a>
+        <a href="#" class="num on">1</a>
+        <a href="#" class="num">2</a>
+        <a href="#" class="num">3</a>
+        <a href="#" class="num">4</a>
+        <a href="#" class="num">5</a>
+        <a href="#" class="bt first">></a>
+        <a href="#" class="bt prev">>></a>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>
+  <div id="footer" class="re_text" module="Layout_footer">
+    <ul>
+      <li>
+            <span>
+                <strong>CS CENTER</strong> <br>
+                02-2033-0816 <br><br>
+            </span>
+        <span>
+                업무시간   09:00 - 21:00 <br>
+                점심시간   13:00 - 14:00 <br>
+                저녁시간   18:00 - 19:00 <br>
+                휴무일자   토요일,일요일,공휴일
+            </span>
+      </li>
+    </ul>
+    <ul>
+      <li>
+
+        <p>
+          회사명 : 주식회사 사리추가 대표 : 조혜연<br>
+          사업자등록번호 : 000-00-00000 <br>
+          통신판매업 신고 : 2023-서울강남-2023 <br>
+          주소 : 02023 서울특별시 스파코구 게더길 4<br>
+          스파르타코딩클럽4조, 4호<br>
+          개인정보관리책임자 : 박해리 <br>
+          <br>
+        </p>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <img src="https://i.postimg.cc/T3KxY0gd/2.png" width="30%"/><br><br>
+        <p>
+          &nd는 주식회사 사리추가가 소유하고 있습니다. <br>
+          &nd에서 사용되는 모든 콘텐츠는 무단복제하여 사용할 수 없으며,<br>
+          해당 콘텐츠의 소유권은 주식회사 사리추가에 있습니다.<br>
+          Copyright © 4riplus. All rights reserved.
+        </p>
+      </li>
+    </ul>
+  </div>
+</footer>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+
+</script>
+</body>
+</html>

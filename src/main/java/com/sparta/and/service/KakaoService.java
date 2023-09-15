@@ -68,6 +68,7 @@ public class KakaoService {
 		// HTTP Header 생성
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		//headers.add("Content-type", "application/json");
 
 		// HTTP Body 생성
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
@@ -106,6 +107,7 @@ public class KakaoService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + accessToken);
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		//headers.add("Content-type", "application/json");
 
 		RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
 				.post(uri)

@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ChatroomRepository extends JpaRepository<Chatroom, Long> {
     List<Chatroom> findAllByFounderOrParticipant(User founder, User participant);
+    List<Chatroom> findAllByFounderUserIdOrParticipantUserId(Long founderId, Long participantId);
 
     Chatroom findByFounderAndParticipant(User founder, User participant);
 }

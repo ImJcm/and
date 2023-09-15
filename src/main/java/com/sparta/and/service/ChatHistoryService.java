@@ -4,6 +4,7 @@ import com.sparta.and.dto.ApiResponseDto;
 import com.sparta.and.dto.chat.ChatHistoryResponseDto;
 import com.sparta.and.dto.chat.ChatHistoryRequestDto;
 import com.sparta.and.entity.ChatHistory;
+import com.sparta.and.entity.User;
 
 import java.util.List;
 
@@ -38,5 +39,13 @@ public interface ChatHistoryService {
      * @param message       보낸 채팅
      * @return              ResponseDto 변환 결과
      */
-    ChatHistoryResponseDto updateRequestToResponseDto(ChatHistoryRequestDto message);
+    ChatHistoryResponseDto updateEnterRequestToResponseDto(ChatHistoryRequestDto message);
+
+    /**
+     * ChatHistory -> ChatHistoryResponseDto
+     *
+     * @param chatHistory
+     * @return
+     */
+    ChatHistoryResponseDto updateMessageChatHistoryToResponseDto(ChatHistory chatHistory);
 }

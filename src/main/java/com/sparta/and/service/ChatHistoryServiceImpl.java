@@ -4,15 +4,15 @@ import com.sparta.and.dto.ApiResponseDto;
 import com.sparta.and.dto.chat.ChatHistoryDto;
 import com.sparta.and.dto.chat.ChatHistoryResponseDto;
 import com.sparta.and.dto.chat.ChatHistoryRequestDto;
-import com.sparta.and.entity.ChatHistory;
-import com.sparta.and.entity.Chatroom;
-import com.sparta.and.entity.TimeStamped;
+import com.sparta.and.entity.*;
 import com.sparta.and.repository.ChatHistoryRepository;
 import com.sparta.and.repository.ChatroomRepository;
+import com.sparta.and.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,10 +25,14 @@ public class ChatHistoryServiceImpl implements ChatHistoryService{
     private final RedisTemplate<String, ChatHistoryDto> redisTemplateChat;
     private final ChatHistoryRepository chatHistoryRepository;
     private final ChatroomRepository chatroomRepository;
+    private final NotificationService notificationService;
+    private final UserRepository userRepository;
 
     @Override
     public ChatHistory createChatHistory(ChatHistoryRequestDto chatHistoryRequestDto) {
         Chatroom chatroom = chatroomRepository.findById(chatHistoryRequestDto.getRoomId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 채팅방입니다."));
+        User writer = userRepository.findByNickname(chatHistoryRequestDto.getWriter()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
         // MySql 저장
         ChatHistory chatHistory = ChatHistory.builder()
                 .chatroom(chatroom)
@@ -45,6 +49,21 @@ public class ChatHistoryServiceImpl implements ChatHistoryService{
 
         // 채팅방을 Key로 채팅내역들의 만료기간을 1 MIN으로 expire 설정
         redisTemplateChat.expire(String.valueOf(chatHistoryRequestDto.getRoomId()), 1, TimeUnit.MINUTES);
+
+        try {
+            // 채팅 알림 호출
+            if(writer.getUserId() == chat.getChatroom().getFounder().getUserId()) {
+                if(chat.getChatroom().getParticipant() != null) {
+                    notificationService.send(chatroom.getParticipant(), NotificationType.CHAT, chat.getMessage(), String.valueOf(chatroom.getId()));
+                }
+            } else {
+                notificationService.send(chatroom.getFounder(), NotificationType.CHAT, chat.getMessage(), String.valueOf(chatroom.getId()));
+            }
+        } catch (RuntimeException re) {
+            chatHistoryRepository.delete(chat);
+            redisTemplateChat.delete(String.valueOf(chatHistoryRequestDto.getRoomId()));
+        }
+
 
         return chat;
     }
@@ -70,6 +89,7 @@ public class ChatHistoryServiceImpl implements ChatHistoryService{
         return chatHistoryList;
     }
 
+    @Transactional
     @Override
     public ApiResponseDto deleteChatHistorys(Long roomId) {
         redisTemplateChat.delete(String.valueOf(roomId));
@@ -78,12 +98,18 @@ public class ChatHistoryServiceImpl implements ChatHistoryService{
     }
 
     @Override
-    public ChatHistoryResponseDto updateRequestToResponseDto(ChatHistoryRequestDto message) {
+    public ChatHistoryResponseDto updateEnterRequestToResponseDto(ChatHistoryRequestDto message) {
         message.setSendDate(LocalDateTime.now().format(TimeStamped.FORMATTER_DATE_HOUR_MINUTE));
         ChatHistoryResponseDto newMessage = new ChatHistoryResponseDto(message);
         if(message.getMessageType().equals("enter")) {
             newMessage.setMessage(message.getWriter() + "님이 입장하셨습니다.");
         }
+        return newMessage;
+    }
+
+    @Override
+    public ChatHistoryResponseDto updateMessageChatHistoryToResponseDto(ChatHistory chatHistory) {
+        ChatHistoryResponseDto newMessage = new ChatHistoryResponseDto(chatHistory);
         return newMessage;
     }
 }
