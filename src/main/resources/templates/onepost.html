@@ -103,7 +103,7 @@
                 <p class="card-text" id="commentDate"></p>
                 <p class="card-text" id="commentContent"></p>
                 <button class="delete-comment-btn" data-comment-id="${comment.commentId}">댓글 삭제</button>
-<!--                <button class="report-comment-btn" data-comment-id="${reportComment.commentId}">댓글 삭제</button>-->
+                <button class="report-comment-btn" data-comment-id="${comment.commentId}">댓글 신고</button>
             </div>
     </div>
     </body>
@@ -373,8 +373,10 @@
                     <p class="card-text comment-writer">작성자: ${comment.writer}</p>
                     <p class="card-text comment-date">작성일: ${comment.modifiedDate}</p>
                     <p class="card-text comment-content">${comment.content}</p>
+                    <button type="button" class="btn btn-danger delete-comment-btn" data-comment-id="${comment.commentId}">댓글 삭제</button>
+                    <button type="button" class="btn btn-warning report-comment-btn" data-comment-id="${comment.commentId}">댓글 신고</button>
                 </div>
-                <button type="button" class="btn btn-danger delete-comment-btn" data-comment-id="${comment.commentId}">댓글 삭제</button>
+
                 `;
 
             commentCard.html(cardContent);
@@ -445,18 +447,57 @@
                 dataType: "json"
             }).done(function (res) {
                 if (res.status === 200) {
-                    alert("Comment has been successfully deleted.");
+                    alert("댓글을 성공적으로 삭제했습니다.");
                 } else {
                     alert(res.message);
                 }
 
                 loadComments(); // Refresh the comments after deletion
             }).fail(function (request, status, error) {
-                console.error("An error occurred:", error);
+                console.error("댓글 삭제가 완료되지 않았습니다.", error);
             });
         }
     });
 
+    function reportComment(commentId) {
+        var reportReason = prompt('댓글을 신고하려는 이유를 입력해주세요:');
+
+        // Validate if the report reason is not empty
+        if (!reportReason) {
+            alert('신고 이유를 입력해주세요.'); // Provide feedback to the user
+            return;
+        }
+
+        // Create a report object with the reason
+        var reportData = {
+            reportReason: reportReason
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: `/api/comments/${commentId}/report`, // Adjust the URL to match your API endpoint
+            contentType: 'application/json',
+            data: JSON.stringify(reportData),
+        })
+            .done(function (response) {
+                console.log('Server response:', response);
+
+                if (response.status === 200) {
+                    alert('댓글 신고가 완료되었습니다.');
+                } else if (response.status === 400) {
+                    alert('이미 신고한 댓글입니다.');
+                }
+
+            })
+            .fail(function (error) {
+                console.error('댓글 신고에 실패했습니다.', error);
+            });
+    }
+
+    $(document).off('click', '.report-comment-btn').on('click', '.report-comment-btn', function () {
+        var commentId = $(this).data('comment-id');
+        reportComment(commentId);
+    });
 
 
 </script>
