@@ -26,7 +26,6 @@ public class ReportPostController {
 
 	private final ReportPostService reportPostService;
 
-
 	@PostMapping("/{postId}/report")
 	public ResponseEntity<ApiResponseDto> ReportPost(@PathVariable Long postId,
 		@RequestBody ReportPostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {

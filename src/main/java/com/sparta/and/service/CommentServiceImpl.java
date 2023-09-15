@@ -124,10 +124,10 @@ public class CommentServiceImpl implements CommentService {
         });
 
         ReportComment reportComment = ReportComment.builder()
-                .reportReason(commentReportRequestDto.getReportReason())
-                .comment(comment)
-                .reporter(connectUser)
-                .build();
+            .reportReason(commentReportRequestDto.getReportReason())
+            .comment(comment)
+            .reporter(connectUser)
+            .build();
 
         reportCommentRepository.save(reportComment);
 
