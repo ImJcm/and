@@ -22,9 +22,28 @@ public class GlobalExceptionHandler {
 		);
 	}
 
+	@ExceptionHandler({NullPointerException.class})
+	public ResponseEntity<RestApiException> NullPointerExceptionHandler(NullPointerException e) {
+		log.info("GlobalExceptionHandler - NullPointerExceptionHandler");
+		RestApiException restApiException = new RestApiException(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+		return new ResponseEntity<>(
+				restApiException,
+				HttpStatus.BAD_REQUEST
+		);
+	}
+
 	@ExceptionHandler({RejectedExecutionException.class})
 	public ResponseEntity<RestApiException> RejectExecutionExceptionHandler(RejectedExecutionException e) {
 		log.info("GlobalExceptionHandler - RejectExecutionExceptionHandler");
+		RestApiException restApiException = new RestApiException(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+		return new ResponseEntity<>(
+				restApiException,
+				HttpStatus.BAD_REQUEST
+		);
+	}
+
+	@ExceptionHandler({RuntimeException.class})
+	public ResponseEntity<RestApiException> RuntimeExceptionHandler(RuntimeException e) {
 		RestApiException restApiException = new RestApiException(e.getMessage(), HttpStatus.BAD_REQUEST.value());
 		return new ResponseEntity<>(
 				restApiException,

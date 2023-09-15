@@ -7,6 +7,7 @@ import com.sparta.and.dto.GoogleUserInfoDto;
 import com.sparta.and.entity.User;
 import com.sparta.and.entity.UserBlackList;
 import com.sparta.and.jwt.JwtUtil;
+import com.sparta.and.repository.UserBlackListRepository;
 import com.sparta.and.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,14 +31,13 @@ public class GoogleService {
 	private final UserRepository userRepository;
 	private final RestTemplate restTemplate; // 수동 등록한 Bean
 	private final JwtUtil jwtUtil;
-	private final UserBlackList userBlackList;
+	private final UserBlackListRepository userBlackListRepository;
 	@Value("${auth.google.client_id}")
 	private String restApiKey;
-	@Value("&{auth.google.client_secret}")
+	@Value("${auth.google.client_secret}")
 	private String secretKey;
 	@Value("${auth.google.redirectURL}")
 	private String redirectURL;
-
 	public String googleLogin(String code) throws JsonProcessingException {
 		// 1. "인가 코드"로 "액세스 토큰" 요청
 		String accessToken = getToken(code);
@@ -55,7 +55,6 @@ public class GoogleService {
 		//return createToken;
 		return createToken;
 	}
-
 
 	// 애플리케이션은 인증 코드로 구글 서버에 토큰을 요청하고, 토큰을 전달 받습니다.
 	// 1) 액세스 토큰 요청 메서드
@@ -129,21 +128,25 @@ public class GoogleService {
 
 	}
 
-
 	// 3)  회원가입
 	private User registerGoogleUserIfNeeded(GoogleUserInfoDto googleUserInfoDto) {
-
 		String googleId = googleUserInfoDto.getId();
 		User googleUser = userRepository.findByGoogleId(googleId).orElse(null);
 
-		if(googleUser.equals(userBlackList.getUser().getUserName())) {
-			throw new IllegalArgumentException("응 안돼 돌아가.");
-		}
+		// 블랙리스트에 해당 email이 존재하는지 확인
+//		userBlackListRepository.findByUsername(kakaoUsername).ifPresent((blackUser) -> {
+//			throw new IllegalArgumentException("블랙리스트 사용자입니다.");
+//		});
 
 		if (googleUser == null) {
 			// 구글 사용자 email 동일한 email 가진 회원이 있는지 확인
 			String googleEmail = googleUserInfoDto.getEmail();
 			User sameEmailUser = userRepository.findByUserName(googleEmail).orElse(null);
+
+			userBlackListRepository.findByUsername(googleEmail).ifPresent((blackUser) -> {
+				throw new IllegalArgumentException("블랙리스트 사용자입니다.");
+			});
+
 			if (sameEmailUser != null) {
 				googleUser = sameEmailUser;
 				// 기존 회원정보에 구글 Id 추가
@@ -157,7 +160,7 @@ public class GoogleService {
 				// email: kakao email
 				String email = googleUserInfoDto.getEmail();
 
-				googleUser = new User(email, encodedPassword, googleUserInfoDto.getNickname(), googleId);
+				googleUser = new User(email, encodedPassword, googleUserInfoDto.getEmail(), googleId);
 			}
 
 			userRepository.save(googleUser);
@@ -165,6 +168,4 @@ public class GoogleService {
 
 		return googleUser;
 	}
-
-
 }

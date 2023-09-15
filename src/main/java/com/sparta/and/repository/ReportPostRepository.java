@@ -8,6 +8,6 @@ import com.sparta.and.entity.Post;
 import com.sparta.and.entity.ReportPost;
 
 public interface ReportPostRepository extends JpaRepository <ReportPost, Long> {
-	ReportPost findByPostId(Long id);
+	ReportPost findByUserUserIdAndPostId(Long userId, Long postId);
 
 }

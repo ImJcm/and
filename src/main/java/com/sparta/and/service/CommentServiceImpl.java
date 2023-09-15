@@ -119,11 +119,15 @@ public class CommentServiceImpl implements CommentService {
     public ApiResponseDto reportComment(Long commentId, User connectUser, CommentReportRequestDto commentReportRequestDto) {
         Comment comment = getCommentById(commentId);
 
+        reportCommentRepository.findByUserAndComment(connectUser, comment).ifPresent((report) -> {
+            throw new IllegalArgumentException("이미 신고한 댓글입니다.");
+        });
+
         ReportComment reportComment = ReportComment.builder()
-                .reportReason(commentReportRequestDto.getReportReason())
-                .comment(comment)
-                .reporter(connectUser)
-                .build();
+            .reportReason(commentReportRequestDto.getReportReason())
+            .comment(comment)
+            .reporter(connectUser)
+            .build();
 
         reportCommentRepository.save(reportComment);
 

@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -26,10 +29,17 @@ public class Chatroom extends TimeStamped {
     @JoinColumn(name = "participant_id")
     private User participant;
 
+    @OneToMany(mappedBy = "chatroom", cascade = CascadeType.REMOVE)
+    private List<ChatHistory> chatHistoryList = new ArrayList<>();
+
     @Builder
     public Chatroom(String chatroomName, User founder, User participant) {
         this.chatroomName = chatroomName;
         this.founder = founder;
         this.participant = participant;
+    }
+
+    public void setParticipant(User user) {
+        this.participant = user;
     }
 }
