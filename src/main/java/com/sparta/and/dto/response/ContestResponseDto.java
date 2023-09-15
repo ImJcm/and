@@ -1,13 +1,15 @@
 package com.sparta.and.dto.response;
 
+import com.sparta.and.dto.request.S3FileDto;
 import com.sparta.and.entity.Contest;
-
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class ContestResponseDto {
+	private Long contestId;
 	private String target;
 	private String title;
 	private String company;
@@ -18,8 +20,10 @@ public class ContestResponseDto {
 	private String contents;
 	private String prize;
 	private Long contestViews;
+	private List<S3FileDto> S3files;
 
 	public ContestResponseDto(Contest contest) {
+		this.contestId = contest.getId();
 		this.target = contest.getTarget();
 		this.title = contest.getTitle();
 		this.company = contest.getCompany();
@@ -30,7 +34,6 @@ public class ContestResponseDto {
 		this.contents = contest.getContents();
 		this.contestViews = contest.getContestViews();
 		this.prize = contest.getPrize();
-
+		this.S3files = contest.getS3Files().stream().map(S3FileDto::new).toList();
 	}
-
 }
