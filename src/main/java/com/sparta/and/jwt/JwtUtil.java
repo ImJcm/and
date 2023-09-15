@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -107,6 +105,7 @@ public class JwtUtil {
 		}
 		throw new NullPointerException("Not Found Token");
 	}
+
 	// JWT Cookie 에 저장
 	public void addJwtToCookie(String token, HttpServletResponse res) {
 		try {
