@@ -41,12 +41,13 @@ public class ReportPostService {
 		ReportPost checkReportLog = reportPostRepository.findByUserUserIdAndPostId(reporter.getUserId(),id);
 		if (checkReportLog != null) {
 			log.error("이미 신고한 게시글입니다.");
-			return ResponseEntity.status(400).body(new ApiResponseDto("이미 신고한 게시글입니다.", HttpStatus.BAD_REQUEST.value()));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponseDto("이미 신고한 게시글입니다.", HttpStatus.BAD_REQUEST.value()));
 		} else {
 			ReportPost reportPost = new ReportPost(checkPost,reportReason, reporter);
 			reportPostRepository.save(reportPost);
 		}
 		return ResponseEntity.status(200).body(new ApiResponseDto("게시글 신고가 완료되었습니다.", HttpStatus.OK.value()));
 	}
+
 
 }

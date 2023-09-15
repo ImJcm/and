@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sparta.and.dto.request.ReportPostRequestDto;
 import com.sparta.and.security.UserDetailsImpl;
+import com.sparta.and.service.ReportPostService;
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,8 @@ public class ReportPostController {
 
 	private final ReportPostService reportPostService;
 
-	@PostMapping("/{postId}")
+
+	@PostMapping("/{postId}/report")
 	public ResponseEntity<ApiResponseDto> ReportPost(@PathVariable Long postId,
 		@RequestBody ReportPostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 		return reportPostService.ReportPost(postId, requestDto, userDetails.getUser());

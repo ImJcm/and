@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&nd 개발자들의 공모전 커뮤니티</title>
+    <style>
+        /* Reset some default styles */
+        body, h1, h2, p, ul, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: linen;
+        }
+
+        .logo img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 10px;
+            border: 2px solid lightgray;
+            border-radius: 20px;
+            width: 300px; /* Adjust the width as needed */
+        }
+
+        .search-icon {
+            margin-left: -40px;
+            padding: 8px;
+            background-color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 17px;
+            height: 17px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-icon img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+
+        .auth-buttons button {
+            margin-left: 10px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background-color: lightsalmon;
+            color: white;
+            cursor: pointer;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .swiper-container {
+            margin-top: 30px;
+            width: 100%; /* Adjust the width as needed */
+            height: 400px; /* Adjust the height as needed */
+            margin: 0 auto;
+            margin-bottom: 20px;
+
+        }
+
+        .swiper-slide img {
+            width: 100%; /* Change the width to 100% */
+            height: 100%;
+            max-width: none; /* Remove max-width */
+            margin: 0 auto;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .main-category-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .main-category-bar a {
+            margin: 0 30px;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .main-category-bar a:hover {
+            color: lightsalmon;
+        }
+        .image-boxes {
+            display: flex;
+            justify-content: center; /* Adjust this based on your spacing preference */
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 20px; /* Adjust margin as needed */
+        }
+
+        .image-box {
+            width: calc(33.33% - 5px); /* Adjust width and margin as needed */
+            margin-bottom: 10px; /* Adjust margin as needed */
+        }
+
+        .image-box img {
+            width: 70%;
+            height: auto;
+            border-radius: 10px; /* Optional: Add border-radius for rounded corners */
+            margin-right: 10px;
+        }
+
+
+
+        /* Footer Styles */
+        footer {
+            text-align: left;
+            background-color: linen;
+            height: 300px;
+            color: white;
+            font-size: 15px;
+        }
+        #footer { display:inline-block; width:86%; margin:3em 5% 0; color:#000;}
+        #footer h4 img { margin:0.4em 0 1.8em; height:1.1em; }
+        #footer ul { display:inline-block; text-align:left; vertical-align:top; }
+        #footer ul:nth-child(3) { width:40%; float:left; max-width:34.2666em; }
+        #footer ul:nth-child(1) { width:27%; margin:0 0 0 8.2%; }
+        #footer ul:nth-child(2) { float:right; }
+        #footer ul li { display:block; font-size:1em; line-height:1.556em; font-weight:300; }
+        #footer ul li strong { font-weight:500; }
+        #footer ul li span { display:inline-block; margin:0 0 1.556em;}
+        #footer ul li span:nth-child(1) { width:8em; }
+        #bt_mobile { display:inline-block; width:100%; margin:50px 0 0; text-align:center; }
+        #bt_mobile a { display:inline-block; width:50%; max-width:300px; border:1px solid #DADADA; color:#999; font-size:12px; line-height:32px; }
+        @media all and (max-width: 1440px) {
+            #footer ul:nth-child(1) { margin:0 0 0 7%; }
+        }
+        @media all and (max-width: 1280px) {
+            #footer ul:nth-child(1) { margin:0 0 0 6%; }
+        }
+        @media all and (max-width: 1180px) {
+            #footer ul:nth-child(1) { margin:0 0 0 5.5%; }
+        }
+        @media all and (max-width: 1080px) {
+            #footer ul:nth-child(3) { width:35%; }
+            #footer ul:nth-child(1) { margin:0 0 0 4%; }
+        }
+        @media all and (max-width: 980px) {
+            #footer ul:nth-child(1) { margin:0 0 0 1%; }
+        }
+        @media all and (max-width: 920px) {
+            #footer { width:100%; margin:10em 0 0; padding:8em 7%; }
+            #footer ul { width:100% !important; max-width:100% !important; margin:0 0 3em !important; }
+            #footer ul:nth-child(3) { margin:0 0 0 !important; }
+            #footer ul li { font-size:1.5em; line-height:1.6em; }
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .auth-buttons {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="https://i.postimg.cc/T3KxY0gd/2.png" alt="Logo">
+    </div>
+
+    <div class="search-bar">
+        <input type="text" placeholder="공모전 검색">
+        <div class="search-icon">
+            <img src="https://i.postimg.cc/MT8tf3Qy/searchmagnifierinterfacesymbol-79894.png" alt="Search Icon">
+
+        </div>
+    </div>
+    <div class="auth-buttons">
+        <button onclick="redirectToLogin()">Login / Signup</button>
+    </div>
+</header>
+<div class="container">
+    <nav class="main-category-bar">
+        <a href="#">공모전</a>
+        <a href="#">공지사항</a>
+        <a href="#">이벤트</a>
+        <a href="#">자유게시판</a>
+    </nav>
+</div>
+<main>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+                <img src="https://i.postimg.cc/yN8DBxHq/image.png" alt="Banner 1">
+            </div>
+            <div class="swiper-slide">
+                <img src="https://i.postimg.cc/4N5jDxNR/image.png" alt="Banner 2">
+            </div>
+            <!-- Add more swiper-slide divs with your images -->
+            <div class="swiper-slide">
+                <img src="https://i.postimg.cc/yN8DBxHq/image.png" alt="Banner 3">
+            </div>
+
+        </div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+    <div class="container">
+        <a></a>
+        </div>
+
+    <div class="image-boxes">
+        <div class="image-box">
+            <img src="https://i.postimg.cc/3xMRpGJj/display-1.jpg" alt="Image 1">
+        </div>
+        <div class="image-box">
+            <img src="https://i.postimg.cc/Qd98dJLk/display.png" alt="Image 2">
+        </div>
+        <div class="image-box">
+            <img src="https://i.postimg.cc/qB16twF9/display-2.jpg" alt="Image 3">
+        </div>
+    </div>
+    </div>
+</main>
+
+<footer>
+    <div id="footer" class="re_text" module="Layout_footer">
+        <ul>
+
+            <li>
+            <span>
+                <strong>CS CENTER</strong> <br>
+                02-2033-0816 <br><br>
+            </span>
+                <span>
+                업무시간   09:00 - 21:00 <br>
+                점심시간   13:00 - 14:00 <br>
+                저녁시간   18:00 - 19:00 <br>
+                휴무일자   토요일,일요일,공휴일
+            </span>
+            </li>
+        </ul>
+        <ul>
+            <li>
+
+                <p>
+                    회사명 : 주식회사 사리추가 대표 : 조혜연<br>
+                    사업자등록번호 : 000-00-00000 <br>
+                    통신판매업 신고 : 2023-서울강남-2023 <br>
+                    주소 : 02023 서울특별시 스파코구 게더길 4<br>
+                    스파르타코딩클럽4조, 4호<br>
+                    개인정보관리책임자 : 박해리 <br>
+                    <br>
+                </p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <img src="https://i.postimg.cc/T3KxY0gd/2.png" width="30%"/><br><br>
+                <p>
+                    &nd는 주식회사 사리추가가 소유하고 있습니다. <br>
+                    &nd에서 사용되는 모든 콘텐츠는 무단복제하여 사용할 수 없으며,<br>
+                    해당 콘텐츠의 소유권은 주식회사 사리추가에 있습니다.<br>
+                    Copyright © 4riplus. All rights reserved.
+                </p>
+            </li>
+        </ul>
+    </div>
+</footer>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        pagination: {
+            el: '.swiper-pagination',
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        spaceBetween: 20, // Add some space between slides
+    });
+
+    function redirectToLogin() {
+        window.location.href = "login.html";
+    }
+</script>
+</body>
+</html>

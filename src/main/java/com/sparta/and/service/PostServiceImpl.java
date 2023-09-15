@@ -4,7 +4,9 @@ import com.sparta.and.dto.ApiResponseDto;
 import com.sparta.and.dto.request.PostRequestDto;
 import com.sparta.and.dto.response.PostResponseDto;
 import com.sparta.and.entity.Post;
+import com.sparta.and.repository.CommentRepository;
 import com.sparta.and.repository.PostRepository;
+import com.sparta.and.repository.ReportPostRepository;
 import com.sparta.and.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,8 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
 	private final PostRepository postRepository;
+	private final CommentRepository commentRepository;
+	private final ReportPostRepository reportRepository;
 
 	@Transactional
 	@Override
@@ -80,10 +84,12 @@ public class PostServiceImpl implements PostService {
 	public ApiResponseDto deletePost(Long id) {
 		log.info("Service - deletePost : 시작");
 
-		Post Post = findPost(id);
+		Post post = findPost(id);
 
 		// TODO : 작성자 확인 추가
-		postRepository.delete(Post);
+		reportRepository.deleteAll(post.getReportList());
+		commentRepository.deleteAll(post.getCommentList());
+		postRepository.delete(post);
 
 		log.info("Service - deletePost : 끝");
 		return new ApiResponseDto("게시글 삭제 완료", HttpStatus.OK.value());
