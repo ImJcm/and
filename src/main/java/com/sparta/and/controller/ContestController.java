@@ -3,12 +3,9 @@ package com.sparta.and.controller;
 import java.util.List;
 
 import com.sparta.and.dto.SearchRequestDto;
-import com.sparta.and.dto.request.ContestRequestDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.sparta.and.dto.response.ContestResponseDto;
 import com.sparta.and.service.ContestService;
@@ -29,10 +26,13 @@ public class ContestController {
 		return contestService.getContests();
 	}
 
-	@PostMapping("")
-	public ContestResponseDto createContest(@RequestBody ContestRequestDto requestDto) {
-		return contestService.createContest(requestDto);
+	@GetMapping("/{contestId}")
+	public ResponseEntity<?> getContest(@PathVariable Long contestId) {
+		ContestResponseDto result = contestService.getContest(contestId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
+
 
 	@PostMapping("/search")
 	public List<ContestResponseDto> searchContest(@RequestBody SearchRequestDto requestDto) {
