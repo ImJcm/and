@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MiddleCategoryResponseDto {
     private Long id;
+    private Long middleCategoryId;
     private String categoryName;
 
     public MiddleCategoryResponseDto(MiddleCategory middleCategory) {

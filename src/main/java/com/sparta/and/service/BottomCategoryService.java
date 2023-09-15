@@ -15,10 +15,23 @@ public class BottomCategoryService {
 	private final BottomCategoryRepository bottomCategoryRepository;
 
 	//조회
+//	public BottomCategoryListResponseDto getBottomCategory() {
+//		List<BottomCategoryResponseDto> bottomCategoryList = bottomCategoryRepository.findAll().stream()
+//				.map(BottomCategoryResponseDto::new)
+//				.collect(Collectors.toList());
+//		return new BottomCategoryListResponseDto(bottomCategoryList);
+//	}
+
+	// 조회
 	public BottomCategoryListResponseDto getBottomCategory() {
 		List<BottomCategoryResponseDto> bottomCategoryList = bottomCategoryRepository.findAll().stream()
-				.map(BottomCategoryResponseDto::new)
+				.map(bottomCategory -> {
+					String middleCategoryName = bottomCategory.getMiddleCategory().getCategoryName();
+					return new BottomCategoryResponseDto(bottomCategory, middleCategoryName);
+				})
 				.collect(Collectors.toList());
 		return new BottomCategoryListResponseDto(bottomCategoryList);
 	}
 }
+
+
