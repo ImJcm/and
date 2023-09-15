@@ -27,8 +27,8 @@ public class Contest extends TimeStamped {
 	@Column(name = "category")
 	private Long category;
 
-	@Column(name = "author", nullable = false)
-	private String author;
+	@Column(name = "target", nullable = false)
+	private String target;
 
 	@Column(name = "title", nullable = false)
 	private String title;
@@ -42,6 +42,7 @@ public class Contest extends TimeStamped {
 	@Column(name = "startDate")
 	private LocalDateTime startDate;
 
+	@Enumerated(EnumType.STRING) //enum의 값을 텍스트 값으로 저장
 	@Column(name = "status")
 	private ContestStatus status;
 
@@ -54,33 +55,25 @@ public class Contest extends TimeStamped {
 	@Column(name = "contestViews")
 	private Long contestViews = 0L;
 
-	@OneToMany(mappedBy = "contest")
-	private List<Contest_BottomCategory> bottomCategories = new ArrayList<>();
-
-	// 북마크 카운트
-	@Column
-	private Long bookmarkCnt;
-
-	// 북마크
-	@OneToMany(mappedBy = "contest", cascade = CascadeType.REMOVE)
-	private List<Bookmark> bookmarkList = new ArrayList<>();
-
+	@Column(name = "prize")
+	private String prize;
 
 	public Contest(ContestRequestDto requestDto) {
-		this.author = requestDto.getAuthor();
+		this.target = requestDto.getTarget();
 		this.title = requestDto.getTitle();
 		this.company = requestDto.getCompany();
 		this.endDate = requestDto.getEndDate();
 		this.startDate = requestDto.getStartDate();
-		this.status = (ContestStatus.CLOSED);
 		this.homepage = requestDto.getHomepage();
 		this.contents = requestDto.getContents();
-	}
-
-	// 값 입력이 없다면 default => 1번
-	@PrePersist
-	public void prePersist() {
-		this.category = this.category == null ? 1 : this.category;
-//		this.contestViews = this.contestViews == null ? 0 : this.contestViews;
+		this.prize = requestDto.getPrize();
 	}
 }
+
+//	// 값 입력이 없다면 default => 1번
+//	@PrePersist
+//	public void prePersist() {
+//		this.category = this.category == null ? 1 : this.category;
+////		this.contestViews = this.contestViews == null ? 0 : this.contestViews;
+//	}
+//}
