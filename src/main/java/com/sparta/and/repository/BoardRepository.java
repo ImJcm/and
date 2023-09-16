@@ -1,7 +1,8 @@
 package com.sparta.and.repository;
 
-import com.sparta.and.entity.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.sparta.and.entity.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 }

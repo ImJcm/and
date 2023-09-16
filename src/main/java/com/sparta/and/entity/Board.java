@@ -4,10 +4,13 @@ import com.sparta.and.dto.request.BoardRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "Board")
 @DynamicInsert
 @NoArgsConstructor
@@ -17,7 +20,6 @@ public class Board extends TimeStamped {
     @Column(name = "board_id")
     private Long id;
 
-
     @Column(name = "title")
     private String title;
 
@@ -26,7 +28,10 @@ public class Board extends TimeStamped {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category categoryId;
+    private MiddleCategory categoryId;
+
+    @Column(name = "noticeViews")
+    private Long noticeViews = 0L;
 
     public void setContents(String contents) {
         this.contents = contents;
@@ -36,7 +41,7 @@ public class Board extends TimeStamped {
         this.title = title;
     }
 
-    public Board(Category categoryId, BoardRequestDto requestDto) {
+    public Board(MiddleCategory categoryId, BoardRequestDto requestDto) {
         this.categoryId = categoryId;
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
