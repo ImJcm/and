@@ -15,6 +15,28 @@ document.addEventListener("DOMContentLoaded", function () {
     showContests();
 })
 
+async function fetchCategories() {
+    try {
+        const response = await fetch('/auth/category'); // Replace with your API endpoint
+        const data = await response.json();
+
+        if (data && data.categoryList) {
+            const categoryListContainer = document.querySelector('.category-list-container');
+
+            data.categoryList.forEach(category => {
+                const categoryItem = document.createElement('div');
+                categoryItem.classList.add('category-item');
+                categoryItem.textContent = category.categoryName;
+                categoryListContainer.appendChild(categoryItem);
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+    }
+}
+
+// Call the function to fetch and display categories
+fetchCategories();
 function loginCheck(token) {
     let html = ``;
     const authSection = $('.auth-section');
@@ -353,15 +375,16 @@ function showContests() {
     });
 }
 
-//중,하카테고리 출력
-
-async function fetchMiddleCategories() {
+async function fetchMiddleAndBottomCategories() {
     try {
+        // Fetch middle categories
         const responseMiddle = await fetch('/auth/middlecategory');
         const dataMiddle = await responseMiddle.json();
 
         if (dataMiddle && dataMiddle.middleCategoryList) {
             const middleCategoryListContainer = document.getElementById('middle-category-list');
+
+            middleCategoryListContainer.innerHTML = ''; // Clear previous content
 
             dataMiddle.middleCategoryList.forEach(category => {
                 const categoryItem = document.createElement('div');
@@ -374,8 +397,12 @@ async function fetchMiddleCategories() {
                 middleCategoryListContainer.appendChild(categoryItem);
             });
         }
+
+        // Fetch and display bottom categories for the default middle category (you can modify this)
+        const defaultMiddleCategoryId = 1; // Replace with the appropriate default middle category ID
+        loadBottomCategories(defaultMiddleCategoryId);
     } catch (error) {
-        console.error('Error fetching middle categories:', error);
+        console.error('Error fetching categories:', error);
     }
 }
 
@@ -383,12 +410,11 @@ async function loadBottomCategories(middleCategoryId) {
     try {
         const response = await fetch(`/auth/middlecategory/${middleCategoryId}/bottomcategories`);
         const data = await response.json();
-        const postingListsContainer = document.getElementById('posting-lists');
-        postingListsContainer.innerHTML = ''; // Clear previous content
+        const bottomCategoryListContainer = document.getElementById('bottom-category-list');
+
+        bottomCategoryListContainer.innerHTML = ''; // Clear previous content
 
         if (data && data.bottomCategoryList) {
-            const bottomCategoryListContainer = document.getElementById('bottom-category-list');
-
             data.bottomCategoryList.forEach(category => {
                 const categoryItem = document.createElement('div');
                 categoryItem.classList.add('category-item');
@@ -401,14 +427,15 @@ async function loadBottomCategories(middleCategoryId) {
     }
 }
 
-function showMiddleAndBottomCategories() {
-    // Show the MiddleCategory and BottomCategory sidebar
-    const sidebar = document.getElementById('middle-bottom-category-sidebar');
-    sidebar.style.display = 'block';
 
-    // Fetch and display MiddleCategory lists
-    fetchMiddleCategories();
-}
+document.addEventListener("DOMContentLoaded", function () {
+    // This code will run once the DOM is fully loaded
+    const 공모전CategoryItem = document.querySelector('.category-item.공모전');
+    if (공모전CategoryItem) {
+        공모전CategoryItem.addEventListener('click', fetchMiddleAndBottomCategories);
+    }
+});
+
 
 // 자유게시판 페이징 출력
 function showPosts(page, size) {
