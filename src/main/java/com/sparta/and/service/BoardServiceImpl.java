@@ -4,17 +4,26 @@ package com.sparta.and.service;
 import com.sparta.and.dto.ApiResponseDto;
 import com.sparta.and.dto.request.BoardRequestDto;
 import com.sparta.and.dto.response.BoardResponseDto;
+import com.sparta.and.dto.response.CategoryResponseDto;
 import com.sparta.and.entity.Board;
 import com.sparta.and.entity.Category;
+import com.sparta.and.entity.MiddleCategory;
 import com.sparta.and.repository.BoardRepository;
 import com.sparta.and.repository.CategoryRepository;
+import com.sparta.and.repository.MiddleCategoryRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,60 +32,28 @@ import java.util.stream.Collectors;
 public class BoardServiceImpl implements BoardService {
 
 	private final BoardRepository boardRepository;
-	private final CategoryRepository categoryRepository;
+	private final MiddleCategoryRepository middleCategoryRepository;
 
 	@Override
-	public List<BoardResponseDto> getAllBoards() {
-		List<Board> boards = boardRepository.findAll();
-		return boards.stream().map(BoardResponseDto::new).collect(Collectors.toList());
+	public Page<BoardResponseDto> getAllBoards(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Board> boards = boardRepository.findAll(pageable);
+		return  boards.map(BoardResponseDto::new);
 	}
 
 	@Override
-	public BoardResponseDto createBoard(Category categoryId, BoardRequestDto requestDto) {
-		log.info("Service - createBoard : 시작");
+	public BoardResponseDto getBoard(Long id){
+		Board board = findBoard(id);
 
-		findCategory(categoryId);
-		Board board = boardRepository.save(new Board(categoryId, requestDto));
+		long views = board.getNoticeViews() + 1;
+		board.setNoticeViews(views);
 
-		log.info("Service - createBoard : 끝");
 		return new BoardResponseDto(board);
 	}
 
-
 	@Override
-	@Transactional
-	public BoardResponseDto modifyBoard(Long id, BoardRequestDto requestDto) {
-		log.info("Service - modifyBoard : 시작");
-
-		Board board = findById(id);
-		board.setTitle(requestDto.getTitle());
-		board.setContents(requestDto.getContents());
-
-		log.info("Service - modifyBoard : 끝");
-		return new BoardResponseDto(board);
-	}
-
-	private Board findById(Long id) {
-		return boardRepository.findById(id).orElseThrow(
-				() -> new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.")
-		);
-	}
-
-	@Override
-	@Transactional
-	public ApiResponseDto deleteBoard(Long id) {
-		log.info("Service - deleteBoard : 시작");
-
-		Board board = findById(id);
-		boardRepository.delete(board);
-
-		log.info("Service - deleteBoard : 끝");
-		return new ApiResponseDto("게시글 삭제 완료", HttpStatus.OK.value());
-	}
-
-	@Override
-	public void findCategory(Category categoryId) {
-		categoryRepository.findById(categoryId.getCategoryId()).orElseThrow(
+	public void findCategory(MiddleCategory categoryId) {
+		middleCategoryRepository.findById(categoryId.getMiddleCategoryId()).orElseThrow(
 				() -> new IllegalArgumentException("존재하지 않는 카테고리입니다.")
 		);
 	}
@@ -89,10 +66,24 @@ public class BoardServiceImpl implements BoardService {
 		);
 	}
 
-	@Override
-	public void equalsCategory(Category categoryId, Board board) {
-		if (!(board.getCategoryId().equals(categoryId))) {
-			throw new IllegalArgumentException("카테고리가 일치하는지 다시 확인해주세요.");
-		}
-	}
+
+	// @Override
+	// public Page<BoardResponseDto> getAllNotices(CategoryResponseDto categoryDto, int page, int size) {
+	// 	if (categoryDto != null && "공지사항".equals(categoryDto.getCategoryName())) {
+	// 		Pageable pageable = PageRequest.of(page, size);
+	// 		Page<Board> notices = boardRepository.findByCategoryId(categoryDto.getId(), pageable);
+	// 		return notices.map(BoardResponseDto::new);
+	// 	}
+	// 	return Page.empty();
+	// }
+	//
+	// @Override
+	// public Page<BoardResponseDto> getAllEvents(CategoryResponseDto categoryDto, int page, int size) {
+	// 	if ("이벤트".equals(categoryDto.getCategoryName())) {
+	// 		Pageable pageable = PageRequest.of(page, size);
+	// 		Page<Board> events = boardRepository.findByCategoryId(categoryDto.getId(), pageable);
+	// 		return events.map(BoardResponseDto::new);
+	// 	}
+	// 	return Page.empty();
+	// }
 }
