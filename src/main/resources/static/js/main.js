@@ -287,7 +287,7 @@ function redirectToLogin() {
     window.location.href = "/view/login";
 }
 
-// 공모전 카테고리 출력
+
 function showContests() {
     let html = `
             <div class="swiper-container">

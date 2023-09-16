@@ -60,6 +60,6 @@ public class Contest extends TimeStamped {
 	@OneToMany(mappedBy = "contest", cascade = CascadeType.REMOVE)
 	private List<S3File> S3Files = new ArrayList<>();
 
-	/*@OneToMany(mappedBy = "contest")
-	private List<Contest_BottomCategory> bottomCategories = new ArrayList<>();*/
+	@OneToMany(mappedBy = "contest")
+	private List<Contest_BottomCategory> bottomCategories = new ArrayList<>();
 }
