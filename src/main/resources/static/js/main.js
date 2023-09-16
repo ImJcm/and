@@ -454,20 +454,27 @@ function showContestsPage() {
     //         let pages = response['totalPages'];
     //
     let html = `
-                    <div class="post-wrap">
-                      <div class="post-title">
+                        <div class =category-container >
+                        <aside class="category">
+                        <ul>
+                           <li><a href="#">카테고리 1</a></li>
+                          <li><a href="#">카테고리 2</a></li>
+                         </ul>
+                      </aside>
+                    <div class="contest-wrap">
+                      <div class="contest-title">
                         <strong>공모전 페이지</strong>
                         <p>자유로운 정보 공유와 공모전을 위한 커뮤니티입니다.</p>
                       </div>
-                      <div class="post-list-wrap">
-                          <div class="post-list">
+                      <div class="contest-list-wrap">
+                          <div class="contest-list">
                             <div class="top">
                               <div class="num">번호</div>
                               <div class="title">제목</div>
                               <div class="writer">작성자</div>
                               <div class="date">작성일</div>
                               <div class="count">조회수</div>
-                            </div>`;
+                            </div></div>`;
 
     // let startNum = (page - 1) * pageSize;
     // response['content'].forEach((post) => {
