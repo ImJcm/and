@@ -15,6 +15,28 @@ document.addEventListener("DOMContentLoaded", function () {
     showContests();
 })
 
+async function fetchCategories() {
+    try {
+        const response = await fetch('/auth/category'); // Replace with your API endpoint
+        const data = await response.json();
+
+        if (data && data.categoryList) {
+            const categoryListContainer = document.querySelector('.category-list-container');
+
+            data.categoryList.forEach(category => {
+                const categoryItem = document.createElement('div');
+                categoryItem.classList.add('category-item');
+                categoryItem.textContent = category.categoryName;
+                categoryListContainer.appendChild(categoryItem);
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+    }
+}
+
+// Call the function to fetch and display categories
+fetchCategories();
 function loginCheck(token) {
     let html = ``;
     const authSection = $('.auth-section');
@@ -353,15 +375,16 @@ function showContests() {
     });
 }
 
-//중,하카테고리 출력
-
-async function fetchMiddleCategories() {
+async function fetchMiddleAndBottomCategories() {
     try {
+        // Fetch middle categories
         const responseMiddle = await fetch('/auth/middlecategory');
         const dataMiddle = await responseMiddle.json();
 
         if (dataMiddle && dataMiddle.middleCategoryList) {
             const middleCategoryListContainer = document.getElementById('middle-category-list');
+
+            middleCategoryListContainer.innerHTML = ''; // Clear previous content
 
             dataMiddle.middleCategoryList.forEach(category => {
                 const categoryItem = document.createElement('div');
@@ -374,8 +397,12 @@ async function fetchMiddleCategories() {
                 middleCategoryListContainer.appendChild(categoryItem);
             });
         }
+
+        // Fetch and display bottom categories for the default middle category (you can modify this)
+        const defaultMiddleCategoryId = 1; // Replace with the appropriate default middle category ID
+        loadBottomCategories(defaultMiddleCategoryId);
     } catch (error) {
-        console.error('Error fetching middle categories:', error);
+        console.error('Error fetching categories:', error);
     }
 }
 
@@ -383,12 +410,11 @@ async function loadBottomCategories(middleCategoryId) {
     try {
         const response = await fetch(`/auth/middlecategory/${middleCategoryId}/bottomcategories`);
         const data = await response.json();
-        const postingListsContainer = document.getElementById('posting-lists');
-        postingListsContainer.innerHTML = ''; // Clear previous content
+        const bottomCategoryListContainer = document.getElementById('bottom-category-list');
+
+        bottomCategoryListContainer.innerHTML = ''; // Clear previous content
 
         if (data && data.bottomCategoryList) {
-            const bottomCategoryListContainer = document.getElementById('bottom-category-list');
-
             data.bottomCategoryList.forEach(category => {
                 const categoryItem = document.createElement('div');
                 categoryItem.classList.add('category-item');
@@ -401,13 +427,93 @@ async function loadBottomCategories(middleCategoryId) {
     }
 }
 
-function showMiddleAndBottomCategories() {
-    // Show the MiddleCategory and BottomCategory sidebar
-    const sidebar = document.getElementById('middle-bottom-category-sidebar');
-    sidebar.style.display = 'block';
 
-    // Fetch and display MiddleCategory lists
-    fetchMiddleCategories();
+document.addEventListener("DOMContentLoaded", function () {
+    // This code will run once the DOM is fully loaded
+    const 공모전CategoryItem = document.querySelector('.category-item.공모전');
+    if (공모전CategoryItem) {
+        공모전CategoryItem.addEventListener('click', fetchMiddleAndBottomCategories);
+    }
+});
+// 공모전 페이징 출력
+function showContestsPage() {
+
+    // $.ajax({
+    //     type: 'GET',
+    //     url: `/api/contest/{contestId}`,
+    // })
+    //     .done(function (response, status, xhr) {
+    //         let pages = response['totalPages'];
+    //
+            let html = `
+                    <div class="post-wrap">
+                      <div class="post-title">
+                        <strong>공모전 페이지</strong>
+                        <p>자유로운 정보 공유와 공모전을 위한 커뮤니티입니다.</p>
+                      </div>
+                      <div class="post-list-wrap">
+                          <div class="post-list">
+                            <div class="top">
+                              <div class="num">번호</div>
+                              <div class="title">제목</div>
+                              <div class="writer">작성자</div>
+                              <div class="date">작성일</div>
+                              <div class="count">조회수</div>
+                            </div>`;
+
+            // let startNum = (page - 1) * pageSize;
+            // response['content'].forEach((post) => {
+            //     startNum += 1;
+            //     html += `
+            //             <div>
+            //               <div class="num">${startNum}</div>
+            //               <div class="title"><a href="/view/onepost/${post.postId}">${post.title}</a></div>
+            //               <div class="writer">${post.writer}</div>
+            //               <div class="date">${post.modifiedDate}</div>
+            //               <div class="count">${post.communityPostViews}</div>
+            //             </div>
+            //         `;
+            // });
+            //
+            // html += `
+            //         </div>
+            //          <div class="post-btn">
+            //          <button onclick="postingBtn()">글쓰기</button>
+            //          </div>
+            //          <div class="post-page">
+            //             <a onclick="showPosts(1,pageSize)" class="bt first"><<</a>
+            //             <a onclick="showPosts(${page}-1,pageSize)" class="bt prev"><</a>
+            //     `;
+            //
+            // let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
+            // let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
+            //
+            // for (let i = startPage; i <= endPage; i++) {
+            //     if (page === i) {
+            //         html += `
+            //                 <a onclick="showPosts(${i},pageSize)" class="num on">${i}</a>
+            //             `;
+            //     } else {
+            //         html += `
+            //                 <a onclick="showPosts(${i},pageSize)" class="num">${i}</a>
+            //             `;
+            //     }
+            // }
+            //
+            // html += `
+            //                 <a onclick="showPosts(${page}+1,pageSize)" class="bt first">></a>
+            //                 <a onclick="showPosts(${pages},pageSize)" class="bt prev">>></a>
+            //               </div>
+            //           </div>
+            //         </div>
+            //     `;
+            $(".main").empty();
+            $(".main").append(html);
+        // })
+        // .fail(function (response) {
+        //     let errorMessage = response.responseJSON.errorMessage;
+        //     alert("공모전 조회 실패 : " + errorMessage);
+        // });
 }
 
 // 자유게시판 페이징 출력
