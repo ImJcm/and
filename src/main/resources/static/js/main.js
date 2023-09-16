@@ -435,6 +435,7 @@ async function loadBottomCategories(middleCategoryId) {
 //     // Fetch and display MiddleCategory lists
 //     fetchMiddleCategories();
 // }
+
 document.addEventListener("DOMContentLoaded", function () {
     // This code will run once the DOM is fully loaded
     const 공모전CategoryItem = document.querySelector('.category-item.공모전');
@@ -444,84 +445,91 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // 공모전 페이징 출력
-function showContestsPage() {
+function showContestsPage(page, size) {
 
-    // $.ajax({
-    //     type: 'GET',
-    //     url: `/api/contest/{contestId}`,
-    // })
-    //     .done(function (response, status, xhr) {
-    //         let pages = response['totalPages'];
-    //
+    if(page <= 0) {
+        page = 1;
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: `/api/contest?page=${page}&size=${size}`
+    })
+        .done(function (response, status, xhr) {
+            let pages = response['totalPages'];
+            console.log(pageSize);
+            if(page > pages) {
+                page = pages;
+            }
+
     let html = `
-                    <div class="post-wrap">
-                      <div class="post-title">
+                    <div class="contest-wrap">
+                      <div class="contest-title">
                         <strong>공모전 페이지</strong>
                         <p>자유로운 정보 공유와 공모전을 위한 커뮤니티입니다.</p>
                       </div>
-                      <div class="post-list-wrap">
-                          <div class="post-list">
+                      <div class="contest-list-wrap">
+                          <div class="contest-list">
                             <div class="top">
                               <div class="num">번호</div>
                               <div class="title">제목</div>
-                              <div class="writer">작성자</div>
-                              <div class="date">작성일</div>
-                              <div class="count">조회수</div>
+                              <div class="company">주최사</div>
+                              <div class="status">현재현황</div>
+                              <div class="contest-views">조회수</div>
                             </div>`;
 
-    // let startNum = (page - 1) * pageSize;
-    // response['content'].forEach((post) => {
-    //     startNum += 1;
-    //     html += `
-    //             <div>
-    //               <div class="num">${startNum}</div>
-    //               <div class="title"><a href="/view/onepost/${post.postId}">${post.title}</a></div>
-    //               <div class="writer">${post.writer}</div>
-    //               <div class="date">${post.modifiedDate}</div>
-    //               <div class="count">${post.communityPostViews}</div>
-    //             </div>
-    //         `;
-    // });
-    //
-    // html += `
-    //         </div>
-    //          <div class="post-btn">
-    //          <button onclick="postingBtn()">글쓰기</button>
-    //          </div>
-    //          <div class="post-page">
-    //             <a onclick="showPosts(1,pageSize)" class="bt first"><<</a>
-    //             <a onclick="showPosts(${page}-1,pageSize)" class="bt prev"><</a>
-    //     `;
-    //
-    // let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
-    // let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
-    //
-    // for (let i = startPage; i <= endPage; i++) {
-    //     if (page === i) {
-    //         html += `
-    //                 <a onclick="showPosts(${i},pageSize)" class="num on">${i}</a>
-    //             `;
-    //     } else {
-    //         html += `
-    //                 <a onclick="showPosts(${i},pageSize)" class="num">${i}</a>
-    //             `;
-    //     }
-    // }
-    //
-    // html += `
-    //                 <a onclick="showPosts(${page}+1,pageSize)" class="bt first">></a>
-    //                 <a onclick="showPosts(${pages},pageSize)" class="bt prev">>></a>
-    //               </div>
-    //           </div>
-    //         </div>
-    //     `;
-    $(".main").empty();
-    $(".main").append(html);
-    // })
-    // .fail(function (response) {
-    //     let errorMessage = response.responseJSON.errorMessage;
-    //     alert("공모전 조회 실패 : " + errorMessage);
-    // });
+            let startNum = (page-1) * pageSize;
+            response['content'].forEach((contest) => {
+                startNum += 1;
+                html += `
+                        <div>
+                          <div class="num">${startNum}</div>
+                          <div class="title"><a href="#">${contest.title}</a></div>
+                          <div class="company">${contest.company}</div>
+                          <div class="status">${contest.status}</div>
+                          <div class="contest-views">${contest.contestViews}</div>
+                        </div>
+
+                    `;
+            });
+
+            html += `
+                    </div>
+                     <div class="contest-page">
+                        <a onclick="showContestsPage(1,pageSize)" class="bt first"><<</a>
+                        <a onclick="showContestsPage(${page}-1,pageSize)" class="bt prev"><</a>
+                `;
+
+            let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
+            let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
+
+            for(let i=startPage;i<=endPage;i++) {
+                if(page === i) {
+                    html += `
+                            <a onclick="showContestsPage(${i},pageSize)" class="num on">${i}</a>
+                        `;
+                } else {
+                    html += `
+                            <a onclick="showContestsPage(${i},pageSize)" class="num">${i}</a>
+                        `;
+                }
+            }
+
+            html += `
+                            <a onclick="showContestsPage(${page}+1,pageSize)" class="bt first">></a>
+                            <a onclick="showContestsPage(${pages},pageSize)" class="bt prev">>></a>
+                          </div>
+                      </div>
+                    </div>
+                `;
+
+            $(".main").empty();
+            $(".main").append(html);
+        })
+        .fail(function(response) {
+            alert("공모전 전체보기 조회 실패");
+            console.log(response.responseJSON.msg);
+        });
 }
 
 // 자유게시판 페이징 출력

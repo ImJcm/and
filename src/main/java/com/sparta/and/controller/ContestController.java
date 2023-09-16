@@ -3,6 +3,8 @@ package com.sparta.and.controller;
 import java.util.List;
 
 import com.sparta.and.dto.SearchRequestDto;
+
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +24,10 @@ public class ContestController {
 	private final ContestService contestService;
 
 	@GetMapping("")
-	public List<ContestResponseDto> getContests() {
-		return contestService.getContests();
+	public ResponseEntity<Page<ContestResponseDto>> getContests(
+		@RequestParam("page") int page,
+		@RequestParam("size") int size){
+		return ResponseEntity.ok().body(contestService.getContests(page-1,size));
 	}
 
 	@GetMapping("/{contestId}")
@@ -35,7 +39,7 @@ public class ContestController {
 
 
 	@PostMapping("/search")
-	public List<ContestResponseDto> searchContest(@RequestBody SearchRequestDto requestDto) {
+	public List<ContestResponseDto> searc토hContest(@RequestBody SearchRequestDto requestDto) {
 		return contestService.searchContest(requestDto);
 	}
 }
