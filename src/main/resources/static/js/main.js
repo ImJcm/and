@@ -15,6 +15,58 @@ document.addEventListener("DOMContentLoaded", function () {
     showContests();
 })
 
+// 카테고리 핸들러
+function showCategories() {
+
+    $.ajax({
+        type: 'GET',
+        url: `/auth/category`,
+    })
+        .done(function (response, status, xhr) {
+
+            let html = `
+                <div class="container">
+                    <div class="category-list-container">
+            `;
+
+            response.forEach((category) => {
+                html += `
+                    <div class="category-item" onclick="navigateToCategoryPage('${category.categoryName}')">${category.categoryName}</div>
+                `;
+            });
+
+            html += `
+                </div>
+            </div>
+        `;
+
+            // Replace the entire container content with the generated HTML
+            $('.container').html(html);
+        })
+        .fail(function (xhr, status, error) {
+            console.error('Error fetching categories:', error);
+        });
+}
+
+function navigateToCategoryPage(categoryName) {
+    console.log('Navigating to category page for:', categoryName);
+
+    if (categoryName === '공지사항') {
+        showNotices(1,pageSize)
+    } else if (categoryName === '공모전') {
+        showContestsPage(1,pageSize)
+    }
+    // else if (categoryName === '이벤트') {
+    //     fetchAndDisplayContent(3, 1, pageSize)
+    // }
+    else if (categoryName === '자유게시판') {
+        showPosts(1,pageSize)
+    } else if (categoryName === '공모전 채팅방') {
+        showChats()
+    }
+
+}
+
 async function fetchCategories() {
     try {
         const response = await fetch('/auth/category'); // Replace with your API endpoint
@@ -27,6 +79,7 @@ async function fetchCategories() {
                 const categoryItem = document.createElement('div');
                 categoryItem.classList.add('category-item');
                 categoryItem.textContent = category.categoryName;
+                categoryItem.addEventListener('click', () => navigateToCategoryPage(category.categoryName));
                 categoryListContainer.appendChild(categoryItem);
             });
         }
@@ -37,6 +90,7 @@ async function fetchCategories() {
 
 // Call the function to fetch and display categories
 fetchCategories();
+
 function loginCheck(token) {
     let html = ``;
     const authSection = $('.auth-section');
@@ -309,7 +363,6 @@ function redirectToLogin() {
     window.location.href = "/view/login";
 }
 
-
 function showContests() {
     let html = `
             <div class="swiper-container">
@@ -427,22 +480,190 @@ async function loadBottomCategories(middleCategoryId) {
     }
 }
 
-// function showMiddleAndBottomCategories() {
-//     // Show the MiddleCategory and BottomCategory sidebar
-//     const sidebar = document.getElementById('middle-bottom-category-sidebar');
-//     sidebar.style.display = 'block';
-//
-//     // Fetch and display MiddleCategory lists
-//     fetchMiddleCategories();
-// }
+// 공지사항 페이징 출력
+function showNotices(page, pageSize) {
 
-document.addEventListener("DOMContentLoaded", function () {
-    // This code will run once the DOM is fully loaded
-    const 공모전CategoryItem = document.querySelector('.category-item.공모전');
-    if (공모전CategoryItem) {
-        공모전CategoryItem.addEventListener('click', fetchMiddleAndBottomCategories);
+    if(page <= 0) {
+        page = 1;
     }
-});
+
+    $.ajax({
+        type: 'GET',
+        url: `/api/admin/boards/notices?page=${page}&size=${pageSize}`
+    })
+        .done(function (response, status, xhr) {
+            let pages = response['totalPages'];
+
+            if(page > pages) {
+                page = pages;
+            }
+
+            let html = `
+                    <div class="notice-wrap">
+                      <div class="notice-title">
+                        <strong>공지사항 및 이벤트 페이지</strong>
+                        <p>공지사항을 지속적으로 확인해주세요.</p>
+                      </div>
+                      <div class="notice-list-wrap">
+                          <div class="notice-list">
+                            <div class="top">
+                              <div class="num">번호</div>
+                              <div class="category">카테고리</div>
+                              <div class="title">제목</div>
+                              <div class="notice-views">조회수</div>
+                            </div>`;
+
+            let startNum = (page-1) * pageSize;
+            response['content'].forEach((Board) => {
+                startNum += 1;
+                html += `
+                        <div>
+                          <div class="num">${startNum}</div>
+                          <div class="category">${Board.categoryName}</div>
+                          <div class="title"><a href="#">${Board.title}</a></div>
+                          <div class="notice-views">${Board.noticeViews}</div>
+                        </div>
+
+                    `;
+            });
+
+            html += `
+                    </div>
+                     <div class="notice-page">
+                        <a onclick="showNotices(1,pageSize)" class="bt first"><<</a>
+                        <a onclick="showNotices(${page}-1,pageSize)" class="bt prev"><</a>
+                `;
+
+            let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
+            let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
+
+            for(let i=startPage;i<=endPage;i++) {
+                if(page === i) {
+                    html += `
+                            <a onclick="showNotices(${i},pageSize)" class="num on">${i}</a>
+                        `;
+                } else {
+                    html += `
+                            <a onclick="showNotices(${i},pageSize)" class="num">${i}</a>
+                        `;
+                }
+            }
+
+            html += `
+                            <a onclick="showNotices(${page}+1,pageSize)" class="bt first">></a>
+                            <a onclick="showNotices(${pages},pageSize)" class="bt prev">>></a>
+                          </div>
+                      </div>
+                    </div>
+                `;
+
+            $(".main").empty();
+            $(".main").append(html);
+        })
+        .fail(function(response) {
+            alert("공지사항 전체보기 조회 실패");
+            console.log(response.responseJSON.msg);
+        });
+}
+
+
+
+// 공지사항과 이벤트 페이지네이션
+// function fetchAndDisplayContent(categoryId, page, pageSize) {
+//     if (page <= 0) {
+//         page = 1;
+//     }
+//
+//     categoryId = parseInt(categoryId);
+//
+//     let url;
+//     let title;
+//     let description;
+//
+//     console.log(categoryId)
+//     if (categoryId === 1) {
+//         url = `/api/admin/boards/notices?page=${page}&size=${pageSize}`;
+//         title = '공지사항 페이지';
+//         description = '공지사항을 지속적으로 확인해주세요.';
+//     } else if (categoryId === 3) {
+//         url = `/api/admin/boards/events?page=${page}&size=${pageSize}`;
+//         title = '이벤트 페이지';
+//         description = '&nd의 이벤트에 귀 기울여 주세요!';
+//     }
+//
+//     $.ajax({
+//         type: 'GET',
+//         url: url
+//     })
+//         .done(function (response, status, xhr) {
+//             let pages = response['totalPages'];
+//
+//             if (page > pages) {
+//                 page = pages;
+//             }
+//
+//             let html = `
+//                     <div class="notice-wrap">
+//                       <div class="notice-title">
+//                         <strong>${title}</strong>
+//                         <p>${description}</p>
+//                       </div>
+//                       <div class="notice-list-wrap">
+//                           <div class="notice-list">
+//                             <div class="top">
+//                               <div class="num">번호</div>
+//                               <div class="title">제목</div>
+//                             </div>`;
+//
+//             let startNum = (page - 1) * pageSize;
+//             response['content'].forEach((Board) => {
+//                 startNum += 1;
+//                 html += `
+//                         <div>
+//                           <div class="num">${startNum}</div>
+//                           <div class="title"><a href="#">${Board.title}</a></div>
+//                         </div>
+//                     `;
+//             });
+//
+//             html += `
+//                     </div>
+//                      <div class="notice-page">
+//                         <a onclick="fetchAndDisplayContent(${categoryId}, 1, ${pageSize})" class="bt first"><<</a>
+//                         <a onclick="fetchAndDisplayContent(${categoryId}, ${page - 1}, ${pageSize})" class="bt prev"><</a>
+//                 `;
+//
+//             let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
+//             let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
+//
+//             for (let i = startPage; i <= endPage; i++) {
+//                 if (page === i) {
+//                     html += `
+//                             <a onclick="fetchAndDisplayContent(${categoryId}, ${i}, ${pageSize})" class="num on">${i}</a>
+//                         `;
+//                 } else {
+//                     html += `
+//                             <a onclick="fetchAndDisplayContent(${categoryId}, ${i}, ${pageSize})" class="num">${i}</a>
+//                         `;
+//                 }
+//             }
+//
+//             html += `
+//                             <a onclick="fetchAndDisplayContent(${categoryId}, ${page + 1}, ${pageSize})" class="bt first">></a>
+//                             <a onclick="fetchAndDisplayContent(${categoryId}, ${pages}, ${pageSize})" class="bt prev">>></a>
+//                           </div>
+//                       </div>
+//                     </div>
+//                 `;
+//
+//             $(".main").empty();
+//             $(".main").append(html);
+//         })
+//         .fail(function (response) {
+//             alert("페이지 조회 실패");
+//             console.log(response.responseJSON.msg);
+//         });
+// }
 
 // 공모전 페이징 출력
 function showContestsPage(page, size) {
@@ -466,7 +687,7 @@ function showContestsPage(page, size) {
                     <div class="contest-wrap">
                       <div class="contest-title">
                         <strong>공모전 페이지</strong>
-                        <p>자유로운 정보 공유와 공모전을 위한 커뮤니티입니다.</p>
+                        <p>다양한 공모전에 참여해 실력과 경력을 쌓도록 합시다.</p>
                       </div>
                       <div class="contest-list-wrap">
                           <div class="contest-list">

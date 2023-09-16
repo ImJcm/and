@@ -278,6 +278,118 @@ header {
     color: #666;
 }
 
+/* 공모전 CSS */
+.notice-wrap {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.notice-title {
+    margin-bottom: 20px;
+}
+
+.notice-title strong {
+    font-size: 1.3rem;
+}
+
+.notice-title p {
+    margin-top: 5px;
+    font-size: 0.8rem;
+}
+
+.notice-list {
+    width: 100%;
+    border-top: 2px solid #000;
+}
+
+.notice-list > div {
+    border-bottom: 1px solid #ddd;
+    font-size: 0;
+}
+
+.notice-list > div.top {
+    border-bottom: 1px solid #999;
+}
+
+.notice-list > div:last-child {
+    border-bottom: 1px solid #000;
+}
+
+.notice-list > div > div {
+    display: inline-block;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.notice-list > div.top > div {
+    font-weight: bold;
+}
+
+.notice-list .num {
+    width: 10%;
+}
+
+.notice-list .category {
+    width: 30%;
+    text-align: center;
+}
+
+.notice-list .top .title {
+    text-align: center;
+}
+
+.notice-list .title {
+    width: 40%;
+    text-align: left;
+}
+
+.post-list .notice-views {
+    width: 10%;
+}
+
+.notice-page {
+    margin-top : 20px;
+    text-align: center;
+    font-size: 0;
+}
+
+.notice-page a {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    border-left: 0;
+    line-height: 100%;
+}
+
+.notice-page a.bt {
+    padding-top: 10px;
+    font-size: 1.0rem;
+    letter-spacing: -1px;
+}
+
+.notice-page a.num {
+    padding-top: 9px;
+    font-size: 0.9rem;
+}
+
+.notice-page a.num.on {
+    border-color: #000;
+    background: #000;
+    color: #fff;
+}
+
+.notice-page a:first-child {
+    border-left: 1px solid #ddd;
+}
+
 /* 자유게시판 CSS */
 .post-wrap {
     margin: 20px;
