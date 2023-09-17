@@ -21,22 +21,6 @@ public interface BoardService {
 	 */
 	Page<BoardResponseDto> getAllBoards(int page, int size);
 
-	// /**
-	//  * 공지사항 전체 조회
-	//  *
-	//  * @return : 게시글 정보 반환
-	//  */
-	// Page<BoardResponseDto> getAllNotices(CategoryResponseDto categoryDto, int page, int size);
-	//
-	// /**
-	//  * 이벤트 전체 조회
-	//  *
-	//  * @return : 게시글 정보 반환
-	//  */
-	// Page<BoardResponseDto> getAllEvents(CategoryResponseDto categoryDto, int page, int size);
-	//
-	//
-
 	/**
 	 * 게시글 단건 조회
 	 *

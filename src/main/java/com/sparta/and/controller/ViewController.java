@@ -43,4 +43,9 @@ public class ViewController {
 		model.addAttribute("postId", postId);
 		return "onepost";
 	}
+	@GetMapping("/onenotice/{noticeId}")
+	public String getOneBoard(@PathVariable Long noticeId, Model model) {
+		model.addAttribute("noticeId", noticeId);
+		return "onenotice";
+	}
 }

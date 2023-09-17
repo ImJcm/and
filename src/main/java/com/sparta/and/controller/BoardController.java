@@ -38,10 +38,10 @@ public class BoardController {
 	}
 
 	// 단건 조회
-	@GetMapping("/notice")
-	public ResponseEntity<?> getBoard(@PathVariable Long id) {
+	@GetMapping("/notice/{noticeId}")
+	public ResponseEntity<?> getBoard(@PathVariable Long noticeId) {
 
-		BoardResponseDto responseDto = boardService.getBoard(id);
+		BoardResponseDto responseDto = boardService.getBoard(noticeId);
 
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}

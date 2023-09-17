@@ -45,8 +45,8 @@ public class BoardServiceImpl implements BoardService {
 	public BoardResponseDto getBoard(Long id){
 		Board board = findBoard(id);
 
-		long views = board.getNoticeViews() + 1;
-		board.setNoticeViews(views);
+		// long views = board.getNoticeViews() + 1;
+		// board.setNoticeViews(views);
 
 		return new BoardResponseDto(board);
 	}

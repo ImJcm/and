@@ -431,7 +431,7 @@ function showContests() {
 // 공지사항 페이징 출력
 function showNotices(page, pageSize) {
 
-    if (page <= 0) {
+    if(page <= 0) {
         page = 1;
     }
 
@@ -442,7 +442,7 @@ function showNotices(page, pageSize) {
         .done(function (response, status, xhr) {
             let pages = response['totalPages'];
 
-            if (page > pages) {
+            if(page > pages) {
                 page = pages;
             }
 
@@ -457,17 +457,17 @@ function showNotices(page, pageSize) {
                             <div class="top">
                               <div class="num">번호</div>
                               <div class="title">제목</div>
-                             
+                              <div class="notice-views">조회수</div>
                             </div>`;
 
-            let startNum = (page - 1) * pageSize;
+            let startNum = (page-1) * pageSize;
             response['content'].forEach((Board) => {
                 startNum += 1;
                 html += `
                         <div>
                           <div class="num">${startNum}</div>
-                          <div class="title"><a href="#">${Board.title}</a></div>
-                          
+                          <div class="title"><a href="/view/onenotice/${Board.id}">${Board.title}</a></div>
+                          <div class="notice-views">${Board.noticeViews}</div>
                         </div>
 
                     `;
@@ -483,8 +483,8 @@ function showNotices(page, pageSize) {
             let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
             let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
 
-            for (let i = startPage; i <= endPage; i++) {
-                if (page === i) {
+            for(let i=startPage;i<=endPage;i++) {
+                if(page === i) {
                     html += `
                             <a onclick="showNotices(${i},pageSize)" class="num on">${i}</a>
                         `;
@@ -506,12 +506,11 @@ function showNotices(page, pageSize) {
             $(".main").empty();
             $(".main").append(html);
         })
-        .fail(function (response) {
+        .fail(function(response) {
             alert("공지사항 전체보기 조회 실패");
             console.log(response.responseJSON.msg);
         });
 }
-
 
 // 공모전 페이징 출력
 function showContestsPage(page, size) {
@@ -531,11 +530,10 @@ function showContestsPage(page, size) {
             }
 
             let html = `
-           
-                    <aside class="category">
-                        <div id="middle-category-list"></div>
-                        <div id="bottom-category-list"></div>
-                    </aside>
+            <div class="category-container">
+                    <div id="mblist"class="category">
+
+                    </div>
                 <div class="contest-wrap">
                     <div class="contest-title">
                         <strong>공모전 페이지</strong>
@@ -549,77 +547,73 @@ function showContestsPage(page, size) {
                                 <div class="company">주최사</div>
                                 <div class="status">현재현황</div>
                                 <div class="contest-views">조회수</div>
-                        
+                            </div>
                         </div>`;
 
             let startNum = (page - 1) * pageSize;
-            response.content.forEach((contest, index) => {
+            response['content'].forEach((contest) => {
                 startNum += 1;
-                // Add data-contest-id attribute to store contestId
                 html += `
-                    <div>
-                        <div class="num">${startNum}</div>
-                        <div class="title"><a href="#" data-contest-id="${contest.contestId}">${contest.title}</a></div>
-                        <div class="company">${contest.company}</div>
-                        <div class="status">${contest.status}</div>
-                        <div class="contest-views">${contest.contestViews}</div>
-                    </div>
-                `;
+                <div>
+                    <div class="num">${startNum}</div>
+                    <div class="title"><a href="#" data-contest-id="${contest.contestId}">${contest.title}</a></div>
+                    <div class="company">${contest.company}</div>
+                    <div class="status">${contest.status}</div>
+                    <div class="contest-views">${contest.contestViews}</div>
+                </div>
+            `;
             });
 
             html += `
                     </div>
                     <div class="contest-page">
-                        <a onclick="showContestsPage(1, ${pageSize})" class="bt first"><<</a>
-                        <a onclick="showContestsPage(${page - 1}, ${pageSize})" class="bt prev"><</a>`;
+                        <a onclick="showContestsPage(1, pageSize)" class="bt first"><<</a>
+                        <a onclick="showContestsPage(${page - 1}, pageSize)" class="bt prev"><</a>`;
 
             let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
-            let endPage = Math.min(startPage + pageBtnSize - 1, pages);
+            let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
 
             for (let i = startPage; i <= endPage; i++) {
-                html += `
-                    <a onclick="showContestsPage(${i}, ${pageSize})" class="num ${page === i ? 'on' : ''}">${i}</a>
-                `;
+                if (page === i) {
+                    html += `
+                        <a onclick="showContestsPage(${i}, pageSize)" class="num on">${i}</a>
+                    `;
+                } else {
+                    html += `
+                        <a onclick="showContestsPage(${i}, pageSize)" class="num">${i}</a>
+                    `;
+                }
             }
 
             html += `
-                        <a onclick="showContestsPage(${page + 1}, ${pageSize})" class="bt first">></a>
-                        <a onclick="showContestsPage(${pages}, ${pageSize})" class="bt prev">>></a>
+                        <a onclick="showContestsPage(${page + 1}, pageSize)" class="bt first">></a>
+                        <a onclick="showContestsPage(${pages}, pageSize)" class="bt prev">>></a>
                     </div>
                 </div>
             </div>
-            `;
+        `;
 
-            // Append the HTML to the .main element
-            $(".main").empty().append(html);
+            $(".main").empty();
+            $(".main").append(html);
 
-            // Attach a click event handler for contest links
-            $('.contest-list a').on('click', function () {
-                let contestId = $(this).data('contest-id');
-                showContestDetail(contestId);
-            });
         })
         .fail(function (response) {
             alert("공모전 전체보기 조회 실패");
             console.log(response.responseJSON.msg);
         });
-}
 
 //공모전 상세페이지
-
 function showContestDetail(contestId) {
-    // Fetch contest details
     $.ajax({
         type: 'GET',
         url: `/api/contest/${contestId}`,
     })
         .done(function (contestResponseDto) {
-            let contestDetails = contestResponseDto; // Assuming the response matches the structure of ContestResponseDto
+            let contestDetails = contestResponseDto;
 
-            // Fetch images for the contest
             $.ajax({
                 type: 'GET',
-                url: `/api/contest/images/${contestDetails.contestId}`, // Use the new endpoint to fetch images
+                url: `/api/contest/images/${contestDetails.contestId}`,
             })
                 .done(function (imageResponse) {
                     let html = `
@@ -687,102 +681,93 @@ function showContestDetail(contestId) {
         });
 }
 
-
-function fetchMiddleCategoriesAndBottomCategories() {
-    // 서버에서 중간 카테고리 정보와 연관된 하위 카테고리 정보를 가져오는 API 엔드포인트를 호출합니다.
-    $.ajax({
-        type: 'GET',
-        url: '/auth/middlecategory',
-    })
-        .done(function (response) {
-            // 가져온 중간 카테고리 정보를 페이지에 추가합니다.
-            displayMiddleCategories(response.middleCategoryList);
-
-            // Extract the middleCategoryId here and pass it to fetchBottomCategoriesAndDisplay
-            const middleCategoryId = response.middleCategoryId; // Replace this with the actual field from your response
-            fetchBottomCategoriesAndDisplay(middleCategoryId);
+    function fetchMiddleCategoriesAndBottomCategories() {
+        // 서버에서 중간 카테고리 정보와 연관된 하위 카테고리 정보를 가져오는 API 엔드포인트를 호출합니다.
+        $.ajax({
+            type: 'GET',
+            url: '/auth/middlecategory',
         })
-        .fail(function (response) {
-            console.error('Failed to fetch categories:', response.status);
-        });
-}
+            .done(function (response) {
+                // 가져온 중간 카테고리 정보를 페이지에 추가합니다.
+                displayMiddleCategories(response.middleCategoryList);
 
-
-function displayMiddleCategories(categories) {
-    // 중간 카테고리 목록을 표시하는 요소를 선택합니다.
-    const middleCategoryListContainer = $("#middle-category-list");
-
-    if (!Array.isArray(categories)) {
-        console.error('middleCategoryList is not an array:', categories);
-        return;
-    }
-
-    // 중간 카테고리 데이터를 동적으로 생성하여 추가합니다.
-    categories.forEach(function (category) {
-        if (category.categoryName) {
-            const middleCategoryItem = $("<div></div>"); // 중간 카테고리 아이템을 생성합니다.
-            middleCategoryItem.addClass("middle-category-item");
-
-            // 중간 카테고리 이름을 추가합니다.
-            middleCategoryItem.append(`<h5>${category.categoryName}</h5>`);
-
-            // 중간 카테고리를 클릭하면 해당 중간 카테고리와 연관된 하위 카테고리를 표시하도록 이벤트 핸들러를 추가합니다.
-            middleCategoryItem.find("h5").on('click', function () {
-                const middleCategoryId = category.id; // Extract the ID correctly
-                console.log('Clicked on middle category with ID:', middleCategoryId); // Debugging
+                const middleCategoryId = response.middleCategoryId;
                 fetchBottomCategoriesAndDisplay(middleCategoryId);
+            })
+            .fail(function (response) {
+                console.error('Failed to fetch categories:', response.status);
             });
-
-            middleCategoryListContainer.append(middleCategoryItem);
-        }
-    });
-}
-
-
-function fetchBottomCategoriesAndDisplay(middleCategoryId) {
-    // Log the middleCategoryId to ensure it's correct
-    console.log('Fetching bottom categories for middle category with ID:', middleCategoryId);
-
-    // Make the AJAX request to fetch bottom categories
-    $.ajax({
-        type: 'GET',
-        url: `/auth/bottomcategory/${middleCategoryId}`, // Ensure the URL is correctly formatted
-    })
-        .done(function (response) {
-            // Log the response to see what data is returned
-            console.log('Received bottom categories response:', response);
-
-            // Display the bottom categories (your existing code)
-            displayBottomCategories(response.bottomCategoryList);
-        })
-        .fail(function (response) {
-            console.error('Failed to fetch bottom categories:', response.status);
-        });
-}
-
-
-function displayBottomCategories(categories) {
-    // 하위 카테고리 목록을 표시하는 요소를 선택합니다.
-    const bottomCategoryListContainer = $("#bottom-category-list");
-
-    if (!Array.isArray(categories)) {
-        console.error('bottomCategoryList is not an array:', categories);
-        return;
     }
 
-    // 하위 카테고리 데이터를 동적으로 생성하여 추가합니다.
-    const bottomCategoryList = $("<ul></ul>");
-    categories.forEach(function (category) {
-        if (category.categoryName) {
-            const listItem = $("<li></li>");
-            listItem.text(category.categoryName);
-            bottomCategoryList.append(listItem);
-        }
-    });
 
-    // 하위 카테고리 목록을 해당 요소에 추가합니다.
-    bottomCategoryListContainer.empty(); // 기존 목록 비우기
-    bottomCategoryListContainer.append(bottomCategoryList);
+    function displayMiddleCategories(categories) {
+        // 중간 카테고리 목록을 표시하는 요소를 선택합니다.
+        var middleCategoryListContainer;
+        if (!Array.isArray(categories)) {
+            console.error('middleCategoryList is not an array:', categories);
+            return;
+        }
+
+        categories.forEach(function (category) {
+            if (category.categoryName) {
+                var html ='<div id="middle-category-list'+category.id+'"></div><div id="bottom-category-list'+category.id+'"></div><hr>'
+                $("#mblist").append(html);
+                middleCategoryListContainer = $("#middle-category-list"+category.id);
+
+                const middleCategoryItem = $("<div></div>"); // 중간 카테고리 아이템을 생성합니다.
+                middleCategoryItem.addClass("middle-category-item");
+
+                middleCategoryItem.append(`<h5>${category.categoryName}</h5>`);
+
+                middleCategoryItem.find("h5").on('click', function () {
+                    const middleCategoryId = category.id; // Extract the ID correctly
+                    console.log('Clicked on middle category with ID:', middleCategoryId); // Debugging
+                    fetchBottomCategoriesAndDisplay(middleCategoryId);
+                });
+
+                middleCategoryListContainer.append(middleCategoryItem);
+            }
+        });
+    }
+
+    function fetchBottomCategoriesAndDisplay(middleCategoryId) {
+        console.log('Fetching bottom categories for middle category with ID:', middleCategoryId);
+
+        $.ajax({
+            type: 'GET',
+            url: `/auth/bottomcategory/${middleCategoryId}`,
+        })
+            .done(function (response) {
+                console.log('Received bottom categories response:', response);
+
+                displayBottomCategories(response.bottomCategoryList,middleCategoryId);
+            })
+            .fail(function (response) {
+                console.error('Failed to fetch bottom categories:', response.status);
+            });
+    }
+
+
+    function displayBottomCategories(categories,middleCategoryId) {
+        console.log(middleCategoryId);
+        const bottomCategoryListContainer = $("#bottom-category-list"+middleCategoryId);
+        if (!Array.isArray(categories)) {
+            console.error('bottomCategoryList is not an array:', categories);
+            return;
+        }
+
+        const bottomCategoryList = $("<div></div>");
+        categories.forEach(function (category) {
+            if (category.categoryName) {
+                const listItem = $("<div></div>");
+                listItem.text(category.categoryName);
+                bottomCategoryList.append(listItem);
+            }
+        });
+
+        bottomCategoryListContainer.empty(); // 기존 목록 비우기
+        bottomCategoryListContainer.append(bottomCategoryList);
+    }
 }
 
 // 자유게시판 페이징 출력
