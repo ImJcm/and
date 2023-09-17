@@ -52,15 +52,15 @@ function navigateToCategoryPage(categoryName) {
     console.log('Navigating to category page for:', categoryName);
 
     if (categoryName === '공지사항') {
-        showNotices(1,pageSize)
+        showNotices(1, pageSize)
     } else if (categoryName === '공모전') {
-        showContestsPage(1,pageSize)
+        showContestsPage(1, pageSize)
     }
-    // else if (categoryName === '이벤트') {
-    //     fetchAndDisplayContent(3, 1, pageSize)
+        // else if (categoryName === '이벤트') {
+        //     fetchAndDisplayContent(3, 1, pageSize)
     // }
     else if (categoryName === '자유게시판') {
-        showPosts(1,pageSize)
+        showPosts(1, pageSize)
     } else if (categoryName === '공모전 채팅방') {
         showChats()
     }
@@ -117,7 +117,7 @@ function loginCheck(token) {
                 loginUsername = userNickName = response['nickname'];
 
                 // 읽지않은 알림이 있는지 체크
-                if(check) {
+                if (check) {
                     html += `
                         <div class="alert-container">
                             <button class="alert-btn" type="button" onclick="showAlerts()" data-bs-toggle="collapse" data-bs-target="#collapseAlert" aria-expanded="false" aria-controls="collapseAlert"><i id="bellIcon" class="fa-solid fa-bell fa-bounce fa-lg" style="color: #e5e826;"></i></button>
@@ -151,9 +151,9 @@ function loginCheck(token) {
             .fail(function (response) {
                 let errorMessage = response.responseJSON.errorMessage;
                 alert("자유게시글 조회 실패 : " + errorMessage);
-                if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                     window.location.href = "/view/login";
-                } else if(errorMessage == "연결 오류!") {
+                } else if (errorMessage == "연결 오류!") {
                     alertConnection(UserId);
                 }
             })
@@ -164,15 +164,15 @@ function loginCheck(token) {
 function unreadAlertCheck() {
     let check = false;
     $.ajax({
-        type:'GET',
-        url:`/api/notification`,
-        async:false
+        type: 'GET',
+        url: `/api/notification`,
+        async: false
     })
         .done(function (response, status, xhr) {
             let notifications = response;
 
             notifications.forEach((notification) => {
-                if(!notification.isRead) {
+                if (!notification.isRead) {
                     check = true;
                     return;
                 }
@@ -181,9 +181,9 @@ function unreadAlertCheck() {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("자유게시글 조회 실패 : " + errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
-            } else if(errorMessage == "연결 오류!") {
+            } else if (errorMessage == "연결 오류!") {
                 alertConnection(UserId);
             }
         })
@@ -193,8 +193,8 @@ function unreadAlertCheck() {
 // 알림 버튼 클릭 시, 현재 접속한 사용자에게 전달된 알림 목록 조회
 function showAlerts() {
     $.ajax({
-        type:'GET',
-        url:`/api/notification`
+        type: 'GET',
+        url: `/api/notification`
     })
         .done(function (response, status, xhr) {
             let notification = response;
@@ -225,8 +225,8 @@ function showAlert(notification) {
     let isRead = notification['isRead'];
     let html = ``;
 
-    if(notificationType == 'CHAT') {
-        if(isRead) {
+    if (notificationType == 'CHAT') {
+        if (isRead) {
             html += `
                 <div class="alert-list-group-item"id="alert-${notificationId}">
                     <div class="alert-item-header">
@@ -271,7 +271,7 @@ function updateAlert() {
     let check = unreadAlertCheck();
     let bellIcon = document.getElementById("bellIcon");
 
-    if(check) {
+    if (check) {
         bellIcon.classList.add("fa-bounce");
         bellIcon.style.color = "#e5e826";
     } else {
@@ -281,10 +281,10 @@ function updateAlert() {
 }
 
 // 알림 읽음 처리
-function readAlert(notificationType,notificationId) {
+function readAlert(notificationType, notificationId) {
     $.ajax({
-        type:'POST',
-        url:`/api/notification/${notificationId}`
+        type: 'POST',
+        url: `/api/notification/${notificationId}`
     })
         .done(function (response, status, xhr) {
             let type = notificationType;
@@ -302,9 +302,9 @@ function readAlert(notificationType,notificationId) {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("알림 읽기 실패 : " + errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
-            } else if(errorMessage == "연결 오류!") {
+            } else if (errorMessage == "연결 오류!") {
                 alertConnection(UserId);
             }
         })
@@ -322,8 +322,8 @@ function readAllAlert() {
 // 알림 삭제
 function deleteAlert(notificationId) {
     $.ajax({
-        type:'DELETE',
-        url:`/api/notification/${notificationId}`
+        type: 'DELETE',
+        url: `/api/notification/${notificationId}`
     })
         .done(function (response, status, xhr) {
             $(`#alert-${notificationId}`).remove();
@@ -332,9 +332,9 @@ function deleteAlert(notificationId) {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("알람 삭제 실패 : " + errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
-            } else if(errorMessage == "연결 오류!") {
+            } else if (errorMessage == "연결 오류!") {
                 alertConnection(UserId);
             }
         })
@@ -347,7 +347,7 @@ function alertConnection(userId) {
 
     eventSource.addEventListener("sse", function (event) {
         // sse 연결 시도를 제외한 sse 통신 - sse 프로토콜 생성
-        if(!event.data.includes("EventStream Created.")) {
+        if (!event.data.includes("EventStream Created.")) {
             bellIcon.classList.add("fa-bounce");
             bellIcon.style.color = "#e5e826";
         }
@@ -428,62 +428,11 @@ function showContests() {
     });
 }
 
-async function fetchMiddleAndBottomCategories() {
-    try {
-        // Fetch middle categories
-        const responseMiddle = await fetch('/auth/middlecategory');
-        const dataMiddle = await responseMiddle.json();
-
-        if (dataMiddle && dataMiddle.middleCategoryList) {
-            const middleCategoryListContainer = document.getElementById('middle-category-list');
-
-            middleCategoryListContainer.innerHTML = ''; // Clear previous content
-
-            dataMiddle.middleCategoryList.forEach(category => {
-                const categoryItem = document.createElement('div');
-                categoryItem.classList.add('category-item');
-                categoryItem.textContent = category.categoryName;
-                categoryItem.addEventListener('click', () => {
-                    // Load and display BottomCategory lists associated with this MiddleCategory
-                    loadBottomCategories(category.id);
-                });
-                middleCategoryListContainer.appendChild(categoryItem);
-            });
-        }
-
-        // Fetch and display bottom categories for the default middle category (you can modify this)
-        const defaultMiddleCategoryId = 1; // Replace with the appropriate default middle category ID
-        loadBottomCategories(defaultMiddleCategoryId);
-    } catch (error) {
-        console.error('Error fetching categories:', error);
-    }
-}
-
-async function loadBottomCategories(middleCategoryId) {
-    try {
-        const response = await fetch(`/auth/middlecategory/${middleCategoryId}/bottomcategories`);
-        const data = await response.json();
-        const bottomCategoryListContainer = document.getElementById('bottom-category-list');
-
-        bottomCategoryListContainer.innerHTML = ''; // Clear previous content
-
-        if (data && data.bottomCategoryList) {
-            data.bottomCategoryList.forEach(category => {
-                const categoryItem = document.createElement('div');
-                categoryItem.classList.add('category-item');
-                categoryItem.textContent = category.categoryName;
-                bottomCategoryListContainer.appendChild(categoryItem);
-            });
-        }
-    } catch (error) {
-        console.error('Error fetching bottom categories:', error);
-    }
-}
 
 // 공지사항 페이징 출력
 function showNotices(page, pageSize) {
 
-    if(page <= 0) {
+    if (page <= 0) {
         page = 1;
     }
 
@@ -494,7 +443,7 @@ function showNotices(page, pageSize) {
         .done(function (response, status, xhr) {
             let pages = response['totalPages'];
 
-            if(page > pages) {
+            if (page > pages) {
                 page = pages;
             }
 
@@ -513,7 +462,7 @@ function showNotices(page, pageSize) {
                               <div class="notice-views">조회수</div>
                             </div>`;
 
-            let startNum = (page-1) * pageSize;
+            let startNum = (page - 1) * pageSize;
             response['content'].forEach((Board) => {
                 startNum += 1;
                 html += `
@@ -537,8 +486,8 @@ function showNotices(page, pageSize) {
             let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
             let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
 
-            for(let i=startPage;i<=endPage;i++) {
-                if(page === i) {
+            for (let i = startPage; i <= endPage; i++) {
+                if (page === i) {
                     html += `
                             <a onclick="showNotices(${i},pageSize)" class="num on">${i}</a>
                         `;
@@ -560,12 +509,11 @@ function showNotices(page, pageSize) {
             $(".main").empty();
             $(".main").append(html);
         })
-        .fail(function(response) {
+        .fail(function (response) {
             alert("공지사항 전체보기 조회 실패");
             console.log(response.responseJSON.msg);
         });
 }
-
 
 
 // 공지사항과 이벤트 페이지네이션
@@ -665,10 +613,9 @@ function showNotices(page, pageSize) {
 //         });
 // }
 
-// 공모전 페이징 출력
-function showContestsPage(page, size) {
 
-    if(page <= 0) {
+function showContestsPage(page, size) {
+    if (page <= 0) {
         page = 1;
     }
 
@@ -677,81 +624,139 @@ function showContestsPage(page, size) {
         url: `/api/contest?page=${page}&size=${size}`
     })
         .done(function (response, status, xhr) {
-            let pages = response['totalPages'];
-            console.log(pageSize);
-            if(page > pages) {
-                page = pages;
-            }
+            let pages = response.totalPages;
 
-    let html = `
-                    <div class="contest-wrap">
-                      <div class="contest-title">
+            // Create HTML for the contest list
+            let html = `
+                <div class="contest-wrap">
+                    <div class="contest-title">
                         <strong>공모전 페이지</strong>
                         <p>다양한 공모전에 참여해 실력과 경력을 쌓도록 합시다.</p>
-                      </div>
-                      <div class="contest-list-wrap">
-                          <div class="contest-list">
+                    </div>
+                    <div class="contest-list-wrap">
+                        <div class="contest-list">
                             <div class="top">
-                              <div class="num">번호</div>
-                              <div class="title">제목</div>
-                              <div class="company">주최사</div>
-                              <div class="status">현재현황</div>
-                              <div class="contest-views">조회수</div>
+                                <div class="num">번호</div>
+                                <div class="title">제목</div>
+                                <div class="company">주최사</div>
+                                <div class="status">현재현황</div>
+                                <div class="contest-views">조회수</div>
                             </div>`;
 
-            let startNum = (page-1) * pageSize;
-            response['content'].forEach((contest) => {
+            let startNum = (page - 1) * pageSize;
+            response.content.forEach((contest, index) => {
                 startNum += 1;
+                // Add data-contest-id attribute to store contestId
                 html += `
-                        <div>
-                          <div class="num">${startNum}</div>
-                          <div class="title"><a href="#">${contest.title}</a></div>
-                          <div class="company">${contest.company}</div>
-                          <div class="status">${contest.status}</div>
-                          <div class="contest-views">${contest.contestViews}</div>
-                        </div>
-
-                    `;
+                    <div>
+                        <div class="num">${startNum}</div>
+                        <div class="title"><a href="#" data-contest-id="${contest.contestId}">${contest.title}</a></div>
+                        <div class="company">${contest.company}</div>
+                        <div class="status">${contest.status}</div>
+                        <div class="contest-views">${contest.contestViews}</div>
+                    </div>
+                `;
             });
 
             html += `
                     </div>
-                     <div class="contest-page">
-                        <a onclick="showContestsPage(1,pageSize)" class="bt first"><<</a>
-                        <a onclick="showContestsPage(${page}-1,pageSize)" class="bt prev"><</a>
-                `;
+                    <div class="contest-page">
+                        <a onclick="showContestsPage(1, ${pageSize})" class="bt first"><<</a>
+                        <a onclick="showContestsPage(${page - 1}, ${pageSize})" class="bt prev"><</a>`;
 
             let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
-            let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
+            let endPage = Math.min(startPage + pageBtnSize - 1, pages);
 
-            for(let i=startPage;i<=endPage;i++) {
-                if(page === i) {
-                    html += `
-                            <a onclick="showContestsPage(${i},pageSize)" class="num on">${i}</a>
-                        `;
-                } else {
-                    html += `
-                            <a onclick="showContestsPage(${i},pageSize)" class="num">${i}</a>
-                        `;
-                }
+            for (let i = startPage; i <= endPage; i++) {
+                html += `
+                    <a onclick="showContestsPage(${i}, ${pageSize})" class="num ${page === i ? 'on' : ''}">${i}</a>
+                `;
             }
 
             html += `
-                            <a onclick="showContestsPage(${page}+1,pageSize)" class="bt first">></a>
-                            <a onclick="showContestsPage(${pages},pageSize)" class="bt prev">>></a>
-                          </div>
-                      </div>
+                        <a onclick="showContestsPage(${page + 1}, ${pageSize})" class="bt first">></a>
+                        <a onclick="showContestsPage(${pages}, ${pageSize})" class="bt prev">>></a>
                     </div>
-                `;
+                </div>
+            </div>
+            `;
 
-            $(".main").empty();
-            $(".main").append(html);
+            // Append the HTML to the .main element
+            $(".main").empty().append(html);
+
+            // Attach a click event handler for contest links
+            $('.contest-list a').on('click', function () {
+                let contestId = $(this).data('contest-id');
+                showContestDetail(contestId);
+            });
         })
-        .fail(function(response) {
+        .fail(function (response) {
             alert("공모전 전체보기 조회 실패");
             console.log(response.responseJSON.msg);
         });
 }
+
+// Function to display contest details
+function showContestDetail(contestId) {
+    // Fetch contest details
+    $.ajax({
+        type: 'GET',
+        url: `/api/contest/${contestId}`,
+    })
+        .done(function (contestResponseDto) {
+            let contestDetails = contestResponseDto; // Assuming the response matches the structure of ContestResponseDto
+
+            // Fetch images for the contest
+            $.ajax({
+                type: 'GET',
+                url: `/api/contest/images/${contestDetails.contestId}`, // Use the new endpoint to fetch images
+            })
+                .done(function (imageResponse) {
+                    let html = `
+                <div class="contest-detail">
+                    <h2>${contestDetails.title}</h2>
+                    <p>Company: ${contestDetails.company}</p>
+                    <p>Start Date: ${contestDetails.startDate}</p>
+                    <p>End Date: ${contestDetails.endDate}</p>
+                    <p>Status: ${contestDetails.status}</p>
+                    <p>Prize: ${contestDetails.prize}</p>
+                    <p>Contest Views: ${contestDetails.contestViews}</p>
+                    <p>Description: ${contestDetails.contents}</p>
+                        
+                    <div class="contest-images">
+                        <h3>Contest Images</h3>
+                        `;
+
+                    if (imageResponse && Array.isArray(imageResponse)) {
+                        imageResponse.forEach((image, index) => {
+                            html += `
+                        <div class="image-container">
+                            <img src="${image.uploadFileUrl}" alt="Contest Image ${index + 1}">
+                        </div>
+                    `;
+                        });
+                    } else {
+                        html += `<p>No images available</p>`;
+                    }
+
+                    html += `
+                </div>
+            </div>
+            `;
+
+                    $('.main').empty();
+                    $('.main').append(html);
+                })
+                .fail(function (error) {
+                    console.error('Error loading contest images:', error);
+                });
+
+        })
+        .fail(function (error) {
+            console.error('Error loading contest details:', error);
+        });
+}
+
 
 // 자유게시판 페이징 출력
 function showPosts(page, size) {
@@ -984,9 +989,9 @@ function showChats() {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("채팅 목록 불러오기 실패 : " + errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
-            } else if(errorMessage == "연결 오류!") {
+            } else if (errorMessage == "연결 오류!") {
                 alertConnection(UserId);
             }
         });
@@ -1038,7 +1043,7 @@ function createChatroomHandler() {
             .fail(function (response, status, xhr) {
                 let errorMessage = response.responseJSON.errorMessage;
                 alert("사용자 검색 실패 : " + errorMessage);
-                if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                     window.location.href = "/view/login";
                 }
             })
@@ -1088,7 +1093,7 @@ function createChatroomHandler() {
             .fail(function (response, status, xhr) {
                 let errorMessage = response.responseJSON.errorMessage;
                 alert("사용자 검색 실패 : " + errorMessage);
-                if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                     window.location.href = "/view/login";
                 }
             })
@@ -1116,7 +1121,7 @@ function createChatroom(chatroomName, userId) {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("채팅방 생성 실패 : " + errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
             }
         })
@@ -1221,7 +1226,7 @@ function showChatHistory(roomId) {
                             <div class="timebox">${sendDate}</div>
                         </div>
                     `;
-                } else if(messageType == "message") {
+                } else if (messageType == "message") {
                     if (writer == loginUsername) {
                         html += `
                         <div class="chat ch2" id="${chatId}">
@@ -1248,7 +1253,7 @@ function showChatHistory(roomId) {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("채팅내역 불러오기 실패 : " + response.responseJSON.errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
             }
         });
@@ -1282,7 +1287,7 @@ function connectChat(roomId) {
                             <div class="timebox">${sendDate}</div>
                         </div>
                     `;
-            } else if(messageType == "message") {
+            } else if (messageType == "message") {
                 if (writer == loginUsername) {
                     html += `
                         <div class="chat ch2" id="${chatId}">
@@ -1329,9 +1334,9 @@ function connectChat(roomId) {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("채팅 전송 실패 : " + errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
-            } else if(errorMessage == "연결 오류!") {
+            } else if (errorMessage == "연결 오류!") {
                 alertConnection(UserId);
             }
         })
