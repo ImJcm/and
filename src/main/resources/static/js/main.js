@@ -530,7 +530,7 @@ function showContestsPage(page, size) {
             }
 
             let html = `
-            <div class="category-container">
+            
                     <div id="mblist"class="category">
 
                     </div>
@@ -547,7 +547,7 @@ function showContestsPage(page, size) {
                                 <div class="company">주최사</div>
                                 <div class="status">현재현황</div>
                                 <div class="contest-views">조회수</div>
-                            </div>
+                           
                         </div>`;
 
             let startNum = (page - 1) * pageSize;
@@ -596,11 +596,18 @@ function showContestsPage(page, size) {
             $(".main").empty();
             $(".main").append(html);
 
+            // Attach a click event handler for contest links
+            $('.contest-list a').on('click', function () {
+                let contestId = $(this).data('contest-id');
+                showContestDetail(contestId);
+            });
         })
         .fail(function (response) {
             alert("공모전 전체보기 조회 실패");
             console.log(response.responseJSON.msg);
         });
+}
+
 
 //공모전 상세페이지
 function showContestDetail(contestId) {
@@ -767,7 +774,7 @@ function showContestDetail(contestId) {
 
         bottomCategoryListContainer.empty(); // 기존 목록 비우기
         bottomCategoryListContainer.append(bottomCategoryList);
-    }
+
 }
 
 // 자유게시판 페이징 출력
