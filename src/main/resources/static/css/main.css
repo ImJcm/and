@@ -14,7 +14,6 @@ body {
     min-width: 950px !important;
 }
 
-/* Header Styles */
 header {
     display: flex;
     justify-content: space-between;
@@ -22,6 +21,85 @@ header {
     padding: 20px;
     background-color: linen;
 }
+
+.contest-detail {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin: 20px;
+}
+
+.contest-details-box {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.contest-detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.contest-label {
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: large;
+}
+
+.contest-value {
+    flex-grow: 1;
+    font-size: large;
+}
+
+.contest-images {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.contest-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.contest-image {
+    max-width: 200px;
+    height: auto;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.contest-title-in-image {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.contest-detail p {
+    margin-bottom: 5px;
+}
+
+.contest-images h3 {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.deatil-label {
+    font-weight: bold;
+    margin-right: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    font-size: large;
+}
+
+.contest-contents {
+    margin-top: 20px;
+}
+
 
 .logo img {
     width: 150px;

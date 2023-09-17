@@ -5,10 +5,7 @@ import com.sparta.and.dto.response.BottomCategoryResponseDto;
 import com.sparta.and.service.BottomCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,12 +16,13 @@ public class BottomCategoryController {
 
 	private final BottomCategoryService bottomCategoryService;
 
-	//조회
-	@GetMapping("/bottomcategory")
-	public ResponseEntity<BottomCategoryListResponseDto> getBottomCategory() {
-		BottomCategoryListResponseDto getBottomCategory = bottomCategoryService.getBottomCategory();
-		return ResponseEntity.ok().body(getBottomCategory);
-	}
 
+	@GetMapping("/bottomcategory/{middleCategoryId}")
+	public ResponseEntity<BottomCategoryListResponseDto> getBottomCategoryByMiddleCategoryId(
+			@PathVariable(name = "middleCategoryId") Long middleCategoryId) {
+		BottomCategoryListResponseDto bottomCategoryListResponse = bottomCategoryService
+				.getBottomCategoryByMiddleCategoryId(middleCategoryId);
+		return ResponseEntity.ok().body(bottomCategoryListResponse);
+	}
 
 }

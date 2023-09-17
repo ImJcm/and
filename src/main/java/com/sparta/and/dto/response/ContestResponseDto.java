@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+
 public class ContestResponseDto {
 	private Long contestId;
 	private String target;
@@ -20,9 +21,9 @@ public class ContestResponseDto {
 	private String contents;
 	private String prize;
 	private Long contestViews;
-	private List<S3FileDto> S3files;
+	private List<S3FileDto> s3Files;
 
-	public ContestResponseDto(Contest contest) {
+	public ContestResponseDto(Contest contest, List<S3FileDto> s3Files) {
 		this.contestId = contest.getId();
 		this.target = contest.getTarget();
 		this.title = contest.getTitle();
@@ -34,6 +35,6 @@ public class ContestResponseDto {
 		this.contents = contest.getContents();
 		this.contestViews = contest.getContestViews();
 		this.prize = contest.getPrize();
-		this.S3files = contest.getS3Files().stream().map(S3FileDto::new).toList();
+		this.s3Files = s3Files; // Set the list of associated images
 	}
 }

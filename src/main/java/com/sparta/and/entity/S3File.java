@@ -52,4 +52,3 @@ public class S3File {
         this.contest = contest;
     }
 }
-

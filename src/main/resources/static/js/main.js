@@ -52,15 +52,15 @@ function navigateToCategoryPage(categoryName) {
     console.log('Navigating to category page for:', categoryName);
 
     if (categoryName === '공지사항') {
-        showNotices(1,pageSize)
+        showNotices(1, pageSize)
     } else if (categoryName === '공모전') {
-        showContestsPage(1,pageSize)
+        showContestsPage(1, pageSize)
     }
-    // else if (categoryName === '이벤트') {
-    //     fetchAndDisplayContent(3, 1, pageSize)
+        // else if (categoryName === '이벤트') {
+        //     fetchAndDisplayContent(3, 1, pageSize)
     // }
     else if (categoryName === '자유게시판') {
-        showPosts(1,pageSize)
+        showPosts(1, pageSize)
     } else if (categoryName === '공모전 채팅방') {
         showChats()
     }
@@ -117,7 +117,7 @@ function loginCheck(token) {
                 loginUsername = userNickName = response['nickname'];
 
                 // 읽지않은 알림이 있는지 체크
-                if(check) {
+                if (check) {
                     html += `
                         <div class="alert-container">
                             <button class="alert-btn" type="button" onclick="showAlerts()" data-bs-toggle="collapse" data-bs-target="#collapseAlert" aria-expanded="false" aria-controls="collapseAlert"><i id="bellIcon" class="fa-solid fa-bell fa-bounce fa-lg" style="color: #e5e826;"></i></button>
@@ -151,9 +151,9 @@ function loginCheck(token) {
             .fail(function (response) {
                 let errorMessage = response.responseJSON.errorMessage;
                 alert("자유게시글 조회 실패 : " + errorMessage);
-                if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                     window.location.href = "/view/login";
-                } else if(errorMessage == "연결 오류!") {
+                } else if (errorMessage == "연결 오류!") {
                     alertConnection(UserId);
                 }
             })
@@ -164,15 +164,15 @@ function loginCheck(token) {
 function unreadAlertCheck() {
     let check = false;
     $.ajax({
-        type:'GET',
-        url:`/api/notification`,
-        async:false
+        type: 'GET',
+        url: `/api/notification`,
+        async: false
     })
         .done(function (response, status, xhr) {
             let notifications = response;
 
             notifications.forEach((notification) => {
-                if(!notification.isRead) {
+                if (!notification.isRead) {
                     check = true;
                     return;
                 }
@@ -181,9 +181,9 @@ function unreadAlertCheck() {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("자유게시글 조회 실패 : " + errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
-            } else if(errorMessage == "연결 오류!") {
+            } else if (errorMessage == "연결 오류!") {
                 alertConnection(UserId);
             }
         })
@@ -193,8 +193,8 @@ function unreadAlertCheck() {
 // 알림 버튼 클릭 시, 현재 접속한 사용자에게 전달된 알림 목록 조회
 function showAlerts() {
     $.ajax({
-        type:'GET',
-        url:`/api/notification`
+        type: 'GET',
+        url: `/api/notification`
     })
         .done(function (response, status, xhr) {
             let notification = response;
@@ -225,8 +225,8 @@ function showAlert(notification) {
     let isRead = notification['isRead'];
     let html = ``;
 
-    if(notificationType == 'CHAT') {
-        if(isRead) {
+    if (notificationType == 'CHAT') {
+        if (isRead) {
             html += `
                 <div class="alert-list-group-item"id="alert-${notificationId}">
                     <div class="alert-item-header">
@@ -271,7 +271,7 @@ function updateAlert() {
     let check = unreadAlertCheck();
     let bellIcon = document.getElementById("bellIcon");
 
-    if(check) {
+    if (check) {
         bellIcon.classList.add("fa-bounce");
         bellIcon.style.color = "#e5e826";
     } else {
@@ -281,10 +281,10 @@ function updateAlert() {
 }
 
 // 알림 읽음 처리
-function readAlert(notificationType,notificationId) {
+function readAlert(notificationType, notificationId) {
     $.ajax({
-        type:'POST',
-        url:`/api/notification/${notificationId}`
+        type: 'POST',
+        url: `/api/notification/${notificationId}`
     })
         .done(function (response, status, xhr) {
             let type = notificationType;
@@ -302,9 +302,9 @@ function readAlert(notificationType,notificationId) {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("알림 읽기 실패 : " + errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
-            } else if(errorMessage == "연결 오류!") {
+            } else if (errorMessage == "연결 오류!") {
                 alertConnection(UserId);
             }
         })
@@ -322,8 +322,8 @@ function readAllAlert() {
 // 알림 삭제
 function deleteAlert(notificationId) {
     $.ajax({
-        type:'DELETE',
-        url:`/api/notification/${notificationId}`
+        type: 'DELETE',
+        url: `/api/notification/${notificationId}`
     })
         .done(function (response, status, xhr) {
             $(`#alert-${notificationId}`).remove();
@@ -332,9 +332,9 @@ function deleteAlert(notificationId) {
         .fail(function (response) {
             let errorMessage = response.responseJSON.errorMessage;
             alert("알람 삭제 실패 : " + errorMessage);
-            if(errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
                 window.location.href = "/view/login";
-            } else if(errorMessage == "연결 오류!") {
+            } else if (errorMessage == "연결 오류!") {
                 alertConnection(UserId);
             }
         })
@@ -347,7 +347,7 @@ function alertConnection(userId) {
 
     eventSource.addEventListener("sse", function (event) {
         // sse 연결 시도를 제외한 sse 통신 - sse 프로토콜 생성
-        if(!event.data.includes("EventStream Created.")) {
+        if (!event.data.includes("EventStream Created.")) {
             bellIcon.classList.add("fa-bounce");
             bellIcon.style.color = "#e5e826";
         }
@@ -428,62 +428,10 @@ function showContests() {
     });
 }
 
-async function fetchMiddleAndBottomCategories() {
-    try {
-        // Fetch middle categories
-        const responseMiddle = await fetch('/auth/middlecategory');
-        const dataMiddle = await responseMiddle.json();
-
-        if (dataMiddle && dataMiddle.middleCategoryList) {
-            const middleCategoryListContainer = document.getElementById('middle-category-list');
-
-            middleCategoryListContainer.innerHTML = ''; // Clear previous content
-
-            dataMiddle.middleCategoryList.forEach(category => {
-                const categoryItem = document.createElement('div');
-                categoryItem.classList.add('category-item');
-                categoryItem.textContent = category.categoryName;
-                categoryItem.addEventListener('click', () => {
-                    // Load and display BottomCategory lists associated with this MiddleCategory
-                    loadBottomCategories(category.id);
-                });
-                middleCategoryListContainer.appendChild(categoryItem);
-            });
-        }
-
-        // Fetch and display bottom categories for the default middle category (you can modify this)
-        const defaultMiddleCategoryId = 1; // Replace with the appropriate default middle category ID
-        loadBottomCategories(defaultMiddleCategoryId);
-    } catch (error) {
-        console.error('Error fetching categories:', error);
-    }
-}
-
-async function loadBottomCategories(middleCategoryId) {
-    try {
-        const response = await fetch(`/auth/middlecategory/${middleCategoryId}/bottomcategories`);
-        const data = await response.json();
-        const bottomCategoryListContainer = document.getElementById('bottom-category-list');
-
-        bottomCategoryListContainer.innerHTML = ''; // Clear previous content
-
-        if (data && data.bottomCategoryList) {
-            data.bottomCategoryList.forEach(category => {
-                const categoryItem = document.createElement('div');
-                categoryItem.classList.add('category-item');
-                categoryItem.textContent = category.categoryName;
-                bottomCategoryListContainer.appendChild(categoryItem);
-            });
-        }
-    } catch (error) {
-        console.error('Error fetching bottom categories:', error);
-    }
-}
-
 // 공지사항 페이징 출력
 function showNotices(page, pageSize) {
 
-    if(page <= 0) {
+    if (page <= 0) {
         page = 1;
     }
 
@@ -494,7 +442,7 @@ function showNotices(page, pageSize) {
         .done(function (response, status, xhr) {
             let pages = response['totalPages'];
 
-            if(page > pages) {
+            if (page > pages) {
                 page = pages;
             }
 
@@ -508,20 +456,18 @@ function showNotices(page, pageSize) {
                           <div class="notice-list">
                             <div class="top">
                               <div class="num">번호</div>
-                              <div class="category">카테고리</div>
                               <div class="title">제목</div>
-                              <div class="notice-views">조회수</div>
+                             
                             </div>`;
 
-            let startNum = (page-1) * pageSize;
+            let startNum = (page - 1) * pageSize;
             response['content'].forEach((Board) => {
                 startNum += 1;
                 html += `
                         <div>
                           <div class="num">${startNum}</div>
-                          <div class="category">${Board.categoryName}</div>
                           <div class="title"><a href="#">${Board.title}</a></div>
-                          <div class="notice-views">${Board.noticeViews}</div>
+                          
                         </div>
 
                     `;
@@ -537,8 +483,8 @@ function showNotices(page, pageSize) {
             let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
             let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
 
-            for(let i=startPage;i<=endPage;i++) {
-                if(page === i) {
+            for (let i = startPage; i <= endPage; i++) {
+                if (page === i) {
                     html += `
                             <a onclick="showNotices(${i},pageSize)" class="num on">${i}</a>
                         `;
@@ -560,112 +506,13 @@ function showNotices(page, pageSize) {
             $(".main").empty();
             $(".main").append(html);
         })
-        .fail(function(response) {
+        .fail(function (response) {
             alert("공지사항 전체보기 조회 실패");
             console.log(response.responseJSON.msg);
         });
 }
 
 
-
-// 공지사항과 이벤트 페이지네이션
-// function fetchAndDisplayContent(categoryId, page, pageSize) {
-//     if (page <= 0) {
-//         page = 1;
-//     }
-//
-//     categoryId = parseInt(categoryId);
-//
-//     let url;
-//     let title;
-//     let description;
-//
-//     console.log(categoryId)
-//     if (categoryId === 1) {
-//         url = `/api/admin/boards/notices?page=${page}&size=${pageSize}`;
-//         title = '공지사항 페이지';
-//         description = '공지사항을 지속적으로 확인해주세요.';
-//     } else if (categoryId === 3) {
-//         url = `/api/admin/boards/events?page=${page}&size=${pageSize}`;
-//         title = '이벤트 페이지';
-//         description = '&nd의 이벤트에 귀 기울여 주세요!';
-//     }
-//
-//     $.ajax({
-//         type: 'GET',
-//         url: url
-//     })
-//         .done(function (response, status, xhr) {
-//             let pages = response['totalPages'];
-//
-//             if (page > pages) {
-//                 page = pages;
-//             }
-//
-//             let html = `
-//                     <div class="notice-wrap">
-//                       <div class="notice-title">
-//                         <strong>${title}</strong>
-//                         <p>${description}</p>
-//                       </div>
-//                       <div class="notice-list-wrap">
-//                           <div class="notice-list">
-//                             <div class="top">
-//                               <div class="num">번호</div>
-//                               <div class="title">제목</div>
-//                             </div>`;
-//
-//             let startNum = (page - 1) * pageSize;
-//             response['content'].forEach((Board) => {
-//                 startNum += 1;
-//                 html += `
-//                         <div>
-//                           <div class="num">${startNum}</div>
-//                           <div class="title"><a href="#">${Board.title}</a></div>
-//                         </div>
-//                     `;
-//             });
-//
-//             html += `
-//                     </div>
-//                      <div class="notice-page">
-//                         <a onclick="fetchAndDisplayContent(${categoryId}, 1, ${pageSize})" class="bt first"><<</a>
-//                         <a onclick="fetchAndDisplayContent(${categoryId}, ${page - 1}, ${pageSize})" class="bt prev"><</a>
-//                 `;
-//
-//             let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
-//             let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
-//
-//             for (let i = startPage; i <= endPage; i++) {
-//                 if (page === i) {
-//                     html += `
-//                             <a onclick="fetchAndDisplayContent(${categoryId}, ${i}, ${pageSize})" class="num on">${i}</a>
-//                         `;
-//                 } else {
-//                     html += `
-//                             <a onclick="fetchAndDisplayContent(${categoryId}, ${i}, ${pageSize})" class="num">${i}</a>
-//                         `;
-//                 }
-//             }
-//
-//             html += `
-//                             <a onclick="fetchAndDisplayContent(${categoryId}, ${page + 1}, ${pageSize})" class="bt first">></a>
-//                             <a onclick="fetchAndDisplayContent(${categoryId}, ${pages}, ${pageSize})" class="bt prev">>></a>
-//                           </div>
-//                       </div>
-//                     </div>
-//                 `;
-//
-//             $(".main").empty();
-//             $(".main").append(html);
-//         })
-//         .fail(function (response) {
-//             alert("페이지 조회 실패");
-//             console.log(response.responseJSON.msg);
-//         });
-// }
-
-// 공모전 페이징 출력
 // 공모전 페이징 출력
 function showContestsPage(page, size) {
     if (page <= 0) {
@@ -684,7 +531,7 @@ function showContestsPage(page, size) {
             }
 
             let html = `
-            <div class="category-container">
+           
                     <aside class="category">
                         <div id="middle-category-list"></div>
                         <div id="bottom-category-list"></div>
@@ -702,162 +549,260 @@ function showContestsPage(page, size) {
                                 <div class="company">주최사</div>
                                 <div class="status">현재현황</div>
                                 <div class="contest-views">조회수</div>
-                            </div>
+                        
                         </div>`;
 
             let startNum = (page - 1) * pageSize;
-            response['content'].forEach((contest) => {
+            response.content.forEach((contest, index) => {
                 startNum += 1;
+                // Add data-contest-id attribute to store contestId
                 html += `
-                <div>
-                    <div class="num">${startNum}</div>
-                    <div class="title"><a href="#" data-contest-id="${contest.contestId}">${contest.title}</a></div>
-                    <div class="company">${contest.company}</div>
-                    <div class="status">${contest.status}</div>
-                    <div class="contest-views">${contest.contestViews}</div>
-                </div>
-            `;
+                    <div>
+                        <div class="num">${startNum}</div>
+                        <div class="title"><a href="#" data-contest-id="${contest.contestId}">${contest.title}</a></div>
+                        <div class="company">${contest.company}</div>
+                        <div class="status">${contest.status}</div>
+                        <div class="contest-views">${contest.contestViews}</div>
+                    </div>
+                `;
             });
 
             html += `
                     </div>
                     <div class="contest-page">
-                        <a onclick="showContestsPage(1, pageSize)" class="bt first"><<</a>
-                        <a onclick="showContestsPage(${page - 1}, pageSize)" class="bt prev"><</a>`;
+                        <a onclick="showContestsPage(1, ${pageSize})" class="bt first"><<</a>
+                        <a onclick="showContestsPage(${page - 1}, ${pageSize})" class="bt prev"><</a>`;
 
             let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
-            let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
+            let endPage = Math.min(startPage + pageBtnSize - 1, pages);
 
             for (let i = startPage; i <= endPage; i++) {
-                if (page === i) {
-                    html += `
-                        <a onclick="showContestsPage(${i}, pageSize)" class="num on">${i}</a>
-                    `;
-                } else {
-                    html += `
-                        <a onclick="showContestsPage(${i}, pageSize)" class="num">${i}</a>
-                    `;
-                }
+                html += `
+                    <a onclick="showContestsPage(${i}, ${pageSize})" class="num ${page === i ? 'on' : ''}">${i}</a>
+                `;
             }
 
             html += `
-                        <a onclick="showContestsPage(${page + 1}, pageSize)" class="bt first">></a>
-                        <a onclick="showContestsPage(${pages}, pageSize)" class="bt prev">>></a>
+                        <a onclick="showContestsPage(${page + 1}, ${pageSize})" class="bt first">></a>
+                        <a onclick="showContestsPage(${pages}, ${pageSize})" class="bt prev">>></a>
                     </div>
                 </div>
             </div>
-        `;
+            `;
 
-            $(".main").empty();
-            $(".main").append(html);
+            // Append the HTML to the .main element
+            $(".main").empty().append(html);
 
+            // Attach a click event handler for contest links
+            $('.contest-list a').on('click', function () {
+                let contestId = $(this).data('contest-id');
+                showContestDetail(contestId);
+            });
         })
         .fail(function (response) {
             alert("공모전 전체보기 조회 실패");
             console.log(response.responseJSON.msg);
         });
+}
 
-    function fetchMiddleCategoriesAndBottomCategories() {
-        // 서버에서 중간 카테고리 정보와 연관된 하위 카테고리 정보를 가져오는 API 엔드포인트를 호출합니다.
-        $.ajax({
-            type: 'GET',
-            url: '/auth/middlecategory',
-        })
-            .done(function (response) {
-                // 가져온 중간 카테고리 정보를 페이지에 추가합니다.
-                displayMiddleCategories(response.middleCategoryList);
+//공모전 상세페이지
+
+function showContestDetail(contestId) {
+    // Fetch contest details
+    $.ajax({
+        type: 'GET',
+        url: `/api/contest/${contestId}`,
+    })
+        .done(function (contestResponseDto) {
+            let contestDetails = contestResponseDto; // Assuming the response matches the structure of ContestResponseDto
+
+            // Fetch images for the contest
+            $.ajax({
+                type: 'GET',
+                url: `/api/contest/images/${contestDetails.contestId}`, // Use the new endpoint to fetch images
             })
-            .fail(function (response) {
-                console.error('Failed to fetch categories:', response.status);
-            });
-    }
+                .done(function (imageResponse) {
+                    let html = `
+                <div class="contest-detail">
+    <div class="contest-details-box">
+        <div class="contest-detail-item">
+            <div class="contest-label">주최사:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="contest-value">${contestDetails.company}</div>
+        </div>
+        <div class="contest-detail-item">
+            <div class="contest-label">모집 시작일:&nbsp;&nbsp;&nbsp;</div>
+            <div class="contest-value">${contestDetails.startDate}</div>
+        </div>
+        <div class="contest-detail-item">
+            <div class="contest-label">모집 마감일:&nbsp;&nbsp;&nbsp;</div>
+            <div class="contest-value">${contestDetails.endDate}</div>
+        </div>
+        <div class="contest-detail-item">
+            <div class="contest-label">현재현황:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="contest-value">${contestDetails.status}</div>
+        </div>
+        <div class="contest-detail-item">
+            <div class="contest-label">시상금(1등):&nbsp;&nbsp;&nbsp;</div>
+            <div class="contest-value">${contestDetails.prize}</div>
+        </div>
+    </div>
+                    <div class="contest-details-box">
+                        <div class="deatil-label">공모전 상세내용</div>
+                        <p></p>
+                        <p class="contest-contents">${contestDetails.contents}</p>
+                    </div>
+                    
+                    <div class="contest-images">
+                        <h3></h3>
 
-    function displayMiddleCategories(categories) {
-        // 중간 카테고리 목록을 표시하는 요소를 선택합니다.
-        const middleCategoryListContainer = $("#middle-category-list");
+                        `;
 
-        if (!Array.isArray(categories)) {
-            console.error('middleCategoryList is not an array:', categories);
-            return;
-        }
+                    if (imageResponse && Array.isArray(imageResponse)) {
+                        imageResponse.forEach((image, index) => {
+                            html += `
+                            <div class="image-container">
+                                <img src="${image.uploadFileUrl}" alt="Contest Image ${index + 1}">
+                            </div>
+                            `;
+                        });
+                    } else {
+                        html += `<p>No images available</p>`;
+                    }
 
-        // 중간 카테고리 데이터를 동적으로 생성하여 추가합니다.
-        categories.forEach(function (category) {
-            if (category.categoryName) {
-                const middleCategoryItem = $("<div></div>"); // 중간 카테고리 아이템을 생성합니다.
-                middleCategoryItem.addClass("middle-category-item");
+                    html += `
+                    </div>
+                </div>
+                `;
 
-                // 중간 카테고리 이름을 추가합니다.
-                middleCategoryItem.append(`<h5>${category.categoryName}</h5>`);
-
-                // 중간 카테고리를 클릭하면 해당 중간 카테고리와 연관된 하위 카테고리를 표시하도록 이벤트 핸들러를 추가합니다.
-                middleCategoryItem.find("h5").on('click', function () {
-                    const middleCategoryId = category.middleCategoryId;
-                    fetchBottomCategoriesAndDisplay(middleCategoryId);
+                    $('.main').empty();
+                    $('.main').append(html);
+                })
+                .fail(function (error) {
+                    console.error('Error loading contest images:', error);
                 });
 
-                middleCategoryListContainer.append(middleCategoryItem);
-            }
-        });
-    }
-
-    function fetchBottomCategoriesAndDisplay(middleCategoryId) {
-        // 선택한 중간 카테고리에 연결된 하위 카테고리 정보를 가져오는 API 엔드포인트를 호출합니다.
-        $.ajax({
-            type: 'GET',
-            url: `/auth/bottomcategory?middleCategoryId=${middleCategoryId}`,
         })
-            .done(function (response) {
-                // 가져온 하위 카테고리 정보를 #bottom-category-list 요소에 추가합니다.
-                displayBottomCategories(response.bottomCategoryList);
-            })
-            .fail(function (response) {
-                console.error('Failed to fetch bottom categories:', response.status);
-            });
-    }
-
-    function displayBottomCategories(categories) {
-        // 하위 카테고리 목록을 표시하는 요소를 선택합니다.
-        const bottomCategoryListContainer = $("#bottom-category-list");
-
-        if (!Array.isArray(categories)) {
-            console.error('bottomCategoryList is not an array:', categories);
-            return;
-        }
-
-        // 하위 카테고리 데이터를 동적으로 생성하여 추가합니다.
-        const bottomCategoryList = $("<ul></ul>");
-        categories.forEach(function (category) {
-            if (category.categoryName) {
-                const listItem = $("<li></li>");
-                listItem.text(category.categoryName);
-                bottomCategoryList.append(listItem);
-            }
+        .fail(function (error) {
+            console.error('Error loading contest details:', error);
         });
-
-        // 하위 카테고리 목록을 해당 요소에 추가합니다.
-        bottomCategoryListContainer.empty(); // 기존 목록 비우기
-        bottomCategoryListContainer.append(bottomCategoryList);
-    }
 }
-// 자유게시판 페이징 출력
-    function showPosts(page, size) {
-        if (page <= 0) {
-            page = 1;
-        }
 
-        $.ajax({
-            type: 'GET',
-            url: `/api/posts?page=${page}&size=${size}`,
+
+function fetchMiddleCategoriesAndBottomCategories() {
+    // 서버에서 중간 카테고리 정보와 연관된 하위 카테고리 정보를 가져오는 API 엔드포인트를 호출합니다.
+    $.ajax({
+        type: 'GET',
+        url: '/auth/middlecategory',
+    })
+        .done(function (response) {
+            // 가져온 중간 카테고리 정보를 페이지에 추가합니다.
+            displayMiddleCategories(response.middleCategoryList);
+
+            // Extract the middleCategoryId here and pass it to fetchBottomCategoriesAndDisplay
+            const middleCategoryId = response.middleCategoryId; // Replace this with the actual field from your response
+            fetchBottomCategoriesAndDisplay(middleCategoryId);
         })
-            .done(function (response, status, xhr) {
-                let pages = response['totalPages'];
+        .fail(function (response) {
+            console.error('Failed to fetch categories:', response.status);
+        });
+}
 
-                if (page > pages) {
-                    page = pages;
-                }
 
-                let html = `
+function displayMiddleCategories(categories) {
+    // 중간 카테고리 목록을 표시하는 요소를 선택합니다.
+    const middleCategoryListContainer = $("#middle-category-list");
+
+    if (!Array.isArray(categories)) {
+        console.error('middleCategoryList is not an array:', categories);
+        return;
+    }
+
+    // 중간 카테고리 데이터를 동적으로 생성하여 추가합니다.
+    categories.forEach(function (category) {
+        if (category.categoryName) {
+            const middleCategoryItem = $("<div></div>"); // 중간 카테고리 아이템을 생성합니다.
+            middleCategoryItem.addClass("middle-category-item");
+
+            // 중간 카테고리 이름을 추가합니다.
+            middleCategoryItem.append(`<h5>${category.categoryName}</h5>`);
+
+            // 중간 카테고리를 클릭하면 해당 중간 카테고리와 연관된 하위 카테고리를 표시하도록 이벤트 핸들러를 추가합니다.
+            middleCategoryItem.find("h5").on('click', function () {
+                const middleCategoryId = category.id; // Extract the ID correctly
+                console.log('Clicked on middle category with ID:', middleCategoryId); // Debugging
+                fetchBottomCategoriesAndDisplay(middleCategoryId);
+            });
+
+            middleCategoryListContainer.append(middleCategoryItem);
+        }
+    });
+}
+
+
+function fetchBottomCategoriesAndDisplay(middleCategoryId) {
+    // Log the middleCategoryId to ensure it's correct
+    console.log('Fetching bottom categories for middle category with ID:', middleCategoryId);
+
+    // Make the AJAX request to fetch bottom categories
+    $.ajax({
+        type: 'GET',
+        url: `/auth/bottomcategory/${middleCategoryId}`, // Ensure the URL is correctly formatted
+    })
+        .done(function (response) {
+            // Log the response to see what data is returned
+            console.log('Received bottom categories response:', response);
+
+            // Display the bottom categories (your existing code)
+            displayBottomCategories(response.bottomCategoryList);
+        })
+        .fail(function (response) {
+            console.error('Failed to fetch bottom categories:', response.status);
+        });
+}
+
+
+function displayBottomCategories(categories) {
+    // 하위 카테고리 목록을 표시하는 요소를 선택합니다.
+    const bottomCategoryListContainer = $("#bottom-category-list");
+
+    if (!Array.isArray(categories)) {
+        console.error('bottomCategoryList is not an array:', categories);
+        return;
+    }
+
+    // 하위 카테고리 데이터를 동적으로 생성하여 추가합니다.
+    const bottomCategoryList = $("<ul></ul>");
+    categories.forEach(function (category) {
+        if (category.categoryName) {
+            const listItem = $("<li></li>");
+            listItem.text(category.categoryName);
+            bottomCategoryList.append(listItem);
+        }
+    });
+
+    // 하위 카테고리 목록을 해당 요소에 추가합니다.
+    bottomCategoryListContainer.empty(); // 기존 목록 비우기
+    bottomCategoryListContainer.append(bottomCategoryList);
+}
+
+// 자유게시판 페이징 출력
+function showPosts(page, size) {
+    if (page <= 0) {
+        page = 1;
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: `/api/posts?page=${page}&size=${size}`,
+    })
+        .done(function (response, status, xhr) {
+            let pages = response['totalPages'];
+
+            if (page > pages) {
+                page = pages;
+            }
+
+            let html = `
                     <div class="post-wrap">
                       <div class="post-title">
                         <strong>자유게시판</strong>
@@ -873,10 +818,10 @@ function showContestsPage(page, size) {
                               <div class="count">조회수</div>
                             </div>`;
 
-                let startNum = (page - 1) * pageSize;
-                response['content'].forEach((post) => {
-                    startNum += 1;
-                    html += `
+            let startNum = (page - 1) * pageSize;
+            response['content'].forEach((post) => {
+                startNum += 1;
+                html += `
                         <div>
                           <div class="num">${startNum}</div>
                           <div class="title"><a href="/view/onepost/${post.postId}">${post.title}</a></div>
@@ -885,9 +830,9 @@ function showContestsPage(page, size) {
                           <div class="count">${post.communityPostViews}</div>
                         </div>
                     `;
-                });
+            });
 
-                html += `
+            html += `
                     </div>
                      <div class="post-btn">
                      <button onclick="postingBtn()">글쓰기</button>
@@ -897,55 +842,55 @@ function showContestsPage(page, size) {
                         <a onclick="showPosts(${page}-1,pageSize)" class="bt prev"><</a>
                 `;
 
-                let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
-                let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
+            let startPage = (Math.floor(page / pageBtnSize) * pageBtnSize) + 1;
+            let endPage = (startPage + pageBtnSize) <= pages ? (startPage + pageBtnSize) : pages;
 
-                for (let i = startPage; i <= endPage; i++) {
-                    if (page === i) {
-                        html += `
+            for (let i = startPage; i <= endPage; i++) {
+                if (page === i) {
+                    html += `
                             <a onclick="showPosts(${i},pageSize)" class="num on">${i}</a>
                         `;
-                    } else {
-                        html += `
+                } else {
+                    html += `
                             <a onclick="showPosts(${i},pageSize)" class="num">${i}</a>
                         `;
-                    }
                 }
+            }
 
-                html += `
+            html += `
                             <a onclick="showPosts(${page}+1,pageSize)" class="bt first">></a>
                             <a onclick="showPosts(${pages},pageSize)" class="bt prev">>></a>
                           </div>
                       </div>
                     </div>
                 `;
-                $(".main").empty();
-                $(".main").append(html);
-            })
-            .fail(function (response) {
-                let errorMessage = response.responseJSON.errorMessage;
-                alert("자유게시글 조회 실패 : " + errorMessage);
-                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
-                    window.location.href = "/view/login";
-                } else if (errorMessage == "연결 오류!") {
-                    alertConnection(UserId);
-                }
-            });
-    }
+            $(".main").empty();
+            $(".main").append(html);
+        })
+        .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("자유게시글 조회 실패 : " + errorMessage);
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            } else if (errorMessage == "연결 오류!") {
+                alertConnection(UserId);
+            }
+        });
+}
 
 // 글쓰기(작성)
-    function postingBtn() {
-        $(document).ready(function () {
-            $('#summernote').summernote({
-                placeholder: 'contents',
-                minHeight: 370,
-                maxHeight: null,
-                focus: true,
-                lang: 'ko-KR'
-            });
+function postingBtn() {
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            placeholder: 'contents',
+            minHeight: 370,
+            maxHeight: null,
+            focus: true,
+            lang: 'ko-KR'
         });
+    });
 
-        let html = `
+    let html = `
                 <div class="posting-wrap">
                     <div style="width: 60%; margin: auto;">
                         <div id="postForm">
@@ -957,54 +902,54 @@ function showContestsPage(page, size) {
                 </div>
             `;
 
-        $('.main').empty();
-        $('.main').append(html);
+    $('.main').empty();
+    $('.main').append(html);
+}
+
+function createPost() {
+    let postTitle = $('#title').val();
+    let postContents = $('#summernote').val();
+
+    console.log("postTitle:", postTitle);
+    console.log("postContents:", postContents);
+
+    let data = {
+        title: postTitle,
+        contents: postContents
+    };
+
+    console.log(postTitle);
+    console.log(postContents);
+
+    if (postTitle.trim() === '' || postContents.trim() === '') {
+        alert('제목과 내용을 입력하세요');
+        return;
     }
 
-    function createPost() {
-        let postTitle = $('#title').val();
-        let postContents = $('#summernote').val();
-
-        console.log("postTitle:", postTitle);
-        console.log("postContents:", postContents);
-
-        let data = {
-            title: postTitle,
-            contents: postContents
-        };
-
-        console.log(postTitle);
-        console.log(postContents);
-
-        if (postTitle.trim() === '' || postContents.trim() === '') {
-            alert('제목과 내용을 입력하세요');
-            return;
+    $.ajax({
+        url: '/api/posts',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function (xhr) {
+            console.log(xhr);
+            alert("게시글 등록 성공");
+            showPosts(1, pageSize);
+        },
+        error: function () {
+            console.log('게시글 등록 error 실패');
         }
-
-        $.ajax({
-            url: '/api/posts',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function (xhr) {
-                console.log(xhr);
-                alert("게시글 등록 성공");
-                showPosts(1, pageSize);
-            },
-            error: function () {
-                console.log('게시글 등록 error 실패');
-            }
-        });
-    }
+    });
+}
 
 // // 1:1 채팅 화면 구성
-    function showChats() {
-        $.ajax({
-            type: 'GET',
-            url: `/api/chat/rooms`,
-        })
-            .done(function (response, status, xhr) {
-                let html = `
+function showChats() {
+    $.ajax({
+        type: 'GET',
+        url: `/api/chat/rooms`,
+    })
+        .done(function (response, status, xhr) {
+            let html = `
                 <div class="chat-wrap">
                     <div class="chat-room-list">
                         <div class="title">
@@ -1045,69 +990,69 @@ function showContestsPage(page, size) {
                         </div>
                         <div class="room-lists">
             `;
-                let roomList = response;
-                roomList.forEach((room) => {
-                    html += `
+            let roomList = response;
+            roomList.forEach((room) => {
+                html += `
                         <div class="room-list" id="room-${room.roomId}">
                             <a onclick="showChat(${room.roomId})">${room.chatroomName}</a>
                             <p>${room.createdDate}</p>
                             <i class="fa-solid fa-xmark" onclick="deleteChat(${room.roomId})"></i>
                         </div>
                     `;
-                })
+            })
 
-                html += `
+            html += `
                         </div>
                     </div>
                     <div class="chat-room">
                     </div>
                 </div>
             `;
-                $('.main').empty();
-                $('.main').append(html);
+            $('.main').empty();
+            $('.main').append(html);
 
-                createChatroomHandler();
-            })
-            .fail(function (response) {
-                let errorMessage = response.responseJSON.errorMessage;
-                alert("채팅 목록 불러오기 실패 : " + errorMessage);
-                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
-                    window.location.href = "/view/login";
-                } else if (errorMessage == "연결 오류!") {
-                    alertConnection(UserId);
-                }
-            });
-    }
+            createChatroomHandler();
+        })
+        .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("채팅 목록 불러오기 실패 : " + errorMessage);
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            } else if (errorMessage == "연결 오류!") {
+                alertConnection(UserId);
+            }
+        });
+}
 
 // 채팅 관련 Handler
-    function createChatroomHandler() {
-        const memberInput = document.querySelector("#search-term");
-        const memberSearchBtn = document.querySelector(".search-member-button");
+function createChatroomHandler() {
+    const memberInput = document.querySelector("#search-term");
+    const memberSearchBtn = document.querySelector(".search-member-button");
 
-        // 사용자 이메일 실시간 검색
-        memberInput.addEventListener('keyup', function () {
-            let search = $('#search-term').val().trim();
-            let chatroomName = $('#chatroom-name-term').val().trim();
+    // 사용자 이메일 실시간 검색
+    memberInput.addEventListener('keyup', function () {
+        let search = $('#search-term').val().trim();
+        let chatroomName = $('#chatroom-name-term').val().trim();
 
-            if (search === "") {
-                $('#member-list').empty();
-                return;
+        if (search === "") {
+            $('#member-list').empty();
+            return;
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: '/api/users/search',
+            data: {
+                keyword: search
             }
+        })
+            .done(function (response, status, xhr) {
+                let users = response;
+                let chatroomName = $('#chatroom-name-term').val().trim();
+                let html = ``;
 
-            $.ajax({
-                type: 'GET',
-                url: '/api/users/search',
-                data: {
-                    keyword: search
-                }
-            })
-                .done(function (response, status, xhr) {
-                    let users = response;
-                    let chatroomName = $('#chatroom-name-term').val().trim();
-                    let html = ``;
-
-                    users.forEach((user) => {
-                        html += `
+                users.forEach((user) => {
+                    html += `
                         <li class="member-list-item">
                             <div class="member-list-item-content w-100">
                                 <h4>${user.username}</h4>
@@ -1118,46 +1063,46 @@ function showContestsPage(page, size) {
                             </button>
                         </li>
                     `;
-                    })
-                    $('#member-list').empty();
-                    $('#member-list').append(html);
                 })
-                .fail(function (response, status, xhr) {
-                    let errorMessage = response.responseJSON.errorMessage;
-                    alert("사용자 검색 실패 : " + errorMessage);
-                    if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
-                        window.location.href = "/view/login";
-                    }
-                })
-        });
-
-        // 사용자 이메일 검색
-        memberSearchBtn.addEventListener('click', function () {
-            let search = $('#search-term').val().trim();
-
-            if (search === "") {
                 $('#member-list').empty();
-                return;
-            }
-
-            $.ajax({
-                type: 'GET',
-                url: '/api/users/search',
-                data: {
-                    keyword: search
+                $('#member-list').append(html);
+            })
+            .fail(function (response, status, xhr) {
+                let errorMessage = response.responseJSON.errorMessage;
+                alert("사용자 검색 실패 : " + errorMessage);
+                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                    window.location.href = "/view/login";
                 }
             })
-                .done(function (response, status, xhr) {
-                    let chatroomName = $('#chatroom-name-term').val().trim();
-                    let users = response;
-                    if (users.length == 0) {
-                        alert("검색결과가 없습니다.");
-                        return;
-                    }
-                    let html = ``;
+    });
 
-                    users.forEach((user) => {
-                        html += `
+    // 사용자 이메일 검색
+    memberSearchBtn.addEventListener('click', function () {
+        let search = $('#search-term').val().trim();
+
+        if (search === "") {
+            $('#member-list').empty();
+            return;
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: '/api/users/search',
+            data: {
+                keyword: search
+            }
+        })
+            .done(function (response, status, xhr) {
+                let chatroomName = $('#chatroom-name-term').val().trim();
+                let users = response;
+                if (users.length == 0) {
+                    alert("검색결과가 없습니다.");
+                    return;
+                }
+                let html = ``;
+
+                users.forEach((user) => {
+                    html += `
                         <li class="member-list-item">
                             <div class="member-list-item-content w-100">
                                 <h4>${user.username}</h4>
@@ -1168,74 +1113,74 @@ function showContestsPage(page, size) {
                             </button>
                         </li>
                     `;
-                    })
-                    $('#member-list').empty();
-                    $('#member-list').append(html);
                 })
-                .fail(function (response, status, xhr) {
-                    let errorMessage = response.responseJSON.errorMessage;
-                    alert("사용자 검색 실패 : " + errorMessage);
-                    if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
-                        window.location.href = "/view/login";
-                    }
-                })
-        });
-    }
+                $('#member-list').empty();
+                $('#member-list').append(html);
+            })
+            .fail(function (response, status, xhr) {
+                let errorMessage = response.responseJSON.errorMessage;
+                alert("사용자 검색 실패 : " + errorMessage);
+                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                    window.location.href = "/view/login";
+                }
+            })
+    });
+}
 
 // 채팅방 생성
-    function createChatroom(chatroomName, userId) {
-        $.ajax({
-            type: 'POST',
-            url: `/api/chat/room?chatroomName=${chatroomName}&participant=${userId}`
-        })
-            .done(function (response, status, xhr) {
-                let room = response;
+function createChatroom(chatroomName, userId) {
+    $.ajax({
+        type: 'POST',
+        url: `/api/chat/room?chatroomName=${chatroomName}&participant=${userId}`
+    })
+        .done(function (response, status, xhr) {
+            let room = response;
 
-                let html = `
+            let html = `
                 <div class="room-list" id="room-${room.roomId}">
                     <a onclick="showChat(${room.roomId})">${room.chatroomName}</a>
                     <p>${room.createdDate}</p>
                     <i class="fa-solid fa-xmark" onclick="deleteChat(${room.roomId})"></i>
                 </div>
             `;
-                $('.room-lists').append(html);
-            })
-            .fail(function (response) {
-                let errorMessage = response.responseJSON.errorMessage;
-                alert("채팅방 생성 실패 : " + errorMessage);
-                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
-                    window.location.href = "/view/login";
-                }
-            })
-    }
+            $('.room-lists').append(html);
+        })
+        .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("채팅방 생성 실패 : " + errorMessage);
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            }
+        })
+}
 
 // 채팅방 삭제
-    function deleteChat(roomId) {
-        $.ajax({
-            type: 'DELETE',
-            url: `/api/chat/room?roomId=${roomId}`
+function deleteChat(roomId) {
+    $.ajax({
+        type: 'DELETE',
+        url: `/api/chat/room?roomId=${roomId}`
+    })
+        .done(function (response, status, xhr) {
+            alert("채팅방 삭제 성공");
+            $(`#room-${roomId}`).remove();
+            $('.chat-room').empty();
         })
-            .done(function (response, status, xhr) {
-                alert("채팅방 삭제 성공");
-                $(`#room-${roomId}`).remove();
-                $('.chat-room').empty();
-            })
-            .fail(function (response) {
-                let errorMessage = response.responseJSON.errorMessage;
-                alert("채팅방 삭제 실패 : " + response.responseJSON.errorMessage);
-                window.location.href = "/view/";
-            })
-    }
+        .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("채팅방 삭제 실패 : " + response.responseJSON.errorMessage);
+            window.location.href = "/view/";
+        })
+}
 
 // 채팅방으로 접속과 동시에 채팅 내역을 출력
-    function showChat(roomId) {
-        $.ajax({
-            type: 'GET',
-            url: `/api/chat/room?roomId=${roomId}`
-        })
-            .done(async function (response, status, xhr) {
-                let roomInfo = response;
-                let html = `
+function showChat(roomId) {
+    $.ajax({
+        type: 'GET',
+        url: `/api/chat/room?roomId=${roomId}`
+    })
+        .done(async function (response, status, xhr) {
+            let roomInfo = response;
+            let html = `
                 <div class="chat-room-title">
                     <h2>${roomInfo.chatroomName}</h2>
                 </div>
@@ -1264,102 +1209,41 @@ function showContestsPage(page, size) {
                     <button id="button-send">전송</button>
                 </div>
             `;
-                $('.chat-room').empty();
-                $('.chat-room').append(html);
+            $('.chat-room').empty();
+            $('.chat-room').append(html);
 
-                await sleep(2);
+            await sleep(2);
 
-                if (stomp != null) {
-                    stomp.disconnect();
-                }
+            if (stomp != null) {
+                stomp.disconnect();
+            }
 
-                showChatHistory(roomId);
-            })
-            .fail(function (response) {
-                alert("채팅 불러오기 실패 : " + response.responseJSON.errorMessage);
-                console.log(response);
-                window.location.href = "/";
-            });
-    }
+            showChatHistory(roomId);
+        })
+        .fail(function (response) {
+            alert("채팅 불러오기 실패 : " + response.responseJSON.errorMessage);
+            console.log(response);
+            window.location.href = "/";
+        });
+}
 
 // 채팅 내역 출력
-    function showChatHistory(roomId) {
-        $.ajax({
-            type: 'GET',
-            url: `/api/chat/room/chatting?roomId=${roomId}`
-        })
-            .done(function (response, status, xhr) {
-                $('.chat-room-wrap').empty();
+function showChatHistory(roomId) {
+    $.ajax({
+        type: 'GET',
+        url: `/api/chat/room/chatting?roomId=${roomId}`
+    })
+        .done(function (response, status, xhr) {
+            $('.chat-room-wrap').empty();
 
-                let chatHistories = response;
+            let chatHistories = response;
 
-                chatHistories.forEach((chat) => {
-                    let chatId = chat.id;
-                    let writer = chat.writer;
-                    let message = chat.message;
-                    let messageType = chat.messageType;
-                    let sendDate = chat.sendDate;
-                    let html = ``;
-
-                    if (messageType == "enter" || messageType == "out") {
-                        html += `
-                        <div class="chat ch3">
-                            <div class="textbox">${message}</div>
-                            <div class="timebox">${sendDate}</div>
-                        </div>
-                    `;
-                    } else if (messageType == "message") {
-                        if (writer == loginUsername) {
-                            html += `
-                        <div class="chat ch2" id="${chatId}">
-                            <div class="icon"><i class="fa-solid fa-user"></i></div>
-                            <div class="textbox">${message}</div>
-                            <div class="timebox">${sendDate}</div>
-                        </div>
-                    `;
-                        } else {
-                            html += `
-                        <div class="chat ch1" id="${chatId}">
-                            <div class="icon"><i class="fa-solid fa-user"></i></div>
-                            <div class="textbox">${message}</div>
-                            <div class="timebox">${sendDate}</div>
-                        </div>
-                    `;
-                        }
-                    }
-                    $(".chat-room-wrap").append(html);
-                })
-
-                connectChat(roomId);
-            })
-            .fail(function (response) {
-                let errorMessage = response.responseJSON.errorMessage;
-                alert("채팅내역 불러오기 실패 : " + response.responseJSON.errorMessage);
-                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
-                    window.location.href = "/view/login";
-                }
-            });
-    }
-
-// 채팅 연결
-    function connectChat(roomId) {
-        var sockJs = new SockJS("/stomp-chat");
-        //1. SockJS를 내부에 들고있는 stomp를 내어줌
-        stomp = Stomp.over(sockJs);
-
-        //2. connection이 맺어지면 실행
-        stomp.connect({}, function () {
-            console.log("STOMP Connection")
-
-            //4. subscribe(path, callback)으로 메세지를 받을 수 있음
-            stomp.subscribe("/sub/api/chat/room/" + roomId, function (chat) {
-                let content = JSON.parse(chat.body);
-
-                let chatId = chat.chatId;
-                let writer = content.writer;
-                let message = content.message;
-                let messageType = content.messageType;
-                let sendDate = content.sendDate;
+            chatHistories.forEach((chat) => {
+                let chatId = chat.id;
+                let writer = chat.writer;
+                let message = chat.message;
+                let messageType = chat.messageType;
+                let sendDate = chat.sendDate;
                 let html = ``;
 
                 if (messageType == "enter" || messageType == "out") {
@@ -1389,41 +1273,102 @@ function showContestsPage(page, size) {
                     }
                 }
                 $(".chat-room-wrap").append(html);
+            })
 
-                // 최신 메시지가 보이도록 스크롤 최신화
-                $(".chat-room-wrap").scrollTop($('.chat-room-wrap')[0].scrollHeight);
-            });
+            connectChat(roomId);
+        })
+        .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("채팅내역 불러오기 실패 : " + response.responseJSON.errorMessage);
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            }
+        });
+}
 
-            //3. send(path, header, message)로 메세지를 보낼 수 있음
-            stomp.send('/pub/api/chat/enter', {contentType: 'application/json'}, JSON.stringify({
-                roomId: roomId,
-                writer: loginUsername,
-                messageType: "enter"
-            }));
+// 채팅 연결
+function connectChat(roomId) {
+    var sockJs = new SockJS("/stomp-chat");
+    //1. SockJS를 내부에 들고있는 stomp를 내어줌
+    stomp = Stomp.over(sockJs);
+
+    //2. connection이 맺어지면 실행
+    stomp.connect({}, function () {
+        console.log("STOMP Connection")
+
+        //4. subscribe(path, callback)으로 메세지를 받을 수 있음
+        stomp.subscribe("/sub/api/chat/room/" + roomId, function (chat) {
+            let content = JSON.parse(chat.body);
+
+            let chatId = chat.chatId;
+            let writer = content.writer;
+            let message = content.message;
+            let messageType = content.messageType;
+            let sendDate = content.sendDate;
+            let html = ``;
+
+            if (messageType == "enter" || messageType == "out") {
+                html += `
+                        <div class="chat ch3">
+                            <div class="textbox">${message}</div>
+                            <div class="timebox">${sendDate}</div>
+                        </div>
+                    `;
+            } else if (messageType == "message") {
+                if (writer == loginUsername) {
+                    html += `
+                        <div class="chat ch2" id="${chatId}">
+                            <div class="icon"><i class="fa-solid fa-user"></i></div>
+                            <div class="textbox">${message}</div>
+                            <div class="timebox">${sendDate}</div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="chat ch1" id="${chatId}">
+                            <div class="icon"><i class="fa-solid fa-user"></i></div>
+                            <div class="textbox">${message}</div>
+                            <div class="timebox">${sendDate}</div>
+                        </div>
+                    `;
+                }
+            }
+            $(".chat-room-wrap").append(html);
+
+            // 최신 메시지가 보이도록 스크롤 최신화
+            $(".chat-room-wrap").scrollTop($('.chat-room-wrap')[0].scrollHeight);
         });
 
-        $("#button-send").on("click", function (e) {
-            let msg = document.getElementById("msg");
+        //3. send(path, header, message)로 메세지를 보낼 수 있음
+        stomp.send('/pub/api/chat/enter', {contentType: 'application/json'}, JSON.stringify({
+            roomId: roomId,
+            writer: loginUsername,
+            messageType: "enter"
+        }));
+    });
 
-            stomp.send('/pub/api/chat/message', {'content-type': 'application/json'}, JSON.stringify({
-                roomId: roomId,
-                message: msg.value,
-                writer: loginUsername,
-                messageType: "message"
-            }));
-            msg.value = '';
+    $("#button-send").on("click", function (e) {
+        let msg = document.getElementById("msg");
+
+        stomp.send('/pub/api/chat/message', {'content-type': 'application/json'}, JSON.stringify({
+            roomId: roomId,
+            message: msg.value,
+            writer: loginUsername,
+            messageType: "message"
+        }));
+        msg.value = '';
+    })
+        .fail(function (response) {
+            let errorMessage = response.responseJSON.errorMessage;
+            alert("채팅 전송 실패 : " + errorMessage);
+            if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
+                window.location.href = "/view/login";
+            } else if (errorMessage == "연결 오류!") {
+                alertConnection(UserId);
+            }
         })
-            .fail(function (response) {
-                let errorMessage = response.responseJSON.errorMessage;
-                alert("채팅 전송 실패 : " + errorMessage);
-                if (errorMessage == "유효하지 않은 토큰입니다" || errorMessage == "로그인이 필요합니다") {
-                    window.location.href = "/view/login";
-                } else if (errorMessage == "연결 오류!") {
-                    alertConnection(UserId);
-                }
-            })
-    }
+}
 
-    function sleep(sec) {
-        return new Promise(resolve => setTimeout(resolve, sec * 1000));
-    }
+function sleep(sec) {
+    return new Promise(resolve => setTimeout(resolve, sec * 1000));
+}

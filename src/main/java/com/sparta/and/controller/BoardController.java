@@ -32,8 +32,8 @@ public class BoardController {
 	// 글 전체조회
 	@GetMapping("/notices")
 	public ResponseEntity<Page<BoardResponseDto>> getAllBoards(
-		@RequestParam("page") int page,
-		@RequestParam("size") int size) {
+			@RequestParam("page") int page,
+			@RequestParam("size") int size) {
 		return ResponseEntity.ok().body(boardService.getAllBoards(page-1,size));
 	}
 

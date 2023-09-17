@@ -16,11 +16,13 @@ public class BottomCategoryService {
 	private final BottomCategoryRepository bottomCategoryRepository;
 
 	//조회
-	public BottomCategoryListResponseDto getBottomCategory() {
-		List<BottomCategoryResponseDto> bottomCategoryList = bottomCategoryRepository.findAll().stream()
+	public BottomCategoryListResponseDto getBottomCategoryByMiddleCategoryId(Long middleCategoryId) {
+		List<BottomCategoryResponseDto> bottomCategoryList = bottomCategoryRepository
+				.findAll()
+				.stream()
+				.filter(bottomCategory -> bottomCategory.getMiddleCategory().getMiddleCategoryId().equals(middleCategoryId))
 				.map(BottomCategoryResponseDto::new)
 				.collect(Collectors.toList());
 		return new BottomCategoryListResponseDto(bottomCategoryList);
 	}
-
 }

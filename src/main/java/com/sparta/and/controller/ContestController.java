@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.sparta.and.dto.SearchRequestDto;
 
+import com.sparta.and.dto.request.S3FileDto;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +26,9 @@ public class ContestController {
 
 	@GetMapping("")
 	public ResponseEntity<Page<ContestResponseDto>> getContests(
-		@RequestParam("page") int page,
-		@RequestParam("size") int size){
-		return ResponseEntity.ok().body(contestService.getContests(page-1,size));
+			@RequestParam("page") int page,
+			@RequestParam("size") int size) {
+		return ResponseEntity.ok().body(contestService.getContests(page - 1, size));
 	}
 
 	@GetMapping("/{contestId}")
@@ -37,9 +38,16 @@ public class ContestController {
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 
-
-	@PostMapping("/search")
-	public List<ContestResponseDto> searc토hContest(@RequestBody SearchRequestDto requestDto) {
-		return contestService.searchContest(requestDto);
+	@GetMapping("/images/{contestId}")
+	public ResponseEntity<List<S3FileDto>> getContestImages(@PathVariable Long contestId) {
+		List<S3FileDto> images = contestService.getContestImagesUsingNativeQuery(contestId);
+		return ResponseEntity.status(HttpStatus.OK).body(images);
 	}
 }
+
+
+//	@PostMapping("/search")
+//	public List<ContestResponseDto> searc토hContest(@RequestBody SearchRequestDto requestDto) {
+//		return contestService.searchContest(requestDto);
+//	}
+//}

@@ -11,7 +11,6 @@ public class BoardResponseDto {
 	private Long id;
 	private String title;
 	private String contents;
-	private MiddleCategory categoryId;
 	private String categoryName;
 	private Long noticeViews;
 
@@ -19,7 +18,6 @@ public class BoardResponseDto {
 		this.id= board.getId();
 		this.title = board.getTitle();
 		this.contents = board.getContents();
-		this.categoryId = board.getCategoryId();
 		this.categoryName = board.getCategoryId().getCategoryName();
 		this.noticeViews = board.getNoticeViews();
 	}
