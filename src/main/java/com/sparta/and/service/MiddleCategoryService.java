@@ -15,7 +15,7 @@ public class MiddleCategoryService {
 	private final MiddleCategoryRepository middleCategoryRepository;
 
 	//조회
-	public MiddleCategoryListResponseDto getMiddleCategory() {
+	public MiddleCategoryListResponseDto getAllMiddleCategories() {
 		List<MiddleCategoryResponseDto> middleCategoryList = middleCategoryRepository.findAll().stream()
 				.map(MiddleCategoryResponseDto::new)
 				.collect(Collectors.toList());

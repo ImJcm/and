@@ -2,6 +2,7 @@ package com.sparta.and.service;
 
 import com.sparta.and.dto.response.BottomCategoryListResponseDto;
 import com.sparta.and.dto.response.BottomCategoryResponseDto;
+import com.sparta.and.entity.BottomCategory;
 import com.sparta.and.repository.BottomCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,4 +22,5 @@ public class BottomCategoryService {
 				.collect(Collectors.toList());
 		return new BottomCategoryListResponseDto(bottomCategoryList);
 	}
+
 }
