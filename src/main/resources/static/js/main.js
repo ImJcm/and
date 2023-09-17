@@ -457,7 +457,6 @@ function showNotices(page, pageSize) {
                             <div class="top">
                               <div class="num">번호</div>
                               <div class="title">제목</div>
-                              <div class="notice-views">조회수</div>
                             </div>`;
 
             let startNum = (page-1) * pageSize;
@@ -467,7 +466,6 @@ function showNotices(page, pageSize) {
                         <div>
                           <div class="num">${startNum}</div>
                           <div class="title"><a href="/view/onenotice/${Board.id}">${Board.title}</a></div>
-                          <div class="notice-views">${Board.noticeViews}</div>
                         </div>
 
                     `;
