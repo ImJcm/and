@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <link rel="icon" href="https://i.postimg.cc/YqTT15xb/image.png">
     <meta charset="UTF-8">
@@ -41,55 +41,55 @@
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
 
-        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
-    <header>
-        <div class="logo">
-            <img src="https://i.postimg.cc/T3KxY0gd/2.png" alt="Logo">
-        </div>
-
-        <div class="search-bar">
-            <input type="text" placeholder="공모전 검색">
-            <div class="search-icon">
-                <img src="https://i.postimg.cc/MT8tf3Qy/searchmagnifierinterfacesymbol-79894.png" alt="Search Icon">
-
-            </div>
-        </div>
-        <div class="auth-buttons">
-            <button onclick="redirectToLogin()">Login / Signup</button>
-        </div>
-    </header>
-    <div class="container">
-        <nav class="main-category-bar">
-            <a href="#">공모전</a>
-            <a href="#">공지사항</a>
-            <a href="#">이벤트</a>
-            <a href="#">자유게시판</a>
-        </nav>
+<header>
+    <div class="logo">
+        <img src="https://i.postimg.cc/T3KxY0gd/2.png" alt="Logo">
     </div>
-    <body>
-    <div class="main-container">
-        <p id="postIdParagraph" style="display: none;">postId: <span th:text="${postId}"></span></p>
-        <div class="card mb-3" style="max-width: 50rem;">
-            <div class="card-header">
-                <button id="updatePost">수정</button>
-                <button id="deletePost">삭제</button>
-                <button id="reportPost">신고</button>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title" id="postTitle"></h5>
-                <p class="card-text" id="postWriter"></p>
-                <p class="card-text" id="postDate"></p>
-                <p class="card-text" id="postCount"></p>
-                <p class="card-text" id="postContent"></p>
-            </div>
-        </div>
 
-        <!-- Display comments -->
-        <div class="card mb-3" style="max-width: 50rem;">
+    <div class="search-bar">
+        <input type="text" placeholder="공모전 검색">
+        <div class="search-icon">
+            <img src="https://i.postimg.cc/MT8tf3Qy/searchmagnifierinterfacesymbol-79894.png" alt="Search Icon">
+
+        </div>
+    </div>
+    <div class="auth-buttons">
+        <button onclick="redirectToLogin()">Login / Signup</button>
+    </div>
+</header>
+<div class="container">
+    <nav class="main-category-bar">
+        <a href="#">공모전</a>
+        <a href="#">공지사항</a>
+        <a href="#">이벤트</a>
+        <a href="#">자유게시판</a>
+    </nav>
+</div>
+<body>
+<div class="main-container">
+    <p id="postIdParagraph" style="display: none;">postId: <span th:text="${postId}"></span></p>
+    <div class="card mb-3" style="max-width: 50rem;">
+        <div class="card-header">
+            <button id="updatePost">수정</button>
+            <button id="deletePost">삭제</button>
+            <button id="reportPost">신고</button>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title" id="postTitle"></h5>
+            <p class="card-text" id="postWriter"></p>
+            <p class="card-text" id="postDate"></p>
+            <p class="card-text" id="postCount"></p>
+            <p class="card-text" id="postContent"></p>
+        </div>
+    </div>
+
+    <!-- Display comments -->
+    <div class="card mb-3" style="max-width: 50rem;">
         <div class="card-body">
             <h5 class="card-title">댓글</h5>
         </div>
@@ -98,15 +98,16 @@
             <textarea id="comment-content" placeholder="댓글을 입력해주세요."></textarea>
             <button type="submit">댓글 쓰기</button>
         </form>
-            <div id="commentContainer">
-                <p class="card-text" id="commentWriter"></p>
-                <p class="card-text" id="commentDate"></p>
-                <p class="card-text" id="commentContent"></p>
-                <button class="delete-comment-btn" data-comment-id="${comment.commentId}">댓글 삭제</button>
-                <button class="report-comment-btn" data-comment-id="${comment.commentId}">댓글 신고</button>
-            </div>
+        <div id="commentContainer">
+            <p class="card-text" id="commentWriter"></p>
+            <p class="card-text" id="commentDate"></p>
+            <p class="card-text" id="commentContent"></p>
+            <button class="delete-comment-btn" data-comment-id="${comment.commentId}">댓글 삭제</button>
+            <button class="report-comment-btn" data-comment-id="${comment.commentId}">댓글 신고</button>
+        </div>
     </div>
-    </body>
+    </div>
+</body>
 </html>
 <style>
     body {
@@ -307,8 +308,7 @@
                     url: `/api/posts/${postId}`,
                 })
                     .done(function () {
-                        // Redirect to the main homepage after successful deletion
-                        window.location.href = '/'; // Change the URL to your homepage URL
+                        window.location.href = '/view/main'; // Change the URL to your homepage URL
                     })
                     .fail(function (error) {
                         console.error('Failed to delete post.', error);
